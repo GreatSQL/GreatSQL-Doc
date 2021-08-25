@@ -60,10 +60,10 @@ my.cnf配置文件可参考[这份样例](https://gitee.com/GreatSQL/GreatSQL-Do
 - [在Linux下源码编译安装GreatSQL](https://gitee.com/GreatSQL/GreatSQL-Doc/blob/master/docs/build-greatsql-with-source.md)
 - [利用Ansible安装GreatSQL并构建MGR集群](https://gitee.com/GreatSQL/GreatSQL-Doc/blob/master/docs/install-greatsql-with-ansible.md)
 - [在Docker中部署GreatSQL并构建MGR集群](https://gitee.com/GreatSQL/GreatSQL-Doc/blob/master/docs/install-greatsql-with-docker.md)
-- [MGR优化配置参考](https://gitee.com/GreatSQL/GreatSQL-Doc/wikis/MGR%E6%9C%80%E4%BD%B3%E9%85%8D%E7%BD%AE%E5%8F%82%E8%80%83?sort_id=4163506)
+- [MGR优化配置参考](https://gitee.com/GreatSQL/GreatSQL-Doc/blob/master/docs/mgr-best-options-ref.md)
 - [InnoDB并行查询优化参考](https://gitee.com/GreatSQL/GreatSQL-Doc/blob/master/docs/innodb-parallel-execute.md)
-- [利用GreatSQL部署MGR集群](https://gitee.com/GreatSQL/GreatSQL-Doc/wikis/%E5%88%A9%E7%94%A8GreatSQL%E9%83%A8%E7%BD%B2MGR%E9%9B%86%E7%BE%A4%EF%BC%8C%E5%B9%B6%E5%AE%8C%E6%88%90%E6%B7%BB%E5%8A%A0%E6%96%B0%E8%8A%82%E7%82%B9%20%E3%80%81%E6%BB%9A%E5%8A%A8%E5%8D%87%E7%BA%A7%E3%80%81%E5%88%87%E4%B8%BB?sort_id=4163523)
-- [MySQL InnoDB Cluster+GreatSQL部署MGR集群](https://gitee.com/GreatSQL/GreatSQL-Doc/wikis/MySQL%20InnoDB%20Cluster+GreatSQL%E5%BF%AB%E9%80%9F%E9%83%A8%E7%BD%B2MGR%E9%9B%86%E7%BE%A4%EF%BC%8C%E5%B9%B6%E5%AE%9E%E7%8E%B0%E8%AF%BB%E5%86%99%E5%88%86%E7%A6%BB%E5%92%8C%E6%95%85%E9%9A%9C%E8%87%AA%E5%8A%A8%E8%BD%AC%E7%A7%BB?sort_id=4163532)
+- [利用GreatSQL部署MGR集群](https://gitee.com/GreatSQL/GreatSQL-Doc/blob/master/docs/using-greatsql-to-build-mgr-and-node-manage.md)
+- [MySQL InnoDB Cluster+GreatSQL部署MGR集群](https://gitee.com/GreatSQL/GreatSQL-Doc/blob/master/docs/mysql-innodb-cluster-with-greatsql.md)
 - [MySQL MGR专栏文章](https://mp.weixin.qq.com/mp/homepage?__biz=MjM5NzAzMTY4NQ==&hid=16&sn=9d3d21966d850dcf158e5b676d9060ed&scene=18#wechat_redirect)
 
 # 相关资源
