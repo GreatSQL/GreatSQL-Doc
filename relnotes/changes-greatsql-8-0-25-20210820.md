@@ -1,4 +1,4 @@
-# Changes in GreatSQL 8.0.25 (2021-8-x)
+# Changes in GreatSQL 8.0.25 (2021-8-26)
 ---
 [toc]
 
