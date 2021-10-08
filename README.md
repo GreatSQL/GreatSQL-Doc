@@ -76,12 +76,12 @@ Now you can start GreatSQL.
 - [MySQL MGR column article](https://mp.weixin.qq.com/mp/homepage?__biz=MjM5NzAzMTY4NQ==&hid=16&sn=9d3d21966d850dcf158e5b676d9060ed&scene=18#wechat_redirect)
 
 # related documentation
-- [GreatSQL-Docker](https://gitee.com/GreatSQL/GreatSQL-Docker), run GreatSQL in Docker.
-- [GreatSQL-Ansible](https://gitee.com/GreatSQL/GreatSQL-Ansible), use ansible to install GreatSQL with one click and complete the MGR cluster deployment.
+- [GreatSQL-Docker](https://github.com/GreatSQL/GreatSQL-Docker), run GreatSQL in Docker.
+- [GreatSQL-Ansible](https://github.com/GreatSQL/GreatSQL-Ansible), use ansible to install GreatSQL with one click and complete the MGR cluster deployment.
 
 # feedback
 ---
--[Issue feedback gitee](https://gitee.com/GreatSQL/GreatSQL-Doc/issues)
+- [Issue feedback gitee](https://github.com/GreatSQL/GreatSQL-Doc/issues)
 
 
 # contact us
