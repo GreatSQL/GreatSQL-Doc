@@ -60,26 +60,24 @@ Now you can start GreatSQL.
 
 # Change logs
 ---
--[GreatSQL Update Notes 8.0.22(2021-4-1)](https://gitee.com/GreatSQL/GreatSQL-Doc/blob/master/relnotes/changes-greatsql-8-0-22.md)
--[GreatSQL Update Notes 8.0.22 v20210410(2021-4-10)](https://gitee.com/GreatSQL/GreatSQL-Doc/blob/master/relnotes/changes-greatsql-8-0-22-v20210410. md)
--[GreatSQL Update Notes 8.0.25(2021-8-26)](https://gitee.com/GreatSQL/GreatSQL-Doc/blob/master/relnotes/changes-greatsql-8-0-25-20210820.md )
+- [GreatSQL Update Notes 8.0.25(2021-8-26)](https://gitee.com/GreatSQL/GreatSQL-Doc/blob/master/relnotes/changes-greatsql-8-0-25-20210820.md )
 
 
 
 # Documentation
 ---
--[Compile and install GreatSQL from source code under Linux](https://gitee.com/GreatSQL/GreatSQL-Doc/blob/master/docs/build-greatsql-with-source.md)
--[Using Ansible to install GreatSQL and build an MGR cluster](https://gitee.com/GreatSQL/GreatSQL-Doc/blob/master/docs/install-greatsql-with-ansible.md)
--[Deploy GreatSQL in Docker and build MGR cluster](https://gitee.com/GreatSQL/GreatSQL-Doc/blob/master/docs/install-greatsql-with-docker.md)
--[MGR optimization configuration reference](https://gitee.com/GreatSQL/GreatSQL-Doc/blob/master/docs/mgr-best-options-ref.md)
--[InnoDB parallel query optimization reference](https://gitee.com/GreatSQL/GreatSQL-Doc/blob/master/docs/innodb-parallel-execute.md)
--[Deploy MGR cluster with GreatSQL](https://gitee.com/GreatSQL/GreatSQL-Doc/blob/master/docs/using-greatsql-to-build-mgr-and-node-manage.md)
--[MySQL InnoDB Cluster+GreatSQL deployment MGR cluster](https://gitee.com/GreatSQL/GreatSQL-Doc/blob/master/docs/mysql-innodb-cluster-with-greatsql.md)
--[MySQL MGR column article](https://mp.weixin.qq.com/mp/homepage?__biz=MjM5NzAzMTY4NQ==&hid=16&sn=9d3d21966d850dcf158e5b676d9060ed&scene=18#wechat_redirect)
+- [Compile and install GreatSQL from source code under Linux](https://gitee.com/GreatSQL/GreatSQL-Doc/blob/master/docs/build-greatsql-with-source.md)
+- [Using Ansible to install GreatSQL and build an MGR cluster](https://gitee.com/GreatSQL/GreatSQL-Doc/blob/master/docs/install-greatsql-with-ansible.md)
+- [Deploy GreatSQL in Docker and build MGR cluster](https://gitee.com/GreatSQL/GreatSQL-Doc/blob/master/docs/install-greatsql-with-docker.md)
+- [MGR optimization configuration reference](https://gitee.com/GreatSQL/GreatSQL-Doc/blob/master/docs/mgr-best-options-ref.md)
+- [InnoDB parallel query optimization reference](https://gitee.com/GreatSQL/GreatSQL-Doc/blob/master/docs/innodb-parallel-execute.md)
+- [Deploy MGR cluster with GreatSQL](https://gitee.com/GreatSQL/GreatSQL-Doc/blob/master/docs/using-greatsql-to-build-mgr-and-node-manage.md)
+- [MySQL InnoDB Cluster+GreatSQL deployment MGR cluster](https://gitee.com/GreatSQL/GreatSQL-Doc/blob/master/docs/mysql-innodb-cluster-with-greatsql.md)
+- [MySQL MGR column article](https://mp.weixin.qq.com/mp/homepage?__biz=MjM5NzAzMTY4NQ==&hid=16&sn=9d3d21966d850dcf158e5b676d9060ed&scene=18#wechat_redirect)
 
 # related documentation
--[GreatSQL-Docker](https://gitee.com/GreatSQL/GreatSQL-Docker), run GreatSQL in Docker.
--[GreatSQL-Ansible](https://gitee.com/GreatSQL/GreatSQL-Ansible), use ansible to install GreatSQL with one click and complete the MGR cluster deployment.
+- [GreatSQL-Docker](https://gitee.com/GreatSQL/GreatSQL-Docker), run GreatSQL in Docker.
+- [GreatSQL-Ansible](https://gitee.com/GreatSQL/GreatSQL-Ansible), use ansible to install GreatSQL with one click and complete the MGR cluster deployment.
 
 # feedback
 ---
