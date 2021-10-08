@@ -115,4 +115,4 @@ Use restrictions:
 - For problem diagnosis, it is recommended to set `log_error_verbosity=3`.
 - When the InnoDB parallel query optimization feature (force_parallel_execute = ON) is enabled, it is recommended to increase the parallel_default_dop option value at the same time to improve the parallelism of a single SQL query.
 - When the InnoDB parallel query optimization feature is enabled, it is recommended to increase the parallel_max_threads option value at the same time to improve the query parallelism of the entire instance.
-- When the InnoDB parallel query optimization feature is enabled, if a temporary table needs to be generated during SQL runtime, a `table...full` error may be reported. This is MySQL [BUG#99100](https://bugs.mysql. com/bug.php?id=99100), which can be solved by increasing the option value of `temptable_max_ram`.
+- When the InnoDB parallel query optimization feature is enabled, if a temporary table needs to be generated during SQL runtime, a `table...full` error may be reported. This is MySQL [BUG#99100](https://bugs.mysql.com/bug.php?id=99100), which can be solved by increasing the option value of `temptable_max_ram`.
