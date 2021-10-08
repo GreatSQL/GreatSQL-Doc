@@ -13,7 +13,7 @@ GreatSQL is completely free and compatible with MySQL or Percona Server.
 # Download GreatSQL
 ---
 
-[Poke here to download GreatSQL](https://gitee.com/GreatSQL/GreatSQL/releases)
+[Download GreatSQL](https://github.com/GreatSQL/GreatSQL/releases)
 
 
 # New features
@@ -53,7 +53,7 @@ Load the libjemalloc library, and confirm whether it already exists
         libjemalloc.so (libc6,x86-64) => /usr/local/lib64/libjemalloc.so
 ```
 
-For my.cnf configuration file, please refer to [this sample](https://gitee.com/GreatSQL/GreatSQL-Doc/blob/master/docs/my.cnf-example).
+For my.cnf configuration file, please refer to [this sample](https://github.com/GreatSQL/GreatSQL-Doc/blob/main/docs/my.cnf-example).
 
 Now you can start GreatSQL.
 
@@ -66,13 +66,13 @@ Now you can start GreatSQL.
 
 # Documentation
 ---
-- [Compile and install GreatSQL from source code under Linux](https://gitee.com/GreatSQL/GreatSQL-Doc/blob/master/docs/build-greatsql-with-source.md)
-- [Using Ansible to install GreatSQL and build an MGR cluster](https://gitee.com/GreatSQL/GreatSQL-Doc/blob/master/docs/install-greatsql-with-ansible.md)
-- [Deploy GreatSQL in Docker and build MGR cluster](https://gitee.com/GreatSQL/GreatSQL-Doc/blob/master/docs/install-greatsql-with-docker.md)
-- [MGR optimization configuration reference](https://gitee.com/GreatSQL/GreatSQL-Doc/blob/master/docs/mgr-best-options-ref.md)
-- [InnoDB parallel query optimization reference](https://gitee.com/GreatSQL/GreatSQL-Doc/blob/master/docs/innodb-parallel-execute.md)
-- [Deploy MGR cluster with GreatSQL](https://gitee.com/GreatSQL/GreatSQL-Doc/blob/master/docs/using-greatsql-to-build-mgr-and-node-manage.md)
-- [MySQL InnoDB Cluster+GreatSQL deployment MGR cluster](https://gitee.com/GreatSQL/GreatSQL-Doc/blob/master/docs/mysql-innodb-cluster-with-greatsql.md)
+- [Compile and install GreatSQL from source code under Linux](https://github.com/GreatSQL/GreatSQL-Doc/blob/main/docs/build-greatsql-with-source.md)
+- [Using Ansible to install GreatSQL and build an MGR cluster](https://github.com/GreatSQL/GreatSQL-Doc/blob/main/docs/install-greatsql-with-ansible.md)
+- [Deploy GreatSQL in Docker and build MGR cluster](https://github.com/GreatSQL/GreatSQL-Doc/blob/main/docs/install-greatsql-with-docker.md)
+- [MGR optimization configuration reference](https://github.com/GreatSQL/GreatSQL-Doc/blob/main/docs/mgr-best-options-ref.md)
+- [InnoDB parallel query optimization reference](https://github.com/GreatSQL/GreatSQL-Doc/blob/main/docs/innodb-parallel-execute.md)
+- [Deploy MGR cluster with GreatSQL](https://github.com/GreatSQL/GreatSQL-Doc/blob/main/docs/using-greatsql-to-build-mgr-and-node-manage.md)
+- [MySQL InnoDB Cluster+GreatSQL deployment MGR cluster](https://github.com/GreatSQL/GreatSQL-Doc/blob/main/docs/mysql-innodb-cluster-with-greatsql.md)
 - [MySQL MGR column article](https://mp.weixin.qq.com/mp/homepage?__biz=MjM5NzAzMTY4NQ==&hid=16&sn=9d3d21966d850dcf158e5b676d9060ed&scene=18#wechat_redirect)
 
 # related documentation
@@ -81,7 +81,7 @@ Now you can start GreatSQL.
 
 # feedback
 ---
-- [Issue feedback gitee](https://github.com/GreatSQL/GreatSQL-Doc/issues)
+- [Issue feedback](https://github.com/GreatSQL/GreatSQL-Doc/issues)
 
 
 # contact us
