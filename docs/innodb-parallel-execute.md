@@ -1,104 +1,120 @@
-# 使用说明
-有两种方式来使用并行查询：
+# InnoDB parallel query
 
-## 1. 设置系统参数
-通过全局参数 `force_parallel_execute` 来控制是否启用并行查询；使用全局参数 `parallel_default_dop` 来控制使用多少线程去并行查询。上述参数在使用过程中，随时可以修改，无需重启数据库。
+There are two ways to use innodb parallel query.
 
-例如，想要开启并行执行，并且并发度为4：
+## 1. Set system options
+The global option `force_parallel_execute` control whether to enable innodb parallel query; the global option `parallel_default_dop` set how many threads are used for parallel query. The above options can be modified at run time without restarting the database.
+
+For example, if you want to turn on parallel execution, and the concurrency is 4:
 ```
 force_parallel_execute=on;
 
 parallel_default_dop=4;
 ```
-可以根据实际情况调整 `parallel_cost_threshold` 参数的值，如果设置为0，则所有查询都会使用并行；设置为非0，则只有查询语句的代价估值大于该值的查询才会使用并行。
 
-## 2. 使用hint语法
-使用hint语法可以控制单个语句是否进行并行执行。在系统默认关闭并行执行的情况下, 可以使用hint对特定的SQL进行加速。相反地，也可以限制某类SQL进入并行执行。
+The value of the `parallel_cost_threshold` can be adjusted according to the real situation.
 
-- `SELECT /*+ PQ */ … FROM …` 使用默认的并发度4进行并行查询。
+If it is set to 0, all queries will use parallel; if it is set to non-zero, only queries whose cost estimate of the query statement is greater than this value will use parallel.
 
-- `SELECT /*+ PQ(8) */ … FROM …` 使用并发度为8进行并行查询。
+## 2. Use hint syntax
+Use hint syntax to control whether a single statement is executed in parallel.
 
-- `SELECT /*+ NO_PQ */ … FROM …` 这条语句不使用并行查询。
+In the case that the system disables parallel query by default, hints can be used to accelerate specific SQL. Conversely, you can also restrict certain types of SQL from entering parallel execution.
 
-# 并行查询相关参数、状态变量
+- `SELECT /*+ PQ */… FROM …` Use the default concurrency of 4 for parallel query.
+- 
+- `SELECT /*+ PQ(8) */… FROM …` Use a concurrency of 8 for parallel query.
+- 
+- `SELECT /*+ NO_PQ */… FROM …` This statement does not use parallel query.
 
-## 1. 新增参数
-在并行框架中，增加6个并行相关的参数：
+# Parallel query related system variables, status variables
 
-| System Variable Name	| force_parallel_execute |
-| --- | --- | 
-| Variable Scope	| global, session |
-| Dynamic Variable	| YES |
-| Permitted Values |	ON/OFF |
-| Default	| OFF |
-| Description	| 设置并行查询的开关，bool值，on/off。默认off，关闭并行查询特性。 |
+## 1. New parameters
+In the parallel framework, add 6 new parallel-related system variables:
 
-<br/>
-
-| System Variable Name	| parallel_cost_threshold |
-| --- | --- | 
-| Variable Scope	| global, session |
-| Dynamic Variable	| YES |
-| Permitted Values |	[0, ULONG_MAX] |
-| Default	| 1000 |
-| Description	| 设置SQL语句走并行查询的阈值，只有当查询的估计代价高于这个阈值才会执行并行查询，SQL语句的估计代价低于这个阈值，执行原生的查询过程。 |
+| System Variable Name | force_parallel_execute |
+| --- | --- |
+| Variable Scope | global, session |
+| Dynamic Variable | YES |
+| Permitted Values ​​| ON/OFF |
+| Default | OFF |
+| Description | Set the switch for parallel query, bool value, on/off. The default is off, and the parallel query feature is disabled. |
 
 <br/>
 
-| System Variable Name	| parallel_default_dop |
-| --- | --- | 
-| Variable Scope	| global, session |
-| Dynamic Variable	| YES |
-| Permitted Values |	[0, 1024] |
-| Default	| 4 |
-| Description	| 设置每个SQL语句的并行查询的最大并发度。<br/>SQL语句的查询并发度会根据表的大小来动态调整，如果表的二叉树太小（表的切片划分数小于并行度），则会根据表的切片划分数来设置该查询的并发度。每一个查询的最大并行度都不会超过parallel_default_dop参数设置的值。 |
+| System Variable Name | parallel_cost_threshold |
+| --- | --- |
+| Variable Scope | global, session |
+| Dynamic Variable | YES |
+| Permitted Values ​​| [0, ULONG_MAX] |
+| Default | 1000 |
+| Description | Set the threshold for parallel query of SQL statements. Only when the estimated cost of the query is greater than this threshold will the parallel query be executed. The estimated cost of the SQL statement is lower than this threshold, and the native query process will be executed. |
 
 <br/>
 
-| System Variable Name	| parallel_max_threads |
-| --- | --- | 
-| Variable Scope	| global, session |
-| Dynamic Variable	| YES |
-| Permitted Values |	[0, ULONG_MAX] |
-| Default	| 64 |
-| Description	| 设置系统中总的并行查询线程数。 |
+| System Variable Name | parallel_default_dop |
+| --- | --- |
+| Variable Scope | global, session |
+| Dynamic Variable | YES |
+| Permitted Values ​​| [0, 1024] |
+| Default | 4 |
+| Description | Set the maximum concurrency of parallel queries for each SQL statement. <br/>The query concurrency of SQL statements will be dynamically adjusted according to the size of the index. If the binary tree of the index is too small (the number of slices of the index is less than the degree of parallelism), the concurrency of the query will be set according to the number of slices of the index. The maximum degree of parallelism of each query will not exceed the value set by the parallel_default_dop parameter. |
 
 <br/>
 
-| System Variable Name	| parallel_memory_limit |
-| --- | --- | 
-| Variable Scope	| global, session |
-| Dynamic Variable	| YES |
-| Permitted Values |	[0, ULONG_MAX] |
-| Default	| 1073741824（1GB） |
-| Description	| 并行执行时leader线程和worker线程使用的总内存大小上限。 |
+| System Variable Name | parallel_max_threads |
+| --- | --- |
+| Variable Scope | global, session |
+| Dynamic Variable | YES |
+| Permitted Values ​​| [0, ULONG_MAX] |
+| Default | 64 |
+| Description | Set the total number of parallel query threads. |
 
 <br/>
 
-| System Variable Name	| parallel_queue_timeout |
-| --- | --- | 
-| Variable Scope	| global, session |
-| Dynamic Variable	| YES |
-| Permitted Values |	[0, ULONG_MAX] |
-| Default	| 0 |
-| Description	| 设置系统中并行查询的等待的超时时间，如果系统的资源不够，例如运行的并行查询线程已达到parallel_max_threads的值，并行查询语句将会等待，如果超时后还未获取资源，将会执行原生的查询过程。 <br/>单位：毫秒|
+| System Variable Name | parallel_memory_limit |
+| --- | --- |
+| Variable Scope | global, session |
+| Dynamic Variable | YES |
+| Permitted Values ​​| [0, ULONG_MAX] |
+| Default | 1073741824 (1GB) |
+| Description | The upper limit of the total memory size used by the leader thread and the worker thread during parallel execution. |
 
-## 2. 新增状态变量
-在并行框架中，同时增加了4个状态变量：
+<br/>
 
-- **PQ_threads_running**
+| System Variable Name | parallel_queue_timeout |
+| --- | --- |
+| Variable Scope | global, session |
+| Dynamic Variable | YES |
+| Permitted Values ​​| [0, ULONG_MAX] |
+| Default | 0 |
+| Description | Set the waiting timeout time for parallel query. If the system resources are not enough, for example, the running parallel query thread has reached the value of parallel_max_threads, the parallel query statement will wait. If the resource is not obtained after the timeout, it will be executed Native query process. <br/>Unit: milliseconds|
 
-global级别，当前正在运行的并行执行的总线程数。
+## 2. New status variables
+In the parallel framework, 4 new status variables are added:
 
-- **PQ_memory_used**
+-**PQ_threads_running**
 
-global级别，当前并行执行使用的总内存量。
+Global status, the total number of threads currently running in parallel.
 
-- **PQ_threads_refused**
+-**PQ_memory_used**
 
-global级别，由于总线程数限制，导致未能执行并行执行的查询总数。
+Global status, the total amount of memory currently used by parallel execution.
 
-- **PQ_memory_refused**
+-**PQ_threads_refused**
 
-global级别，由于总内存限制，导致未能执行并行执行的查询总数。
+Global status, the total number of queries that cannot be executed in parallel due to the limitation of the total number of threads.
+
+-**PQ_memory_refused**
+
+Global status, the total number of queries that could not be executed in parallel due to the total memory limit.
+
+## 3. About InnoDB parallel query optimization
+According to the characteristics of the B+ tree, the B+ tree can be divided into several subtrees. At this time, multiple threads can scan different parts of the same InnoDB table in parallel. Multi-threaded transformation of the execution plan. The execution plan of each sub-thread is consistent with the original execution plan of MySQL, but each sub-thread only needs to scan part of the data in the table, and the results are summarized after the sub-thread scan is completed. Through multi-threaded transformation, multi-core resources can be fully utilized and query performance can be improved.
+
+After optimization, it performs well in the TPC-H test, with a maximum increase of 30 times and an average increase of 15 times. This feature is suitable for SAP, financial statistics and other businesses such as periodic data summary reports.
+
+Use restrictions:
+- Subqueries are not supported temporarily, and need to be transformed into JOIN first.
+- At present, only ARM is supported, and X86 optimization will be completed as soon as possible.
+![Enter picture description](https://images.gitee.com/uploads/images/2021/0819/094317_1c0fb43a_8779455.jpeg "16292668686865.jpg")
