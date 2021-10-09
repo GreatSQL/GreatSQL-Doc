@@ -39,10 +39,10 @@ Install docker and start the docker server.
 
 ### 1.3, download a few necessary installation packages in advance
 Download several dependency packages that are needed during the compilation process:
--boost, https://boostorg.jfrog.io/artifactory/main/release/1.73.0/source/boost_1_73_0.tar.gz
--git, https://github.com/git/git/archive/v2.27.0.tar.gz, renamed to git-v2.27.0.tar.gz after downloading
--patchelf, https://github.com/NixOS/patchelf/archive/refs/tags/0.12.tar.gz, renamed to patchelf-0.12.tar.gz after downloading
--rpcsvc-proto, https://github.com/thkukuk/rpcsvc-proto/releases/download/v1.4/rpcsvc-proto-1.4.tar.gz
+- boost, https://boostorg.jfrog.io/artifactory/main/release/1.73.0/source/boost_1_73_0.tar.gz
+- git, https://github.com/git/git/archive/v2.27.0.tar.gz, renamed to git-v2.27.0.tar.gz after downloading
+- patchelf, https://github.com/NixOS/patchelf/archive/refs/tags/0.12.tar.gz, renamed to patchelf-0.12.tar.gz after downloading
+- rpcsvc-proto, https://github.com/thkukuk/rpcsvc-proto/releases/download/v1.4/rpcsvc-proto-1.4.tar.gz
 
 Download the GreatSQL source code package:
 ```
@@ -409,16 +409,16 @@ In addition, you can also refer to this guide "[Add GreatSQL to the system syste
 ## 4. Build MGR cluster
 
 The deployment of the MGR cluster can be done manually step by step, or it can be quickly completed through MySQL Shell. Refer to the following documents respectively:
--[Deploy MGR cluster using GreatSQL](https://mp.weixin.qq.com/s/gLaLybt46PqXlV4qWFfyng)
--[InnoDB Cluster+GreatSQL deployment MGR cluster](https://mp.weixin.qq.com/s/1QUt-rK_5L_UnaLClyve1w)
--[ansible one-click installation of GreatSQL and build MGR cluster](https://mp.weixin.qq.com/s/8hbpus0RxrVnmCdVDHVg2Q)
--[​Deploy GreatSQL in Docker and build MGR cluster](https://mp.weixin.qq.com/s/CfrYEQD54EXD9mLJJPGs-A)
+- [Deploy MGR cluster using GreatSQL](https://mp.weixin.qq.com/s/gLaLybt46PqXlV4qWFfyng)
+- [InnoDB Cluster+GreatSQL deployment MGR cluster](https://mp.weixin.qq.com/s/1QUt-rK_5L_UnaLClyve1w)
+- [ansible one-click installation of GreatSQL and build MGR cluster](https://mp.weixin.qq.com/s/8hbpus0RxrVnmCdVDHVg2Q)
+- [​Deploy GreatSQL in Docker and build MGR cluster](https://mp.weixin.qq.com/s/CfrYEQD54EXD9mLJJPGs-A)
 
 ## Further reading
--[Fun with MySQL 8.0 source code compilation](https://mp.weixin.qq.com/s/Lrx-YYYWtHHaxLfY_UZ8GQ)
--[Add GreatSQL to the system systemd service](https://mp.weixin.qq.com/s/tSA-DrWT13GN45Csq2tQoA)
--[Deploy MGR cluster using GreatSQL](https://mp.weixin.qq.com/s/gLaLybt46PqXlV4qWFfyng)
--[InnoDB Cluster+GreatSQL deployment MGR cluster](https://mp.weixin.qq.com/s/1QUt-rK_5L_UnaLClyve1w)
--[​Deploy GreatSQL in Docker and build MGR cluster](https://mp.weixin.qq.com/s/CfrYEQD54EXD9mLJJPGs-A)
+- [Fun with MySQL 8.0 source code compilation](https://mp.weixin.qq.com/s/Lrx-YYYWtHHaxLfY_UZ8GQ)
+- [Add GreatSQL to the system systemd service](https://mp.weixin.qq.com/s/tSA-DrWT13GN45Csq2tQoA)
+- [Deploy MGR cluster using GreatSQL](https://mp.weixin.qq.com/s/gLaLybt46PqXlV4qWFfyng)
+- [InnoDB Cluster+GreatSQL deployment MGR cluster](https://mp.weixin.qq.com/s/1QUt-rK_5L_UnaLClyve1w)
+- [​Deploy GreatSQL in Docker and build MGR cluster](https://mp.weixin.qq.com/s/CfrYEQD54EXD9mLJJPGs-A)
 
 Enjoy GreatSQL :)
