@@ -1,4 +1,4 @@
-#利用Ansible安装GreatSQL并构建MGR集群
+# 利用Ansible安装GreatSQL并构建MGR集群
 
 本次介绍如何利用ansible一键安装GreatSQL并完成MGR部署。
 
