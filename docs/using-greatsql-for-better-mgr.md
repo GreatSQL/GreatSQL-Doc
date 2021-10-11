@@ -1,41 +1,36 @@
-> 用GreatSQL，上MGR更放心！
-> 
-> 文末有彩蛋，别错过 ：）
+# Use GreatSQL to play MGR more at ease
 
-在3月20日「3306π」社区成都站分享会上，万里数据库CTO娄帅做了主题分享《MGR Bug修复之路》。
+> With GreatSQL, you can be more at ease on MGR!
 
-娄帅指出，由于MGR自身的复杂性，以及复现BUG场景也更困难，所以MySQL官方针对MGR的BUG修复工作通常比较缓慢，堆积较多。这也就造成了社区用户不太敢放心使用官方版本的MGR，担心遇到各种不可控的BUG，甚至较严重的线程、事务hang住等问题，感觉还是不那么可靠。
+At the "3306π" community alon in Chengdu on March 20, Lou Shuai, CTO of GreatDB, made a theme sharing "The Road to MGR Bug Repair".
 
-万里数据库核心研发团队深入研究MGR架构，并在不断的BUG修复实践中总结出了一套完善、流畅的BUG修复流程，将MGR的缺陷分为BUG和性能两类，整理出共16种BUG及性能缺陷问题。
-![enter image description here](https://images.gitee.com/uploads/images/2021/0401/094924_1e6384fc_8779455.jpeg "1.GreatSQL，打造更好的MGR生态-20210401.jpg")
+Lou Shuai pointed out that due to the complexity of MGR itself and it is more difficult to reproduce BUG scenarios, BUG repair work for MySQL MGR is usually slow and piles up. This has also caused community users to be afraid to use MySQL MGR, worrying about encountering various uncontrollable bugs, and even more serious thread, transaction hang and other problems, and they still feel that they are not so reliable.
 
+The core R&D team of GreatDB has conducted in-depth research on the MGR architecture, and has summarized a complete and smooth BUG repair process in the continuous BUG repair practice. The defects of MGR are divided into BUG and performance categories, and a total of 16 types of BUG and Performance defect issues.
+![enter image description here](https://images.gitee.com/uploads/images/2021/0401/094924_1e6384fc_8779455.jpeg "1. GreatSQL, to create a better MGR ecology-20210401.jpg")
 
-万里数据库研发团队经过一段时间精心准备，对BUG修复的代码进行review后，决定先放出第一个稳定版本```GreatSQL 8.0.22-13```，这是基于```Percona Server 8.0.22-13```源码编译而来。之所以选择Percona分支版本，是因为它已经在官方版本的基础上进行了功能补充以及性能提升等优化工作，也算是"站在巨人肩膀上"吧。
+After careful preparation for a period of time, the R&D team of Wanli Database decided to release the first stable version ```GreatSQL 8.0.25-15```, which is based on ```Percona Server 8.0.25-15```The source code is compiled. The reason for choosing the branch version of Percona is that it has already carried out optimization work such as functional additions and performance enhancements on the basis of the official version, and it can be regarded as "standing on the shoulders of giants".
 
-本次放出的版本，主要有以下改进和提升：
+The version released this time mainly has the following improvements and enhancements:
 
-### 1.稳定性提升
-- 提升大事务稳定性
-- 优化MGR队列garbage collect机制、改进流控算法，以及减少每次发送数据量，避免性能抖动
-- 解决了AFTER模式下，存在节点加入集群时容易出错的问题
-- 在AFTER模式下，强一致性采用多数派原则，以适应网络分区的场景
-- 当MGR节点崩溃时，能更快发现节点异常状态，有效减少切主和异常节点的等待时间
-- 优化MGR DEBUG日志输出格式
+### 1. Stability improvement
+- Improve the stability of large transactions
+- Optimize the garbage collect mechanism of the MGR queue, improve the flow control algorithm, and reduce the amount of data sent each time to avoid performance jitter
+- Solved the problem of error-prone problems when nodes join the cluster in AFTER mode
+- In AFTER mode, strong consistency adopts the majority principle to adapt to the scene of network partition
+- When the MGR node crashes, the abnormal state of the node can be found faster, effectively reducing the waiting time for the switchover and abnormal nodes
+- Optimize the MGR DEBUG log output format
 
-### 2.bug修复
-- 修复了节点异常时导致MGR大范围性能抖动问题
-- 修复了传输大数据可能导致逻辑判断死循环问题
-- 修复了启动过程中低效等待问题
-- 修复了磁盘满导致吞吐量异常问题
-- 修复了多写模式下可能丢数据的问题/单主模式下切主丢数据的问题
-- 修复了TCP self-connect问题
+### 2. bug fix
+- Fixed the problem of large-scale performance jitter of MGR when the node is abnormal
+- Fixed the problem that the transfer of big data may lead to an infinite loop of logic judgments
+- Fixed the issue of inefficient waiting during startup
+- Fixed the problem of abnormal throughput caused by full disk
+- Fixed the problem that data may be lost in multi-write mode / data loss in single master mode
+- Fixed TCP self-connect problem
 
-随着代码review工作的推进，我们也会继续保持版本更新，不断放出新版本，以飨社区朋友们。我们也很欢迎大家一起起来试用体验，并把遇到的问题在gitee上提交issue（提交地址： https://gitee.com/GreatSQL/GreatSQL/issues ），我们会第一时间进行反馈和回复。
-再次感谢大家对GreatSQL的支持，让我们一起打造更好的MySQL社区生态。
+With the progress of the code review work, we will continue to keep the version updated and release new versions to enjoy the community friends. We also welcome everyone to try the experience together, and submit issues on gitee (submission address: https://github.com/GreatSQL/GreatSQL/issues), and we will give feedback and reply as soon as possible.
 
-接下来说个关键的、重要的事哈。
+Thank you again for your support to GreatSQL and let us build a better MySQL community ecology together.
 
-### GreatSQL测评有礼活动
-自发稿之日起，只要向我们提交GreatSQL的使用报告/测评报告/BUG报告，任一方式均可，**前5位即可获得活动专属惊喜福利**。
-
-不知道哪些小伙伴能抢先拿到呢，让我们拭目以待。
+Enjoy MGR & GreatSQL :)
