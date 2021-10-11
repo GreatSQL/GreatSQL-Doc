@@ -119,15 +119,15 @@ Check MGR user account
 | Grants for repl@% |
 +----------------------------------------------+
 | GRANT REPLICATION SLAVE ON *.* TO `repl`@`%` |
-| GRANT BACKUP_ADMIN ON *.* TO `repl`@`%` |
+| GRANT BACKUP_ADMIN ON *.* TO `repl`@`%`      |
 +----------------------------------------------+
 
 [root@GreatSQL][none]> select * from performance_schema.replication_group_members;
-+---------------------------+-----------+--------- ----+-------------+--------------+-------------+-- --------------+
-| CHANNEL_NAME | MEMBER_ID | MEMBER_HOST | MEMBER_PORT | MEMBER_STATE | MEMBER_ROLE | MEMBER_VERSION |
-+---------------------------+-----------+--------- ----+-------------+--------------+-------------+-- --------------+
-| group_replication_applier | | | NULL | OFFLINE | | |
-+---------------------------+-----------+--------- ----+-------------+--------------+-------------+-- --------------+
++---------------------------+-----------+-------------+-------------+--------------+-------------+----------------+
+| CHANNEL_NAME              | MEMBER_ID | MEMBER_HOST | MEMBER_PORT | MEMBER_STATE | MEMBER_ROLE | MEMBER_VERSION |
++---------------------------+-----------+-------------+-------------+--------------+-------------+----------------+
+| group_replication_applier |           |             |        NULL | OFFLINE      |             |                |
++---------------------------+-----------+-------------+-------------+--------------+-------------+----------------+
 ```
 
 ## 3. Build MGR cluster
@@ -262,13 +262,13 @@ CHANGE MASTER TO MASTER_USER='repl', MASTER_PASSWORD='repl4MGR' FOR CHANNEL'grou
 In the other two docker containers, remember not to set `group_replication_bootstrap_group=ON`, just start the MGR service directly. Check the MGR service status after all nodes are started:
 ```
 [root@GreatSQL][(none)]> select * from performance_schema.replication_group_members;
-+---------------------------+--------------------- -----------------+-------------+-------------+---- ----------+-------------+----------------+
-| CHANNEL_NAME | MEMBER_ID | MEMBER_HOST | MEMBER_PORT | MEMBER_STATE | MEMBER_ROLE | MEMBER_VERSION |
-+---------------------------+--------------------- -----------------+-------------+-------------+---- ----------+-------------+----------------+
-| group_replication_applier | 63b55594-da80-11eb-94bf-0242ac120003 | mgr2 | 3306 | ONLINE | SECONDARY | 8.0.23 |
-| group_replication_applier | 6d33eb83-da80-11eb-91ed-0242ac120004 | mgr3 | 3306 | ONLINE | SECONDARY | 8.0.23 |
-| group_replication_applier | 7b1e33b1-da7f-11eb-8157-0242ac120002 | mgr1 | 3306 | ONLINE | PRIMARY | 8.0.23 |
-+---------------------------+--------------------- -----------------+-------------+-------------+---- ----------+-------------+----------------+
++---------------------------+--------------------------------------+-------------+-------------+--------------+-------------+----------------+
+| CHANNEL_NAME              | MEMBER_ID                            | MEMBER_HOST | MEMBER_PORT | MEMBER_STATE | MEMBER_ROLE | MEMBER_VERSION |
++---------------------------+--------------------------------------+-------------+-------------+--------------+-------------+----------------+
+| group_replication_applier | 63b55594-da80-11eb-94bf-0242ac120003 | mgr2        |        3306 | ONLINE       | SECONDARY   | 8.0.23         |
+| group_replication_applier | 6d33eb83-da80-11eb-91ed-0242ac120004 | mgr3        |        3306 | ONLINE       | SECONDARY   | 8.0.23         |
+| group_replication_applier | 7b1e33b1-da7f-11eb-8157-0242ac120002 | mgr1        |        3306 | ONLINE       | PRIMARY     | 8.0.23         |
++---------------------------+--------------------------------------+-------------+-------------+--------------+-------------+----------------+
 ```
 
 At this stage, the common reasons why the MGR service cannot be started are:
@@ -391,11 +391,11 @@ Query OK, 0 rows affected (2.76 sec)
 
 #View MGR service status
 [root@GreatSQL][(none)]>select * from performance_schema.replication_group_members;
-+---------------------------+--------------------- -----------------+-------------+-------------+---- ----------+-------------+----------------+
-| CHANNEL_NAME | MEMBER_ID | MEMBER_HOST | MEMBER_PORT | MEMBER_STATE | MEMBER_ROLE | MEMBER_VERSION |
-+---------------------------+--------------------- -----------------+-------------+-------------+---- ----------+-------------+----------------+
-| group_replication_applier | f0bd73d4-dbcb-11eb-99ba-0242ac110002 | mgr1 | 3306 | ONLINE | PRIMARY | 8.0.23 |
-| group_replication_applier | f1010499-dbcb-11eb-9194-0242ac110003 | mgr2 | 3306 | ONLINE | SECONDARY | 8.0.23 |
-+---------------------------+--------------------- -----------------+-------------+-------------+---- ----------+-------------+----------------+
++---------------------------+--------------------------------------+-------------+-------------+--------------+-------------+----------------+
+| CHANNEL_NAME              | MEMBER_ID                            | MEMBER_HOST | MEMBER_PORT | MEMBER_STATE | MEMBER_ROLE | MEMBER_VERSION |
++---------------------------+--------------------------------------+-------------+-------------+--------------+-------------+----------------+
+| group_replication_applier | f0bd73d4-dbcb-11eb-99ba-0242ac110002 | mgr1        |        3306 | ONLINE       | PRIMARY     | 8.0.23         |
+| group_replication_applier | f1010499-dbcb-11eb-9194-0242ac110003 | mgr2        |        3306 | ONLINE       | SECONDARY   | 8.0.23         |
++---------------------------+--------------------------------------+-------------+-------------+--------------+-------------+----------------+
 ```
 As usual, continue to start the mgr3 node, and a three-node MGR cluster is complete.
