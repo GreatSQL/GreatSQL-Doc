@@ -114,7 +114,6 @@ drwxr-xr-x 3 root root      4096 Jul 28 06:34 rh
 
 此外，我把Docker镜像文件包也放到网盘上共享了，有兴趣的也可直接下载：
 - 【百度云盘】链接: https://pan.baidu.com/s/188iZ_vT4iEV7kMopgcYEFg 提取码: 8c22
-- 【阿里云盘】链接：https://www.aliyundrive.com/s/DQxqG2pZ8mn
 
 ## 2、编译GreatSQL
 进入容器后，解压GreatSQL和boost缩源码包：
