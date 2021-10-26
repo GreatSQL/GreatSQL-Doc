@@ -77,7 +77,7 @@ RUN mv /usr/bin/git /usr/bin/git.bk && ln -s /opt/git/bin/git /usr/bin/git
 
 # update patchelf 0.12
 COPY patchelf-0.12.tar.gz /tmp/
-RUN cd /tmp && tar -xzvf patchelf-0.12.tar.gz && cd patchelf && ./bootstrap.sh && ./configure && make && make install
+RUN cd /tmp && tar -xzvf patchelf-0.12.tar.gz && cd patchelf-0.12 && ./bootstrap.sh && ./configure && make && make install
 
 COPY rpcsvc-proto-1.4.tar.gz /tmp/rpcsvc-proto-1.4.tar.gz
 RUN tar zxvf /tmp/rpcsvc-proto-1.4.tar.gz -C /tmp && cd /tmp/rpcsvc-proto-1.4/ && ./configure && make && make install
