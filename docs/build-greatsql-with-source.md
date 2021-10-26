@@ -120,19 +120,17 @@ drwxr-xr-x 3 root root      4096 Jul 28 06:34 rh
 如果只是想在本机使用，则可以只编译出二进制文件即可，无需打包或制作RPM包。用下面的命令进行编译：
 ```
 [root@greatsql /]# cmake3 /opt/greatsql-8.0.25-15 \
--DBUILD_TESTING=OFF -DUSE_GTAGS=OFF -DUSE_CTAGS=OFF \
--DUSE_ETAGS=OFF \-DUSE_CSCOPE=OFF -DWITH_TOKUDB=OFF \
--DBUILD_CONFIG=mysql_release -DCMAKE_BUILD_TYPE=RelWithDebInfo \
--DFEATURE_SET=community \
--DCMAKE_INSTALL_PREFIX=/usr/local/GreatSQL-8.0.25-15-Linux \
--DMYSQL_DATADIR=/usr/local/GreatSQL-8.0.25-15-Linux/data \
--DROUTER_INSTALL_LIBDIR=/usr/local/GreatSQL-8.0.25-15-Linux/lib/mysqlrouter/private \
--DROUTER_INSTALL_PLUGINDIR=/usr/local/GreatSQL-8.0.25-15-Linux/lib/mysqlrouter/plugin \
--DCOMPILATION_COMMENT='GreatSQL (GPL), Release 15, Revision e36e91b7242' \
--DWITH_PAM=ON -DWITH_ROCKSDB=ON -DROCKSDB_DISABLE_AVX2=1 -DROCKSDB_DISABLE_MARCH_NATIVE=1 \
--DWITH_INNODB_MEMCACHED=ON -DWITH_ZLIB=bundled -DWITH_NUMA=ON -DWITH_LDAP=system \
--DFORCE_INSOURCE_BUILD=1 -DWITH_LIBEVENT=bundled -DWITH_ZSTD=bundled \
--DWITH_BOOST=/opt/greatsql-8.0.25-15/boost_1_73_0
+-DBOOST_INCLUDE_DIR=../boost_1_73_0
+-DCMAKE_INSTALL_PREFIX=/usr/local/GreatSQL-8.0.25-15-Linux-glibc2.17-x86_64
+-DWITH_ZLIB=bundled
+-DWITH_NUMA=ON
+-DFORCE_INSOURCE_BUILD=1
+-DCMAKE_EXE_LINKER_FLAGS="-ljemalloc"
+-DCMAKE_BUILD_TYPE=RelWithDebInfo
+-DBUILD_CONFIG=mysql_release
+-DCOMPILATION_COMMENT="GreatSQL (GPL), Release 15, Revision 6d439c6ef3f"
+-DWITH_TOKUDB=OFF
+-DWITH_ROCKSDB=OFF
 ```
 cmake过程如果没报错，就会输出类似下面的结果：
 ```
