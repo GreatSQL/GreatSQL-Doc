@@ -1,8 +1,5 @@
 # 在Linux下源码编译安装GreatSQL
 
-## 0、提纲
-[toc]
-
 本次介绍如何利用Docker来将GreatSQL源码编译成二进制文件，以及制作二进制包、RPM包等。
 
 本文介绍的运行环境是CentOS 7.9：
@@ -108,6 +105,12 @@ drwxr-xr-x 5 root root      4096 Jul 28 06:38 git
 -rw------- 1 1000 1000 526639994 Jul 27 05:59 greatsql-8.0.25-15.tar.gz
 drwxr-xr-x 3 root root      4096 Jul 28 06:34 rh
 ```
+
+不同OS及架构平台下的Dockerfile可戳下面链接参考：
+- [Dockerfile-centos7-x86](https://gitee.com/GreatSQL/GreatSQL-Doc/blob/master/build-gs/Dockerfile/Dockerfile-centos7-x86)
+- [Dockerfile-centos8-x86](https://gitee.com/GreatSQL/GreatSQL-Doc/blob/master/build-gs/Dockerfile/Dockerfile-centos8-x86)
+- [Dockerfile-centos7-arm](https://gitee.com/GreatSQL/GreatSQL-Doc/blob/master/build-gs/Dockerfile/Dockerfile-centos7-arm)
+- [Dockerfile-centos8-arm](https://gitee.com/GreatSQL/GreatSQL-Doc/blob/master/build-gs/Dockerfile/Dockerfile-centos8-arm)
 
 ## 2、编译GreatSQL
 进入容器后，解压GreatSQL和boost缩源码包：
