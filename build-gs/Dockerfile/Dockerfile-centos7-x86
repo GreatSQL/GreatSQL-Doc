@@ -6,13 +6,15 @@ curl -o /etc/yum.repos.d/CentOS-Base.repo http://mirrors.cloud.tencent.com/repo/
 yum clean all && \
 yum makecache
 RUN yum install -y yum-utils && \
-yum install -y --skip-broken wget diffutils net-tools vim git gcc gcc-c++ automake libtool cmake cmake3 \
-make psmisc openssl-devel zlib-devel readline-devel bzip2-devel expat-devel gflags-devel libssl \
-bison bison-devel flex wget unzip libcurl-devel libevent-devel libffi-devel lz4-devel lz4-static \
-file clang bzip2 snappy-devel libxml2-devel libtirpc libtirpc-devel numactl-devel numactl-libs \
-numactl gtest-devel openldap-devel openldap-clients rpcgen pam-devel valgrind boost-devel rpm* tar \
-centos-release-scl libzstd libzstd-static libzstd-devel patchelf perl-Env perl-JSON time libaio-devel \
-ncurses-devel ncurses-libs pam python-devel redhat-lsb-core scl-utils-build pkg-config ccache libssh
+yum install -y --skip-broken \
+automake bison bison-devel boost-devel bzip2 bzip2-devel ccache centos-release-scl clang \
+cmake cmake3 diffutils expat-devel file flex gcc gcc-c++ gflags-devel git jemalloc jemalloc-devel \
+gtest-devel libaio-devel libarchive libcurl-devel libevent-devel libffi-devel libicu-devel libssh \
+libssl libtirpc libtirpc-devel libtool libxml2-devel libzstd libzstd-devel libzstd-static lz4-devel \
+lz4-static make ncurses-devel ncurses-libs net-tools numactl numactl-devel numactl-libs openldap-clients \
+openldap-devel openssl openssl-devel pam pam-devel patchelf perl perl-Env perl-JSON perl-Memoize \
+perl-Time-HiRes pkg-config psmisc re2-devel python-devel readline-devel redhat-lsb-core rpcgen rpm* \
+scl-utils-build snappy-devel tar time unzip valgrind vim wget wget yum-utils zlib-devel
 
 RUN yum install -y devtoolset-10-gcc*
 RUN scl enable devtoolset-10 bash
