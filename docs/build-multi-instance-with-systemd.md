@@ -47,19 +47,19 @@ group_replication_local_address= "127.0.0.1:33071"
 ```
 
 然后执行命令 `systemctl daemon-reload` 重新加载systemd服务，即可识别到这些新增加的服务列表了：
-```
+```
 # systemctl -l
 ...
 greatsql@mgr01.service                                                                             loaded active running   GreatSQL Server...
 greatsql@mgr02.service                                                                             loaded active running   GreatSQL Server...
 greatsql@mgr03.service                                                                             loaded active running   GreatSQL Server...
 ...
-```
+```
 
 现在可以直接执行类似下面的命令启停多实例服务：
-```
+```
 # systemctl start greatsql@mgr01
-```
+```
 
 这就可以在单机环境下很方便的管理多实例服务了。
 
