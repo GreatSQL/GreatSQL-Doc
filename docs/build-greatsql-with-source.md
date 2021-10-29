@@ -126,16 +126,16 @@ drwxr-xr-x 3 root root      4096 Jul 28 06:34 rh
 如果只是想在本机使用，则可以只编译出二进制文件即可，无需打包或制作RPM包。用下面的命令进行编译：
 ```
 [root@greatsql /]# cmake3 /opt/greatsql-8.0.25-15 \
--DBOOST_INCLUDE_DIR=../boost_1_73_0
--DCMAKE_INSTALL_PREFIX=/usr/local/GreatSQL-8.0.25-15-Linux-glibc2.17-x86_64
--DWITH_ZLIB=bundled
--DWITH_NUMA=ON
--DFORCE_INSOURCE_BUILD=1
--DCMAKE_EXE_LINKER_FLAGS="-ljemalloc"
--DCMAKE_BUILD_TYPE=RelWithDebInfo
--DBUILD_CONFIG=mysql_release
--DCOMPILATION_COMMENT="GreatSQL (GPL), Release 15, Revision 6d439c6ef3f"
--DWITH_TOKUDB=OFF
+-DBOOST_INCLUDE_DIR=../boost_1_73_0 \
+-DCMAKE_INSTALL_PREFIX=/usr/local/GreatSQL-8.0.25-15-Linux-glibc2.17-x86_64 \
+-DWITH_ZLIB=bundled \
+-DWITH_NUMA=ON \
+-DFORCE_INSOURCE_BUILD=1 \
+-DCMAKE_EXE_LINKER_FLAGS="-ljemalloc" \
+-DCMAKE_BUILD_TYPE=RelWithDebInfo \
+-DBUILD_CONFIG=mysql_release \
+-DCOMPILATION_COMMENT="GreatSQL (GPL), Release 15, Revision 6d439c6ef3f" \
+-DWITH_TOKUDB=OFF \
 -DWITH_ROCKSDB=OFF
 ```
 cmake过程如果没报错，就会输出类似下面的结果：
