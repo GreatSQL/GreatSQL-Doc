@@ -14,7 +14,7 @@ libssl libtirpc libtirpc-devel libtool libxml2-devel libzstd libzstd-devel libzs
 lz4-static make ncurses-devel ncurses-libs net-tools numactl numactl-devel numactl-libs openldap-clients \
 openldap-devel openssl openssl-devel pam pam-devel patchelf perl perl-Env perl-JSON perl-Memoize \
 perl-Time-HiRes pkg-config psmisc re2-devel python-devel readline-devel redhat-lsb-core rpcgen rpm* \
-scl-utils-build snappy-devel tar time unzip valgrind vim wget wget yum-utils zlib-devel
+scl-utils-build snappy-devel tar time unzip valgrind vim wget wget zlib-devel
 
 RUN yum install -y devtoolset-10-gcc*
 RUN scl enable devtoolset-10 bash
