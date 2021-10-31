@@ -136,7 +136,8 @@ drwxr-xr-x 3 root root      4096 Jul 28 06:34 rh
 -DBUILD_CONFIG=mysql_release \
 -DCOMPILATION_COMMENT="GreatSQL (GPL), Release 15, Revision 6d439c6ef3f" \
 -DWITH_TOKUDB=OFF \
--DWITH_ROCKSDB=OFF
+-DWITH_ROCKSDB=OFF \
+-DWITH_COREDUMPER=OFF
 ```
 cmake过程如果没报错，就会输出类似下面的结果：
 ```
