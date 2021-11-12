@@ -1,0 +1,36 @@
+FROM ubuntu
+ENV LANG en_US.utf8
+ARG UID=1001
+ARG GID=1001
+ARG UNAME=mysql
+#ENV TZ Asia/Shanghai
+
+ENV PATH="/usr/local/mysql/bin:${PATH}"
+ENV LD_LIBRARY_PATH="/usr/loca/mysql/lib:${LD_LIBRARY_PATH}"
+ENV TERM=xterm
+
+COPY ubuntu-20.4-sources.list /etc/apt/sources.list
+
+#RUN apt-get update && apt-get install -y --no-install-recommends tzdata && rm -rf /var/lib/apt/lists/*
+RUN apt update && apt install -y --no-install-recommends tzdata && rm -rf /var/lib/apt/lists/*
+ENV TZ Asia/Shanghai
+
+RUN apt update -y && apt upgrade -y && \
+apt install -y --fix-missing gcc-10 cmake automake build-essential diffutils git lbzip2 libaio-dev libbison-dev \
+libcurl4-openssl-dev libevent-dev libexpat1-dev libffi-dev libgflags-dev libgtest-dev libjemalloc-dev \
+libldap2-dev liblz4-dev libncurses-dev libnuma-dev libreadline-dev libsnappy-dev libssh-dev libtirpc-dev \
+libtool libxml2-dev libzstd-dev make net-tools numactl pkg-config psmisc vim wget \
+&& groupadd -g $GID -o $UNAME && useradd -m -g $GID -u $UID -o -s /bin/bash $UNAME \
+&& /usr/bin/install -m 0775 -o mysql -g root -d /var/lib/mysql /var/run/mysqld /docker-entrypoint-initdb.d \
+&& /usr/bin/install -m 0664 -o mysql -g root /dev/null /etc/sysconfig/mysql
+
+COPY patchelf-0.12.tar.gz /tmp/
+RUN cd /tmp && tar -xzvf patchelf-0.12.tar.gz && cd patchelf-0.12 && ./bootstrap.sh && ./configure && make && make install
+
+COPY rpcsvc-proto-1.4.tar.gz /tmp/rpcsvc-proto-1.4.tar.gz
+RUN tar zxvf /tmp/rpcsvc-proto-1.4.tar.gz -C /tmp && cd /tmp/rpcsvc-proto-1.4/ && ./configure && make && make install
+
+COPY boost_1_73_0.tar.gz /opt/
+COPY greatsql-automake.sh /opt/
+
+RUN rm -fr /tmp/*
