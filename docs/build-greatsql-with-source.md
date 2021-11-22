@@ -379,7 +379,7 @@ performance_schema_instrument = '%lock%=on'
 
 GreatSQL是基于Percona Server的分支版本，默认情况下需要用到jemalloc这个库，如果启动过程中报告类似下面的错误，只需要再安装jemalloc或者libaio等相关的软件包即可：
 ```
-/usr/local/GreatSQL-8.0.23-14/bin/mysqld: error while loading shared libraries: libjemalloc.so.1: cannot open shared object file: No such file or directory
+/usr/local/GreatSQL-8.0.25-15-Linux.x86_64/bin/mysqld: error while loading shared libraries: libjemalloc.so.1: cannot open shared object file: No such file or directory
 ```
 
 补充安装libjemalloc库即可：
