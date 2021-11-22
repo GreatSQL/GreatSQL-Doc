@@ -93,7 +93,7 @@ greatsql_mgr_secondary
 
 打开GreatSQL-Ansible项目主页：[https://gitee.com/GreatSQL/GreatSQL-Ansible](https://gitee.com/GreatSQL/GreatSQL-Ansible)
 
-找到页面右侧“发行版”，进入，选择 " GreatSQL-8.0.23-14-Linux.x86_64-ansible-v0.1-alpha.tar.xz" 这个二进制包下载到服务器上：
+找到页面右侧“发行版”，进入，选择 " GreatSQL-8.0.25-15-Linux-glibc2.17-x86_64-minimal-centos7-ansible.tar.xz" 这个二进制包下载到服务器上：
 
 ```
 [root@greatsql ~]# cd /opt/greatsql/; wget -c "https://gitee.com/xxx/GreatSQL-8.0.25-15-Linux-glibc2.17-x86_64-minimal-centos7-ansible.tar.xz"
@@ -101,7 +101,7 @@ greatsql_mgr_secondary
 [root@greatsql ~]# tar zxf GreatSQL-8.0.25-15-Linux-glibc2.17-x86_64-minimal-centos7-ansible.tar.xz
 ```
 
-解压缩后，能看到除了 *GreatSQL-8.0.23-14-Linux.x86_64.tar.xz* 安装包之外，还有GreatSQL-ansible一键安装相关文件：
+解压缩后，能看到除了 *GreatSQL-8.0.25-15-Linux-glibc2.17-x86_64-minimal-centos7-ansible.tar.xz* 安装包之外，还有GreatSQL-ansible一键安装相关文件：
 ```
 [root@greatsql ~]# cd /opt/greatsql/GreatSQL-8.0.25-15-Linux-glibc2.17-x86_64-minimal-centos7-ansible
 [root@greatsql ~]# ls -la
@@ -113,7 +113,7 @@ drwxr-xr-x 3 root  root      4096 Aug 25 10:43 mysql-support-files
 -rw------- 1 root  root       394 Aug 25 11:03 vars.yml
 ```
 几个文件作用分别介绍下：
-- GreatSQL-8.0.25-15-Linux-glibc2.17-x86_64-minimal.tar.xz，GreatSQL二进制安装包。
+- GreatSQL-8.0.25-15-Linux-glibc2.17-x86_64-minimal-centos7-ansible.tar.xz，GreatSQL二进制安装包。
 - greatsql.yml，ansible一键安装脚本。
 - check_mysql.yml，MySQL进程、端口预检查脚本。
 - vars.yml，定义一些变量的脚本，里面的变量名有些需要修改以适应各自不同的安装环境。
@@ -125,8 +125,8 @@ drwxr-xr-x 3 root  root      4096 Aug 25 10:43 mysql-support-files
 work_dir: /opt/greatsql/GreatSQL-8.0.25-15-Linux-glibc2.17-x86_64-minimal-centos7-ansible
 extract_dir: /usr/local
 data_dir: /data/GreatSQL
-file_name: GreatSQL-8.0.23-14-Linux.x86_64.tar.xz
-base_dir: /usr/local/GreatSQL-8.0.23-14-Linux.x86_64
+file_name: GreatSQL-8.0.25-15-Linux-glibc2.17-x86_64-minimal.tar.xz
+base_dir: /usr/local/GreatSQL-8.0.25-15-Linux-glibc2.17-x86_64-minimal
 my_cnf: /etc/my.cnf
 mysql_user: mysql
 mysql_port: 3306
@@ -142,8 +142,8 @@ wait_for_start: 60
 |work_dir|/opt/greatsql|工作目录，将下载的安装包放在本目录，可根据需要自行调整|
 |extract_dir|/usr/local|GreatSQL二进制包解压缩后放在 /usr/local下，【不建议调整】|
 |data_dir|/data/GreatSQL|GreatSQL运行时的datadir，【不建议调整】|
-|file_name|GreatSQL-8.0.23-14-Linux.x86_64.tar.xz|GreatSQL二进制包文件名，【不建议调整】|
-|base_dir|/usr/local/GreatSQL-8.0.23-14-Linux.x86_64|GreatSQL的basedir，【不建议调整】|
+|file_name|GreatSQL-8.0.25-15-Linux-glibc2.17-x86_64-minimal.tar.xz|GreatSQL二进制包文件名，【不建议调整】|
+|base_dir|/usr/local/GreatSQL-8.0.25-15-Linux-glibc2.17-x86_64-minimal|GreatSQL的basedir，【不建议调整】|
 |my_cnf|/etc/my.cnf|my.cnf配置文件路径，【不建议调整】|
 |mysql_user|mysql|运行GreatSQL对应的user、group，【不建议调整】|
 |mysql_port|3306|GreatSQL运行时的监听端口，【不建议调整】|
@@ -215,11 +215,11 @@ PLAY RECAP *********************************************************************
    Active: active (running) since Tue 2021-07-06 20:55:33 CST; 45s ago
      Docs: man:mysqld(8)
            http://dev.mysql.com/doc/refman/en/using-systemd.html
-  Process: 31320 ExecStartPre=/usr/local/GreatSQL-8.0.23-14-Linux.x86_64/bin/mysqld_pre_systemd (code=exited, status=0/SUCCESS)
+  Process: 31320 ExecStartPre=/usr/local/GreatSQL-8.0.25-15-Linux-glibc2.17-x86_64-minimal/bin/mysqld_pre_systemd (code=exited, status=0/SUCCESS)
  Main PID: 31348 (mysqld)
    Status: "Server is operational"
    CGroup: /system.slice/greatsql.service
-           └─31348 /usr/local/GreatSQL-8.0.23-14-Linux.x86_64/bin/mysqld
+           └─31348 /usr/local/GreatSQL-8.0.25-15-Linux-glibc2.17-x86_64-minimal/bin/mysqld
 
 Jul 06 20:55:31 greatsql systemd[1]: Starting GreatSQL Server...
 Jul 06 20:55:33 greatsql systemd[1]: Started GreatSQL Server.
@@ -231,9 +231,9 @@ Jul 06 20:55:33 greatsql systemd[1]: Started GreatSQL Server.
 +---------------------------+--------------------------------------+-------------+-------------+--------------+-------------+----------------+
 | CHANNEL_NAME              | MEMBER_ID                            | MEMBER_HOST | MEMBER_PORT | MEMBER_STATE | MEMBER_ROLE | MEMBER_VERSION |
 +---------------------------+--------------------------------------+-------------+-------------+--------------+-------------+----------------+
-| group_replication_applier | ac24eab8-def4-11eb-a5e8-525400e802e2 |      mgr3   |        3306 | ONLINE       | SECONDARY   | 8.0.23         |
-| group_replication_applier | ac275d97-def4-11eb-9e49-525400fb993a |      mgr2   |        3306 | ONLINE       | SECONDARY   | 8.0.23         |
-| group_replication_applier | ac383458-def4-11eb-bf1a-5254002eb6d6 |      mgr1   |        3306 | ONLINE       | PRIMARY     | 8.0.23         |
+| group_replication_applier | ac24eab8-def4-11eb-a5e8-525400e802e2 |      mgr3   |        3306 | ONLINE       | SECONDARY   | 8.0.25         |
+| group_replication_applier | ac275d97-def4-11eb-9e49-525400fb993a |      mgr2   |        3306 | ONLINE       | SECONDARY   | 8.0.25         |
+| group_replication_applier | ac383458-def4-11eb-bf1a-5254002eb6d6 |      mgr1   |        3306 | ONLINE       | PRIMARY     | 8.0.25         |
 +---------------------------+--------------------------------------+-------------+-------------+--------------+-------------+----------------+
 ```
 至此，安装完成。
