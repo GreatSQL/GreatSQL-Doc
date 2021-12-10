@@ -1,6 +1,7 @@
 # GreatSQL FAQ
 
 > 关于GreatSQL及MGR的FAQ，持续更新中。
+>
 > Last Update: 2021.12.10。
 
 ## 0. GreatSQL简介
