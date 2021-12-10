@@ -75,11 +75,11 @@ $ docker pull docker.io/greatsql/greatsql:8.0.25-aarch64
 
 使用GreatSQL过程中如果遇到问题，可将问题细节整理清楚后，联系GreatSQL社区寻求帮助。
 
-扫码添加GreatSQL社区助手
-![](https://github.com/GreatSQL/GreatSQL-Doc/blob/main/docs/16389431168305.jpg)
+扫码添加GreatSQL社区助手<br/>
+![](https://gitee.com/GreatSQL/GreatSQL-Doc/raw/master/docs/16389431168305.jpg)
 
-或扫码加入GreatSQL社区QQ群（533341697）：
-![](https://github.com/GreatSQL/GreatSQL-Doc/blob/main/docs/16389431106771.jpg)
+或扫码加入GreatSQL社区QQ群（533341697）：<br/>
+![](https://gitee.com/GreatSQL/GreatSQL-Doc/raw/master/docs/16389431106771.jpg)
 
 ## 4. GreatSQL版本计划是怎样的
 GreatSQL不计划每个小版本都跟随，暂定奇数版本跟随方式，即 8.0.25、8.0.27、8.0.29 ... 以此类推。
