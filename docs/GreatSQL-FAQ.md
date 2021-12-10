@@ -79,10 +79,10 @@ $ docker pull docker.io/greatsql/greatsql:8.0.25-aarch64
 If you encounter problems during the use of GreatSQL, you can sort out the details of the problem and contact the GreatSQL community for help.
 
 Scan the code and add GreatSQL Community Assistant<br/>
-![](https://gitee.com/GreatSQL/GreatSQL-Doc/raw/master/docs/16389431168305.jpg)
+![](https://gitee.com/GreatSQL/GreatSQL-Doc/raw/master/docs/greatsql-wx-assist.jpg)
 
 Or scan the code to join the GreatSQL community QQ group (533341697)<br/>
-![](https://gitee.com/GreatSQL/GreatSQL-Doc/raw/master/docs/16389431106771.jpg)
+![](https://gitee.com/GreatSQL/GreatSQL-Doc/raw/master/docs/greatsql-qqqun.jpg)
 
 ## 4. What is the GreatSQL version plan
 GreatSQL does not plan to follow every minor version, and tentatively odd versions follow the way, that is, 8.0.25, 8.0.27, 8.0.29... And so on.
