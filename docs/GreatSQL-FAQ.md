@@ -75,10 +75,10 @@ $ docker pull docker.io/greatsql/greatsql:8.0.25-aarch64
 
 使用GreatSQL过程中如果遇到问题，可将问题细节整理清楚后，联系GreatSQL社区寻求帮助。
 
-扫码添加GreatSQL社区助手
+扫码添加GreatSQL社区助手<br/>
 ![输入图片说明](greatsql-wx-assist.jpg)
 
-或扫码加入GreatSQL社区QQ群（533341697）：
+或扫码加入GreatSQL社区QQ群（533341697）<br/>
 ![输入图片说明](greatsql-qqqun.jpg)
 
 ## 4. GreatSQL版本计划是怎样的
