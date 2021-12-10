@@ -1,6 +1,5 @@
 # GreatSQL FAQ
 
-[toc]
 
 ## 0. GreatSQL简介
 GreatSQL是由万里数据库维护的MySQL分支，开源、免费。GreatSQL基于Percona Server，在其基础上进一步提升MGR（MySQL Group Replication）的性能及可靠性。此外，GreatSQL合并了华为鲲鹏计算团队贡献的Patch，实现了InnoDB并行查询特性，以及对InnoDB事务锁的优化。
