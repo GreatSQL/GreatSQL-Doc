@@ -1,50 +1,51 @@
 # GreatSQL FAQ
 
-> 关于GreatSQL及MGR的FAQ，持续更新中。
->
+> The FAQ about GreatSQL and MGR, continuously updated.
+> 
 > Last Update: 2021.12.10。
 
-## 0. GreatSQL简介
-GreatSQL是由万里数据库维护的MySQL分支，开源、免费。GreatSQL基于Percona Server，在其基础上进一步提升MGR（MySQL Group Replication）的性能及可靠性。此外，GreatSQL合并了华为鲲鹏计算团队贡献的Patch，实现了InnoDB并行查询特性，以及对InnoDB事务锁的优化。
+## 0. About GreatSQL
+GreatSQL is a MySQL branch maintained by GreatDB, which is open source and free. GreatSQL is based on Percona Server, which further enhances the performance and reliability of MGR (MySQL Group Replication). In addition, GreatSQL incorporates Patch contributed by Huawei's Kunpeng computing team, implements InnoDB parallel query features, and optimizes InnoDB transaction locks.
 
-GreatSQL可以作为MySQL或Percona Server的可选替代方案，用于线上生产环境。
+GreatSQL can be used as an alternative to MySQL or Percona Server for online production environments.
 
-GreatSQL完全免费并兼容MySQL或Percona Server。
+GreatSQL is completely free and compatible with MySQL or Percona Server.
 
-## 1. GreatSQL的特色有哪些
+## 1. What are the features of GreatSQL
 
-相对于MySQL官方社区版，GreatSQL有以下几个优势：
-- InnoDB性能更好
-    - 支持InnoDB并行查询，TPC-H测试中平均提升聚合分析型SQL性能15倍，最高提升40多倍。
-    - 优化InnoDB事务锁，tps性能可提升约10%。
-- MGR更可靠、稳定，性能也更好。
-    - MGR中引入地理标签特性，主要用于解决多机房数据同步的问题。
-    - MGR中优化了流控算法，运行更加平稳。
-    - 解决磁盘空间爆满时导致MGR集群阻塞的问题。
-    - 解决MGR多主模式下或切主时可能导致丢数据的问题。
-    - 解决节点异常退出MGR集群时导致性能抖动的问题。
-    - MGR节点异常状态判断更完善。
-    - 重新设计MGR事务认证队列清理算法，不复存在每隔60秒性能抖动的问题。
-    - 修复了recovery过程中长时间等待的问题。
-    - 修复了传输大数据可能导致逻辑判断死循环问题。
-    - 修复了多数派节点不同类型异常退出集群导致的视图更新的问题。
+GreatSQL has several advantages over MySQL community server:
+- InnoDB better performance
+  - Support InnoDB parallel query, TPC-H test on average to improve the performance of aggregation analysis SQL 15 times, the highest increase of more than 40 times.
+  - Optimize InnoDB transaction locks to improve tps performance by about 10%.
+- MGR is more reliable, stable and has better performance.
+  - Geo-label feature is introduced into MGR, which is mainly used to solve the problem of data synchronization in multiple computer rooms.
+  - The flow control algorithm is optimized in MGR, and the operation is more stable.
+  - Solve the problem of MGR cluster blocking when the disk space is full.
+  - Solve the problem that MGR multi-master mode or failover may cause data loss.
+  - Fix an issue that causes performance jitter when nodes abnormally exit the MGR cluster.
+  - MGR node abnormal state judgment is more perfect.
+  - The MGR transaction authentication queue cleaning algorithm is redesigned, and the problem of performance jitter every 60 seconds no longer exists.
+  - Fixed an issue with long waiting times during recovery.
+  - Fixed the problem that transmitting big data may lead to an endless loop of logical judgment.
+  - Fix an issue with view updates caused by different types of abnormal exit of majority nodes from the cluster.
+Whether it's a more reliable MGR or a better performing InnoDB, it's worth upgrading your current MySQL or Percona Server to GreatSQL.
 
-无论是更可靠的MGR还是性能更好的InnoDB，都值得将当前的MySQL或Percona Server升级到GreatSQL。
+Read the following articles about the advantages of GreatSQL:
+- [GreatSQL Update Notes 8.0.25](https://github.com/GreatSQL/GreatSQL-Doc/blob/main/relnotes/changes-greatsql-8-0-25-20210826.md)
+- [GreatSQL feature, InnoDB parallel parallel query optimization benchmark](https://mp.weixin.qq.com/s/_LeEtwJlfyvIlxzLoyNVdA)
+- [GreatSQL is officially open source](https://mp.weixin.qq.com/s/cI_wPKQJuXItVWpOx_yNTg)
 
-关于GreatSQL的优势可阅读下面几篇文章：
-- [GreatSQL 更新说明 8.0.25](https://gitee.com/GreatSQL/GreatSQL-Doc/blob/master/relnotes/changes-greatsql-8-0-25-20210820.md)
-- [GreatSQL重磅特性，InnoDB并行并行查询优化测试](https://mp.weixin.qq.com/s/_LeEtwJlfyvIlxzLoyNVdA)
-- [面向金融级应用的GreatSQL正式开源](https://mp.weixin.qq.com/s/cI_wPKQJuXItVWpOx_yNTg)
+## 2. Where can I download GreatSQL
 
-## 2. GreatSQL在哪里可以下载
-### 二进制包、RPM包
-二进制包下载地址：[https://gitee.com/GreatSQL/GreatSQL/releases](https://gitee.com/GreatSQL/GreatSQL/releases)。
+### Binary package, RPM package
+Binary package download address: https://gitee.com/GreatSQL/GreatSQL/releases .
 
-目前提供CentOS 7、CentOS 8两种操作系统，以及X86和ARM两种不同架构下的二进制包、RPM包。
+At present, it provides CentOS 7 and CentOS 8 operating systems, as well as binary packages and RPM packages under two different architectures of X86 and ARM.
 
-带 **minimal** 关键字的安装包是对二进制文件进行strip后，所以文件尺寸较小，功能上没本质区别，仅是不支持gdb debug功能，可以放心使用。
-### 源码
-可以直接用git clone的方式下载GreatSQL源码，例如：
+The installation package with **minimal** keyword is after stripping the binary file, so the file size is small and there is no essential difference in function. It only does not support gdb debug function and can be used with confidence.
+
+### Source code
+You can download GreatSQL source code directly with git clone, for example:
 ```
 # 可从gitee下载
 $ git clone https://gitee.com/GreatSQL/GreatSQL.git
@@ -53,113 +54,113 @@ $ git clone https://gitee.com/GreatSQL/GreatSQL.git
 $ git clone https://github.com/GreatSQL/GreatSQL.git
 ```
 
-### Ansible安装包
-GreatSQL提供Ansible一键安装包，可在gitee或github下载：
+### Ansible installation package
+
+GreatSQL provides Ansible installation package, which can be downloaded from gitee or github:
 - https://gitee.com/GreatSQL/GreatSQL-Ansible/releases
 - https://github.com/GreatSQL/GreatSQL-Ansible/releases
 
-### Docker镜像
-GreatSQL提供Docker镜像，可直接从docker hub拉取：
+### Docker image
+GreatSQL provides Docker images that can be pulled directly from the docker hub:
 ```
-# 直接下载最新版本
+# pull the latest version
 $ docker pull docker.io/greatsql/greatsql
 
-# 或自行指定版本
+# specified tag
 $ docker pull docker.io/greatsql/greatsql:8.0.25
 
-# 或指定ARM版本
+# pull ARM version
 $ docker pull docker.io/greatsql/greatsql:8.0.25-aarch64
 ```
 
-## 3. 使用GreatSQL遇到问题时找谁
 
-使用GreatSQL过程中如果遇到问题，可将问题细节整理清楚后，联系GreatSQL社区寻求帮助。
+## 3. Who to call when you encounter problems with GreatSQL
 
-扫码添加GreatSQL社区助手<br/>
+If you encounter problems during the use of GreatSQL, you can sort out the details of the problem and contact the GreatSQL community for help.
+
+Scan the code and add GreatSQL Community Assistant<br/>
 ![](https://gitee.com/GreatSQL/GreatSQL-Doc/raw/master/docs/16389431168305.jpg)
 
-或扫码加入GreatSQL社区QQ群（533341697）：<br/>
+Or scan the code to join the GreatSQL community QQ group (533341697)<br/>
 ![](https://gitee.com/GreatSQL/GreatSQL-Doc/raw/master/docs/16389431106771.jpg)
 
-## 4. GreatSQL版本计划是怎样的
-GreatSQL不计划每个小版本都跟随，暂定奇数版本跟随方式，即 8.0.25、8.0.27、8.0.29 ... 以此类推。
+## 4. What is the GreatSQL version plan
+GreatSQL does not plan to follow every minor version, and tentatively odd versions follow the way, that is, 8.0.25, 8.0.27, 8.0.29... And so on.
 
-未来若有版本计划变更我们再更新。
+We will update if there are changes in the version plan in the future.
 
-## 5. GreatSQL支持读写分离吗
-可以利用MySQL Router来实现读写分离。
+## 5. Does GreatSQL support read-write separation?
+You can use MySQL Router to separate reads and writes.
 
-## 6. 可以使用MySQL Shell来管理GreatSQL吗
-是可以的，最好采用相同版本号的MySQL Shell即可。
+## 6. Can I use MySQL Shell to manage GreatSQL?
+Yes, it is best to use the same version number of the MySQL shell.
 
-## 7. 使用MGR有什么限制吗
-下面是关于MGR使用的一些限制：
-- 所有表必须是InnoDB引擎。可以创建非InnoDB引擎表，但无法写入数据，在利用Clone构建新节点时也会报错。
-- 所有表都必须要有主键。同上，能创建没有主键的表，但无法写入数据，在利用Clone构建新节点时也会报错。
-- 不要使用大事务，默认地，事务超过150MB会报错，最大可支持2GB的事务（在GreatSQL未来的版本中，会增加对大事务的支持，提高大事务上限）。
-- 如果是从旧版本进行升级，则不能选择 MINIMAL 模式升级，建议选择 AUTO 模式，即 `upgrade=AUTO`。
-- 由于MGR的事务认证线程不支持 `gap lock`，因此建议把所有节点的事务隔离级别都改成 `READ COMMITTED`。基于相同的原因，MGR集群中也不要使用 `table lock` 及 `name lock`（即 `GET_LOCK()` 函数 ）。
-- 在多主（`multi-primary`）模式下不支持串行（`SERIALIZABLE`）隔离级别。
-- 不支持在不同的MGR节点上，对同一个表分别执行DML和DDL，可能会造成数据丢失或节点报错退出。
-- 在多主（`multi-primary`）模式下不支持多层级联外键表。另外，为了避免因为使用外键造成MGR报错，建议设置 `group_replication_enforce_update_everywhere_checks=ON`。
-- 在多主（`multi-primary`）模式下，如果多个节点都执行 `SELECT ... FOR UPDATE` 后提交事务会造成死锁。
-- 不支持复制过滤（Replication Filters）设置。
+## 7. Are there any restrictions on using MGR
 
-看起来限制有点多，但绝大多数时候并不影响正常的业务使用。
+Here are some restrictions on the use of MGR:
+- All tables must be InnoDB engine. Non-InnoDB engine tables can be created, but data cannot be written, and errors are reported when new nodes are built with Clones.
+- All tables must have primary keys. As above, you can create a table without a primary key, but you cannot write data. You will also report an error when building a new node with Clone.
+- Do not use large transactions. By default, transactions over 150MB will report errors, and transactions up to 2GB can be supported (in future versions of GreatSQL, support for large transactions will be increased, and the upper limit of large transactions will be increased).
+- If you are upgrading from an older version, you cannot choose MINIMAL mode for upgrading. It is recommended to choose AUTO mode, that is, upgrade = AUTO .
+- Since the MGR transaction authentication thread does not support gap lock , it is recommended to change the transaction isolation level of all nodes to READ COMMITTED . For the same reason, table lock and name lock (that is, the GET_LOCK () function) should not be used in MGR clusters.
+- Serial ( SERIALIZABLE ) isolation levels are not supported in multi-primary mode.
+- It is not supported to execute DML and DDL on the same table on different MGR nodes, which may cause data loss or node error exit.
+- Multilevel cascaded foreign key tables are not supported in multi-primary mode. In addition, in order to avoid MGR errors caused by using foreign keys, it is recommended to set group_replication_enforce_update_everywhere_checks = ON .
+- In multi-primary mode, if multiple nodes perform SELECT... FOR UPDATE Post-commit transactions cause deadlocks.
+- The Replication Filters setting is not supported.
+It seems that there are a lot of restrictions, but most of the time it does not affect normal business use.
+In addition, there are several requirements to enable MGR:
+- Binlog must be enabled for each node.
+- Each node must dump binlog, that is, set log_slave_updates = 1 .
+- The binlog format must be row mode, i.e. binlog_format = ROW .
+- The server_id and server_uuid of each node cannot be the same.
+- Before 8.0.20, binlog_checksum = NONE is required, but after 8.0.20, binlog_checksum = CRC32 can be set.
+- Requires GTID enabled, i.e. set gtid_mode = ON .
+- Requires master_info_repository = TABLE and relay_log_info_repository = TABLE , but since MySQL 8.0.23, these two options have been set by default TABLE, so there is no need to set them separately.
+- The table name case parameters lower_case_table_names settings on all nodes are consistent.
+- It is best to deploy MGR within the local area network, not across the public network. If the network delay is too large, the MGR will have poor performance or be prone to errors.
+- It is recommended to enable writeset mode, that is, set the following parameters
+  - slave_parallel_type = LOGICAL_CLOCK
+  - slave_parallel_workers = N , N > 0, can be set to 2 times the number of logical CPUs
+  - binlog_transaction_dependency_tracking = WRITESET
+  - slave_preserve_commit_order = 1
+  - slave_checkpoint_period = 2
 
-此外，想要启用MGR还有几个要求：
-- 每个节点都要启用binlog。
-- 每个节点都要转存binlog，即设置 `log_slave_updates=1`。
-- binlog format务必是row模式，即 `binlog_format=ROW`。
-- 每个节点的 `server_id` 及 `server_uuid` 不能相同。
-- 在8.0.20之前，要求 `binlog_checksum=NONE`，但是从8.0.20后，可以设置 `binlog_checksum=CRC32`。
-- 要求启用 GTID，即设置 `gtid_mode=ON`。
-- 要求 `master_info_repository=TABLE` 及 `relay_log_info_repository=TABLE`，不过从MySQL 8.0.23开始，这两个选项已经默认设置TABLE，因此无需再单独设置。
-- 所有节点上的表名大小写参数 `lower_case_table_names` 设置要求一致。
-- 最好在局域网内部署MGR，而不要跨公网，网络延迟太大的话，会导致MGR性能很差或很容易出错。
-- 建议启用writeset模式，即设置以下几个参数
-    - `slave_parallel_type = LOGICAL_CLOCK`
-    - `slave_parallel_workers = N`，N>0，可以设置为逻辑CPU数的2倍
-    - `binlog_transaction_dependency_tracking = WRITESET`
-    - `slave_preserve_commit_order = 1`
-    - `slave_checkpoint_period = 2`
+## 8. Maximum number of nodes supported by MGR
+MGR can support up to 9 nodes, either in single-master or multi-master mode.
 
-## 8. MGR最多可支持多少个节点
-MGR最多可支持9个节点，无论是单主还是多主模式。
+## 9. Can MGR be set to self-start
+Set the parameter group_replication_bootstrap_group = ON . However, when the first MGR node initializes and starts, or when the entire MGR cluster is closed and restarted, the first node must first adopt boot mode group_replication_bootstrap_group = ON .
 
-## 9. MGR可以设置为自启动吗
-设置参数 `group_replication_bootstrap_group=ON` 即可。但是当MGR第一个节点初始化启动时，或者整个MGR集群都关闭再重启时，第一个节点都必须先采用引导模式 `group_replication_bootstrap_group=ON`。
+## 10. Does MGR support read load balancing
+Yes. You can mount MySQL Router on the front end of the MGR cluster to achieve read load balancing.
 
-## 10. MGR支持读负载均衡吗
-支持的。可以在MGR集群的前端挂载MySQL Router，即可实现读负载均衡。
+## 11. Does MGR support write load balancing
+No. Because MGR uses the shared nothing mode, each node stores the full amount of data, so all writes to each node must be applied again.
 
-## 11. MGR支持写负载均衡吗
-不支持。由于MGR采用shared nothing模式，每个节点都存储全量数据，因此所有写入每个节点都要再应用一次。
+## 12. Will MGR consume more resources such as CPU, memory and bandwidth than traditional leader/follower replication
+To a certain extent, yes. Because MGR needs transaction collision detection between multiple nodes, but the overhead is limited and it is generally good.
 
-## 12. MGR相对传统主从复制是不是会更耗CPU、内存和带宽等资源
-一定程度上来说，是的。因为MGR需要在多个节点间进行事务冲突检测，不过这方面的开销有限，总体来说也还好。
+## 13. Why is there an additional 33061 port after starting MGR
+When the MGR service is enabled, MySQL listens on port 33061, which is used for communication between MGR nodes. So when there is a firewall policy between servers, remember to open it for that port.
 
-## 13. 为什么启动MGR后，多了个33061端口
-当启用MGR服务后，MySQL会监听33061端口，该端口用于MGR节点间的通信。因此当服务器间有防火墙策略时，记得针对该端口开放。
+Of course, you can define the port yourself, for example group_replication_local_address = 192.168.0.1:33062 .
 
-当然了，可自行定义该端口，例如 `group_replication_local_address=192.168.0.1:33062`。
+## 14. Do you have to set hostnames for all nodes when deploying MGR
+This is not necessary.
 
-## 14. 部署MGR时，务必对所有节点都设置hostname吗
-这个不是必须的。
+The reason for adding the hostname comparison table of each node on each node is that during the communication between MGR nodes, the host name that may be received is inconsistent with the actual local configuration.
 
-之所以要在每个节点上都加上各节点的hostname对照表，是因为在MGR节点间通信过程中，可能收到的主机名和本地实际配置的不一致。
+In this case, you can also set your own report_host and report_port on each node to solve this problem.
 
-这种情况下，也可以在每个节点上自行设置 `report_host` 及 `report_port` 来解决这个问题。
-
-## 15. 可以跨公网部署MGR吗
-可以的，但非常不推荐。
-
-此外，由于MGR默认的allowlist不包含公网地址，因此需要将公网地址加进去，例如：
+## 15. Can I deploy MGR across public networks
+Yes, but it is not recommended.
+In addition, since MGR's default allowlist does not contain public network addresses, public network addresses need to be added, for example:
 ```
 group_replication_ip_allowlist='192.0.2.0/24, 114.114.114.0/24'
 ```
 
-顺便提醒下，MGR默认的allowlist范围（`group_replication_ip_allowlist=AUTOMATIC`）是以下几个
+By the way, the default allowlist range of MGR ( group_replication_ip_allowlist = AUTOMATIC ) is as follows
 ```
 IPv4 (as defined in RFC 1918)
 10/8 prefix       (10.0.0.0 - 10.255.255.255) - Class A
@@ -173,10 +174,11 @@ fe80::/10 prefix  - link-local unicast addresses
 127.0.0.1 - localhost for IPv4
 ::1       - localhost for IPv6
 ```
-有时候docker容器的IP地址不在上述范围中，也会导致MGR服务无法启动。
+Sometimes the Internet Protocol Address of the docker container is not in the above range, which will also cause the MGR service to fail to start.
 
-## 16. 怎么查看MGR当前是单主还是多主模式
-执行下面的命令：
+
+## 16. How to check whether MGR is currently in single-master or multi-master mode
+Execute the following command:
 ```
 [root@GreatSQL]> SELECT * FROM performance_schema.replication_group_members;
 +---------------------------+-----------...-+-------------+--------------+-------------+----------------+
@@ -188,16 +190,15 @@ fe80::/10 prefix  - link-local unicast addresses
 | group_replication_applier | ed5fe7ba-3... |        3309 | ONLINE       | PRIMARY     | 8.0.25         |
 +---------------------------+-----------...-+-------------+--------------+-------------+----------------+
 ```
-如果只看到一个节点的 `MEMBER_ROLE` 值为 **PRIMARY**，则表示这是单主模式。如果看到所有节点上该状态值均为 **PRIMARY**，则表示这是多主模式。
+If you see only one node with a MEMBER_ROLE value of PRIMARY , this is a single master pattern. If you see that the state value is PRIMARY on all nodes, it means that this is a multi-master mode.
 
-另外，也可以通过查询MySQL选项值来确认：
+Alternatively, you can confirm by querying the MySQL option values:
 ```
 [root@GreatSQL]# mysqladmin var|grep -i group_replication_single_primary_mode
 | group_replication_single_primary_mode        | ON
 ```
-值为 **ON**，这表示采用单主模式。如果该值为 **OFF**，则表示采用多主模式。
-
-在MySQL Shell中也可以查看状态来确认：
+The value is ON , which means that the single master mode is used. If the value is OFF , it indicates a multi-master mode.
+You can also check the status in the MySQL shell to confirm:
 ```
 MySQL  GreatSQL:3306 ssl  JS > var c=dba.getCluster()
 MySQL  GreatSQL:3306 ssl  JS > c.describe() /* 或者 c.status() */
@@ -206,10 +207,11 @@ MySQL  GreatSQL:3306 ssl  JS > c.describe() /* 或者 c.status() */
 ...
 ```
 
-P.S，强烈建议采用单主模式，遇到bug或其他问题的概率更低，运行MGR更稳定可靠。
+P.S, the single master mode is strongly recommended, the probability of encountering bugs or other problems is lower, and running MGR is more stable and reliable.
 
-## 17. 怎么切换单主或多主
-在MySQL客户端命令行模式下，执行下面的命令即可：
+
+## 17. How to switch between single or multi-master
+In MySQL client side command line mode, execute the following command:
 ```
 -- 从单主切换为多主
 [root@GreatSQL]> SELECT group_replication_switch_to_multi_primary_mode();
@@ -227,7 +229,8 @@ P.S，强烈建议采用单主模式，遇到bug或其他问题的概率更低�
 | Mode switched to single-primary successfully.     |
 +---------------------------------------------------+
 ```
-**注意：** 切换时会重新选主，新的主节点有可能不是切换之前的那个，这时可以运行下面的命令来重新指定：
+
+Note: When switching, the master will be re-selected. The new master node may not be the one before switching. At this time, you can run the following command to re-specify:
 ```
 [root@GreatSQL]> SELECT group_replication_set_as_primary('ed5fe7ba-37c2-11ec-8e12-70b5e873a570');
 +--------------------------------------------------------------------------+
@@ -237,7 +240,7 @@ P.S，强烈建议采用单主模式，遇到bug或其他问题的概率更低�
 +--------------------------------------------------------------------------+
 ```
 
-也可以通过MySQL Shell来操作：
+You can also use MySQL Shell to operate:
 ```
 MySQL  GreatSQL:3306 ssl  JS > var c=dba.getCluster()
 > c.switchToMultiPrimaryMode()  /*切换为多主模式*/
@@ -274,11 +277,10 @@ Instance 'GreatSQL:3309' was switched from SECONDARY to PRIMARY.
 
 The instance 'GreatSQL:3309' was successfully elected as primary.
 ```
+P.S, the single master mode is strongly recommended, the probability of encountering bugs or other problems is lower, and running MGR is more stable and reliable.
 
-P.S，强烈建议采用单主模式，遇到bug或其他问题的概率更低，运行MGR更稳定可靠。
-
-## 18. 怎么查看MGR从节点是否有延迟
-首先，可以执行下面的命令查看当前除了 **PRIMARY** 节点外，其他节点的 `trx_tobe_applied` 或 `trx_tobe_verified` 值是否较大：
+## 18. How to check if there is a delay in the MGR slave node
+First, you can execute the following command to see if the current trx_tobe_applied or trx_tobe_verified values of other nodes except the PRIMARY node are large:
 ```
 [root@GreatSQL]> SELECT MEMBER_ID AS id, COUNT_TRANSACTIONS_IN_QUEUE AS trx_tobe_verified, COUNT_TRANSACTIONS_REMOTE_IN_APPLIER_QUEUE AS trx_tobe_applied, COUNT_TRANSACTIONS_CHECKED AS trx_chkd, COUNT_TRANSACTIONS_REMOTE_APPLIED AS trx_done, COUNT_TRANSACTIONS_LOCAL_PROPOSED AS proposed FROM performance_schema.replication_group_member_stats;
 +--------------------------------------+-------------------+------------------+----------+----------+----------+
@@ -290,9 +292,9 @@ P.S，强烈建议采用单主模式，遇到bug或其他问题的概率更低�
 | ed5fe7ba-37c2-11ec-8e12-70b5e873a570 |              2976 |           238123 |   422167 |   184044 |        0 |
 +--------------------------------------+-------------------+------------------+----------+----------+----------+
 ```
-其中，`trx_tobe_applied` 的值表示等待被apply的事务队列大小，`trx_tobe_verified` 表示等待被认证的事务队列大小，这二者任何一个值大于0，都表示当前有一定程度的延迟。
 
-另外，也可以查看接收到的事务和已执行完的事务之间的差距来判断：
+Wherein the value of trx_tobe_applied represents the size of the transaction queue waiting to be applied, trx_tobe_verified represents the size of the transaction queue waiting to be authenticated, either of which is greater than 0, indicating that there is currently a certain degree of delay.
+In addition, you can also look at the gap between the received transaction and the executed transaction to judge:
 ```
 [root@GreatSQL]> SELECT RECEIVED_TRANSACTION_SET FROM performance_schema.replication_connection_status WHERE  channel_name = 'group_replication_applier' UNION ALL SELECT variable_value FROM performance_schema.global_variables WHERE  variable_name = 'gtid_executed'\G
 *************************** 1. row ***************************
@@ -300,4 +302,4 @@ RECEIVED_TRANSACTION_SET: 6cfb873b-573f-11ec-814a-d08e7908bcb1:1-3124520
 *************************** 2. row ***************************
 RECEIVED_TRANSACTION_SET: 6cfb873b-573f-11ec-814a-d08e7908bcb1:1-3078139
 ```
-可以看到，接收到的事务 GTID 已经到了 3124520，而本地只执行到 3078139，二者的差距是 46381。可以顺便持续关注这个差值的变化情况，估算出本地节点是否能追平延迟，还是会加大延迟。
+It can be seen that the received transaction GTID has reached 3124520, while the local execution only reached 3078139, and the difference between the two is 46381. By the way, we can keep an eye on the change of this difference and estimate whether the local node can match the delay or increase the delay.
