@@ -81,6 +81,8 @@ $ docker pull docker.io/greatsql/greatsql:8.0.25-aarch64
 或扫码加入GreatSQL社区QQ群（533341697）<br/>
 ![输入图片说明](greatsql-qqqun.jpg)
 
+此外，我们已经在B站发布MGR相关系列视频，可以前往学习，视频链接：[https://space.bilibili.com/1363850082](https://space.bilibili.com/1363850082) 。
+
 ## 4. GreatSQL版本计划是怎样的
 GreatSQL不计划每个小版本都跟随，暂定奇数版本跟随方式，即 8.0.25、8.0.27、8.0.29 ... 以此类推。
 
