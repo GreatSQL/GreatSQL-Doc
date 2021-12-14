@@ -2,7 +2,7 @@
 
 > The FAQ about GreatSQL and MGR, continuously updated.
 > 
-> Last Update: 2021.12.10。
+> Last Update: 2021.12.14。
 
 ## 0. About GreatSQL
 GreatSQL is a MySQL branch maintained by GreatDB, which is open source and free. GreatSQL is based on Percona Server, which further enhances the performance and reliability of MGR (MySQL Group Replication). In addition, GreatSQL incorporates Patch contributed by Huawei's Kunpeng computing team, implements InnoDB parallel query features, and optimizes InnoDB transaction locks.
@@ -303,3 +303,18 @@ RECEIVED_TRANSACTION_SET: 6cfb873b-573f-11ec-814a-d08e7908bcb1:1-3124520
 RECEIVED_TRANSACTION_SET: 6cfb873b-573f-11ec-814a-d08e7908bcb1:1-3078139
 ```
 It can be seen that the received transaction GTID has reached 3124520, while the local execution only reached 3078139, and the difference between the two is 46381. By the way, we can keep an eye on the change of this difference and estimate whether the local node can match the delay or increase the delay.
+
+## 19. Does MySQL Router support single-machine multi-instance deployment?
+Yes, support.
+
+When MySQL Router initializes deployment, add parameters such as --name , --directory and port number, for example:
+```
+-- deploy the first instance
+root@GreatSQL# mysqlrouter --bootstrap mymgr@192.168.1.1:3306 --name=MGR1 --directory=/etc/mysqlrouter/MGR1  --user=mysqlrouter --conf-base-port=6446 --https-port=8443
+
+-- deploy the second instance
+root@GreatSQL# mysqlrouter --bootstrap mymgr@192.168.1.1:4306 --name=MGR2 --directory=/etc/mysqlrouter/MGR2  --user=mysqlrouter --conf-base-port=7446 --https-port=9443
+```
+
+Then each instance can start and stop with the start.sh and stop.sh scripts in their respective directories.
+On the MySQL Router multi-instance deployment method, you can refer to this reference doc: "[Ask Ye#38, MGR whole cluster hung up, how to automatically select the main, without manual intervention](https://mp.weixin.qq.com/s/9eLnQ2EJIMQnZuEvScIhiw) .
