@@ -84,6 +84,8 @@ Scan the code and add GreatSQL Community Assistant<br/>
 Or scan the code to join the GreatSQL community QQ group (533341697)<br/>
 ![](https://gitee.com/GreatSQL/GreatSQL-Doc/raw/master/docs/greatsql-qqqun.jpg)
 
+In addition, we have released a series of videos related to MGR in Bilibili, you can go to learn, video link: https://space.bilibili.com/1363850082.
+
 ## 4. What is the GreatSQL version plan
 GreatSQL does not plan to follow every minor version, and tentatively odd versions follow the way, that is, 8.0.25, 8.0.27, 8.0.29... And so on.
 
