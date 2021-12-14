@@ -2,7 +2,7 @@
 
 > 关于GreatSQL及MGR的FAQ，持续更新中。
 >
-> Last Update: 2021.12.10。
+> Last Update: 2021.12.14。
 
 ## 0. GreatSQL简介
 GreatSQL是由万里数据库维护的MySQL分支，开源、免费。GreatSQL基于Percona Server，在其基础上进一步提升MGR（MySQL Group Replication）的性能及可靠性。此外，GreatSQL合并了华为鲲鹏计算团队贡献的Patch，实现了InnoDB并行查询特性，以及对InnoDB事务锁的优化。
@@ -302,3 +302,17 @@ RECEIVED_TRANSACTION_SET: 6cfb873b-573f-11ec-814a-d08e7908bcb1:1-3078139
 ```
 可以看到，接收到的事务 GTID 已经到了 3124520，而本地只执行到 3078139，二者的差距是 46381。可以顺便持续关注这个差值的变化情况，估算出本地节点是否能追平延迟，还是会加大延迟。
 
+
+## 19. MySQL Router支持单机多实例部署吗
+是的，支持。
+在MySQL Router初始化部署时，添加 `--name`、`--directory` 及端口号等参数即可，例如：
+```
+-- 部署第一个实例
+root@GreatSQL# mysqlrouter --bootstrap mymgr@192.168.1.1:3306 --name=MGR1 --directory=/etc/mysqlrouter/MGR1  --user=mysqlrouter --conf-base-port=6446 --https-port=8443
+
+-- 部署第二个实例
+root@GreatSQL# mysqlrouter --bootstrap mymgr@192.168.1.1:4306 --name=MGR2 --directory=/etc/mysqlrouter/MGR2  --user=mysqlrouter --conf-base-port=7446 --https-port=9443
+```
+然后每个实例用各自目录下的 `start.sh` 和 `stop.sh` 脚本启停即可。
+
+关于MySQL Router多实例部署的方法，可以参考这篇参考文档：[**《叶问》38期，MGR整个集群挂掉后，如何才能自动选主，不用手动干预**](https://mp.weixin.qq.com/s/9eLnQ2EJIMQnZuEvScIhiw)。
