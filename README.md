@@ -66,6 +66,7 @@ Now you can start GreatSQL.
 
 # Documentation
 ---
+- [GreatSQL MGR FAQ](https://github.com/GreatSQL/GreatSQL-Doc/blob/main/docs/GreatSQL-FAQ.md)
 - [Compile and install GreatSQL from source code under Linux](https://github.com/GreatSQL/GreatSQL-Doc/blob/main/docs/build-greatsql-with-source.md)
 - [Using Ansible to install GreatSQL and build an MGR cluster](https://github.com/GreatSQL/GreatSQL-Doc/blob/main/docs/install-greatsql-with-ansible.md)
 - [Deploy GreatSQL in Docker and build MGR cluster](https://github.com/GreatSQL/GreatSQL-Doc/blob/main/docs/install-greatsql-with-docker.md)
