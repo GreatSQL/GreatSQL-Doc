@@ -320,3 +320,25 @@ root@GreatSQL# mysqlrouter --bootstrap mymgr@192.168.1.1:4306 --name=MGR2 --dire
 
 Then each instance can start and stop with the start.sh and stop.sh scripts in their respective directories.
 On the MySQL Router multi-instance deployment method, you can refer to this reference doc: "[Ask Ye#38, MGR whole cluster hung up, how to automatically select the main, without manual intervention](https://mp.weixin.qq.com/s/9eLnQ2EJIMQnZuEvScIhiw) .
+
+## 20. Can a replication relationship be built between two MGR clusters?
+First of all, the answer is yes.
+
+Secondly, in order to ensure the data security of MGR, the requirements for different role nodes are as follows:
+
+- In Single-Primary mode, a Secondary cannot be a Slave to a master-slave at the same time
+- In Single-Primary mode, the Primary node can also as the Slave node of master-slave
+- In Multi-Primary mode, any node can be a Slave node for the master-slave. Reminder: It is strongly recommended not to use Multi-Primary mode
+- The requirements are all InnoDB tables, and there are no data conflicts (e.g. data duplication, data does not exist, etc.), and no foreign keys are used
+- When the node restarts, be careful to start the MGR service before starting the replication threads. At this time, you can set `group_replication_start_on_boot = ON` and `skip_slave_start = ON` to guarantee
+
+The replication between the two MGR clusters can be asynchronous replication or semi-synchronous replication, depending on the network latency and architecture design between the two clusters. At this time, the overall architecture scheme is similar to the following:
+![replica-between-two-mgr-cluster](https://github.com/GreatSQL/GreatSQL-Doc/blob/main/docs/replica-between-two-mgr-cluster.png)
+
+Under this architecture, the two MGR clusters are independent of each other. If the MySQL Router is mounted on the front end, the corresponding connection needs to be created separately.
+
+If you are worried that the MGR node will switch, as long as the master originally pointed to does not exit the MGR cluster, the leader/follower replication relationship still exists and is not affected. If you are worried that the original Master node exits the MGR cluster and causes replication interruption, you can use the new feature Async Replication Auto failover introduced after MySQL 8.0.22 to solve it, and add each node to the replication source. You can refer to the following information:
+
+- [MGR Architecture Solution across DataPlatform in Financial Application Scenarios](https://mp.weixin.qq.com/s/A3yJUz6DNvCgIfqD78t_qQ)
+- [Switching Sources and Replicas with Asynchronous Connection Failover](https://dev.mysql.com/doc/refman/8.0/en/replication-asynchronous-connection-failover.html)
+- [Video: How MGR Ensures Data Consistency](https://www.bilibili.com/video/BV1NT4y1R7Zi)
