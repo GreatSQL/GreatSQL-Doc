@@ -2,7 +2,7 @@
 
 > 关于GreatSQL及MGR的FAQ，持续更新中。
 >
-> Last Update: 2021.12.14。
+> Last Update: 2021.12.22。
 
 ## 0. GreatSQL简介
 GreatSQL是由万里数据库维护的MySQL分支，开源、免费。GreatSQL基于Percona Server，在其基础上进一步提升MGR（MySQL Group Replication）的性能及可靠性。此外，GreatSQL合并了华为鲲鹏计算团队贡献的Patch，实现了InnoDB并行查询特性，以及对InnoDB事务锁的优化。
@@ -318,3 +318,23 @@ root@GreatSQL# mysqlrouter --bootstrap mymgr@192.168.1.1:4306 --name=MGR2 --dire
 然后每个实例用各自目录下的 `start.sh` 和 `stop.sh` 脚本启停即可。
 
 关于MySQL Router多实例部署的方法，可以参考这篇参考文档：[**《叶问》38期，MGR整个集群挂掉后，如何才能自动选主，不用手动干预**](https://mp.weixin.qq.com/s/9eLnQ2EJIMQnZuEvScIhiw)。
+
+## 20. 两个MGR集群间还可以构建主从复制关系吗
+首先，答案是肯定的，可以的。
+
+其次，为了保障MGR的数据安全性，对不同角色节点的要求是这样的：
+- 在单主模式（Single-Primary）时，从节点（Secondary）不能同时作为Master-Slave的从节点（Slave）
+- 在单主模式时，主节点（Primary）可以同时作为M-S的从节点（Slave）
+- 在多主模式时，任何节点可以作为MS的从节点（Slave）。提醒：强烈建议不要使用多主模式
+- 要求都是InnoDB表，且没有数据冲突（例如数据重复、数据不存在等），没有使用外键
+- 节点重启时，注意要先启动MGR服务，再启动M-S服务。这时候可以设置 `group_replication_start_on_boot=ON` 和 `skip_slave_start=ON` 予以保证
+
+在这两个MGR集群间的主从复制可以采用异步复制，也可以采用半同步复制，主要取决于两个集群间的网络延迟情况及架构设计方案。这时候，整体架构方案类似下面这样：
+![两个MGR间构建M-S复制架构](6.%E5%90%8C%E5%9F%8EMGR.png)
+
+在这个架构下，两个MGR集群间是相互独立的，如果前端挂载MySQL Router的话，需要单独创建对应的连接。
+
+如果担心MGR节点因为发生切换，只要原来指向的Master没有退出MGR集群，则这个主从复制关系还是存在的，不受影响。如果担心原来的Master节点退出MGR集群而导致复制中断，则可以采用MySQL 8.0.22后推出的新特性 **Async Replication Auto failover** 来解决，把各节点都加到复制源中，可以参考下面的资料：
+- [金融应用场景下跨数据中心的MGR架构方案](https://mp.weixin.qq.com/s/A3yJUz6DNvCgIfqD78t_qQ)
+- [Switching Sources and Replicas with Asynchronous Connection Failover](https://dev.mysql.com/doc/refman/8.0/en/replication-asynchronous-connection-failover.html)
+- [视频：MGR是如何保障数据一致性的](https://www.bilibili.com/video/BV1NT4y1R7Zi)
