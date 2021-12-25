@@ -338,3 +338,15 @@ root@GreatSQL# mysqlrouter --bootstrap mymgr@192.168.1.1:4306 --name=MGR2 --dire
 - [金融应用场景下跨数据中心的MGR架构方案](https://mp.weixin.qq.com/s/A3yJUz6DNvCgIfqD78t_qQ)
 - [Switching Sources and Replicas with Asynchronous Connection Failover](https://dev.mysql.com/doc/refman/8.0/en/replication-asynchronous-connection-failover.html)
 - [视频：MGR是如何保障数据一致性的](https://www.bilibili.com/video/BV1NT4y1R7Zi)
+
+## 21. 三节点的MGR集群，有两个节点宕机后还能正常工作吗
+要看具体是哪种情况。
+
+如果两个节点是正常关闭的话，则会向MGR集群发送退出信号，这种情况下，这两个节点属于正常退出，最后仅剩的节点会被提升为Primary角色，还可以正常工作，允许对其进行读写，只是此时没有可用性冗余了。当其他节点再次启动并加入集群后，又能恢复正常服务。
+
+如果是因为网络故障，或者mysqld进程发生oom、或被误杀、或其他原因退出了，则这些节点会被标识为 **UNREACHABLE** 状态，等待直到 `group_replication_member_expel_timeout` 时长（单位：秒）后这个节点才会正式退出集群。在这种情况下，一旦超过多数派节点处于 **UNREACHABLE** 状态时，则整个集群不可用，无法提供读写服务。这种情况下，需要把剩下的节点重启MGR服务才能恢复。
+
+正常情况下，不要把 `group_replication_member_expel_timeout` 值调整太大，并且MGR的事务一致性级别尽量不要选择 **AFTER** 模式，以防出现整个集群服务不可用的问题，详细参见这篇文章：[为什么MGR一致性模式不推荐AFTER](https://mp.weixin.qq.com/s/zy0VUgF_5gJuZYbzNVxPXA)。
+
+## 22. MGR可以像主从复制那样只启动两个节点吗
+MGR在初始化启动时，是可以只启动两个节点，甚至只有一个节点，但是这样就失去MGR的意义了。**因为只要少于三个节点，就没办法进行多数派投票**，当发生网络故障等情况时，无法投票确认哪些节点该被踢出集群。
