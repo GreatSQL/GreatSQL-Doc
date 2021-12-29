@@ -23,11 +23,13 @@
 - 技术主管&经理
 - 其他爱好者
 
-
 ## 参考资料、文档
 - [MySQL 8.0 Reference Manual](https://dev.mysql.com/doc/refman/8.0/en/group-replication.html) 
 - [数据库内核开发 - 温正湖](https://www.zhihu.com/column/c_206071340)
 - [Group Replication原理 - 宋利兵](https://mp.weixin.qq.com/s/LFJtdpISVi45qv9Wksv19Q)
+
+## 免责声明
+因个人水平有限，专栏中难免存在错漏之处，请勿直接复制文档中的命令、方法直接应用于线上生产环境。请读者们务必先充分理解并在测试环境验证通过后方可正式实施，若非如此而造成生产环境的破坏及相关损害，我们不承担任何责任。
 
 ## 加入团队
 如果您有兴趣一起加入协作，欢迎联系我们，可直接提交PR，或者将内容以markdown的格式发送到邮箱：greatsql@greatdb.com。
