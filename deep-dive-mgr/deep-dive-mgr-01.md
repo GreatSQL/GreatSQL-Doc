@@ -54,3 +54,11 @@ MGR支持单主和多主两种模式，在单主模式下，各节点会自动�
 MGR是MySQL四部战略走的关键一环，依靠MGR和MySQL Shell、MySQL Router已实现了读节点扩展，以及写节点扩展（MGR多主模式），下一步预计实现sharding，让我们拭目以待。
 
 相信MGR也是MySQL未来几年的重头戏，建议跟紧方向，不要错过这班列车。
+
+## 参考资料、文档
+- [MySQL 8.0 Reference Manual](https://dev.mysql.com/doc/refman/8.0/en/group-replication.html) 
+- [数据库内核开发 - 温正湖](https://www.zhihu.com/column/c_206071340)
+- [Group Replication原理 - 宋利兵](https://mp.weixin.qq.com/s/LFJtdpISVi45qv9Wksv19Q)
+
+## 免责声明
+因个人水平有限，专栏中难免存在错漏之处，请勿直接复制文档中的命令、方法直接应用于线上生产环境。请读者们务必先充分理解并在测试环境验证通过后方可正式实施，若非如此而造成生产环境的破坏及相关损害，我们不承担任何责任。
