@@ -25,6 +25,19 @@ MGR具备以下几个特点：
 4. 支持故障自动检测及自动切换，发生故障时能自动切换到新的主节点，再配合MySQL Router中间件，应用层无需干预或调整。
 5. 支持单节点、多节点写入两种模式，可根据架构或业务需要选择哪种方案，不过**强烈建议选用但主模式**。
 
+MGR可以选择单主（Single-Primary）模式
+![MGR单主模式](single-primary-election.png)
+
+如上图所示，一开始S1节点是Primary角色，提供读写服务。当它发生故障时，剩下的S2-S5节点会再投票选举出S2作为新的Primary角色提供读写服务，而S1节点再达到一定超时阈值后，就会被踢出。
+
+亦可选择多主（Multi-Primary）模式（再次**强烈建议选用但主模式**）
+![MGR多主模式](multi-primary.png)
+
+如上图所示，一开始S1-S5所有节点都是Primary角色，都可以提供读写服务，任何一个节点发生故障时，只需要把指向这个节点的流量切换下就行。
+
+上述两种架构模式下，应用端通过MySQL Router连接后端在MGR服务，当后端节点发生切换时，Router会自动感知，对应用端来说几乎是透明的，影响很小，架构上也更灵活。
+
+
 ## 3. MGR技术架构
 首先来个MGR的技术架构图：
 ![Group Replication Plugin Architecture](https://dev.mysql.com/doc/refman/5.7/en/images/gr-plugin-blocks.png)
