@@ -3,7 +3,7 @@
 [toc]
 
 ## 1. 为什么是MGR
-MGR是是MySQL Group Replication的缩写，即MySQL组复制。
+MGR是MySQL Group Replication的缩写，即MySQL组复制。
 
 在以往，我们一般是利用MySQL的主从复制或半同步复制来提供高可用解决方案，但这存在以下几个比较严重的问题：
 1. 主从复制间容易发生复制延迟，尤其是在5.6以前的版本，以及当数据库实例中存在没有显式主键表时，很容易发生。
