@@ -350,3 +350,59 @@ root@GreatSQL# mysqlrouter --bootstrap mymgr@192.168.1.1:4306 --name=MGR2 --dire
 
 ## 22. MGR可以像主从复制那样只启动两个节点吗
 MGR在初始化启动时，是可以只启动两个节点，甚至只有一个节点，但是这样就失去MGR的意义了。**因为只要少于三个节点，就没办法进行多数派投票**，当发生网络故障等情况时，无法投票确认哪些节点该被踢出集群。
+
+## 23. MGR中可以创建无主键的InnoDB表吗
+是可以的，并且会复制到所有MGR节点，但是仅能创建空表，业务上不能写入数据。
+
+往无主键的InnoDB表中写入数据时，会报告类似下面的错误：
+```
+[root@GreatSQL] [test]> insert into t3 select 1;
+ERROR 3098 (HY000): The table does not comply with the requirements by an external plugin.
+```
+同理，也可以创建MyISAM表，但写入时会提示失败。
+
+此外，当欲加入MGR集群的新实例中有无主键的InnoDB表时，如果要通过 **MySQL Shell** 添加该节点，会发出类似下面的报错，无法加入：
+```
+Validating instance configuration at mgr03:3306...
+
+This instance reports its own address as mgr03:3306
+ERROR: The following tables do not have a Primary Key or equivalent column:
+test.t3
+
+Group Replication requires tables to use InnoDB and have a PRIMARY KEY or PRIMARY KEY Equivalent (non-null unique key). Tables that do not follow these requirements will be readable but not updateable when used with Group Replication. If your applications make updates (INSERT, UPDATE or DELETE) to these tables, ensure they use the InnoDB storage engine and have a PRIMARY KEY or PRIMARY KEY Equivalent.
+If you can't change the tables structure to include an extra visible key to be used as PRIMARY KEY, you can make use of the INVISIBLE COLUMN feature available since 8.0.23: https://dev.mysql.com/doc/refman/8.0/en/invisible-columns.html
+
+ERROR: Instance must be configured and validated with dba.checkInstanceConfiguration() and dba.configureInstance() before it can be used in an InnoDB cluster.
+Cluster.addInstance: Instance check failed (RuntimeError)
+```
+这个报错在MySQL 8.0.25依然存在，据说在MySQL 8.0.27得到解决。
+
+如果改成手动加入新节点，或者直接删除无主键表，则可以成功。
+
+从上面的错误提示也能看出来，如果创建一个和主键等价的唯一索引（且要求不允许为NULL），该唯一索引可用做InnoDB表的聚集索引，就不会再报错了，业务也能正常写入数据。
+
+## 24. MySQL Router可以配置在MGR主从节点间轮询吗
+MySQL Router通过两个端口来区分读写服务请求，默认是 6446端口提供读写服务，6447端口提供只读服务。
+在单主模式下，读写服务只会连接到Primary节点。对于读写服务端口，可选的策略有以下两种：
+- first-available，只连接第一个可用节点
+- round-robin（默认），在多个主节点间轮询
+
+只读服务默认是对所有Secondary节点轮询。对于只读服务端口，可选的策略有以下X种：
+- first-available，只连第一个可用节点
+- round-robin，在所有可用Secondary节点间轮询，如果所有Secondary节点都不可用时，只读服务则不可用，不会连接到Primary节点
+- round-robin-with-fallback（默认），在所有Secondary节点间轮询。如果所有Secondary节点都不可用时，会再连接到Primary节点
+
+现在我们知道了，MySQL Router只有在所有Secondary节点都不可用时，才会去连接Primary节点读数据，无法做到在发起只读请求时，同时连接主从节点。
+
+更多关于 MySQL Router 可用的策略请参见文档 **[routing_strategy参数/选项](https://dev.mysql.com/doc/mysql-router/8.0/en/mysql-router-conf-options.html#option_mysqlrouter_routing_strategy)**。
+
+## 25. 都有哪些情况可能导致MGR服务无法启动
+简单整理了下，大概有以下原因可能导致MGR服务无法启动：
+1. 网络原因，例如网络本来就不通，或被防火墙拦住。防火墙通常至少有两道，操作系统默认的firewall策略，以及云主机被默认的安全策略。
+2. 第一个启动的节点没先做初始引导操作（`group_replication_bootstrap_group=ON`）。
+3. 没有正确配置group_name，所有节点的 `group_replication_group_name` 值要一致才可以。
+4. 没正确配置 `group_replication_group_name`，常见于新手。要为MGR服务专门新开一个服务端口，常用33061端口，但新手可能会照样写成3306端口。
+5. 通常，我们会在各MGR节点的 hosts 文件里加上所有节点的hostname。这是为了防止本地节点使用的hostname和MGR收到的hostname不一致，这种情况下，可以在每个本地节点设置 `report-host`，主动上报hostname即可解决。
+7. 没设置正确的allowlist。有可能加入MGR各节点的IP不在默认的allowlist中，可参考这篇文章：[MySQL Group Replication集群对IP地址的限制导致的一些问题与解决办法](https://mp.weixin.qq.com/s/sbYufrlOx4cKiT8sV3hCaw)。
+8. 个别节点的本地事务更多，例如误操作写入数据，也会无法加入MGR，这种情况需要重建本地节点。
+9. 个别节点的本地事务缺失太多，且加入MGR时无法自动完成恢复，这种情况比较少见，需要手动执行clone复制数据，或者其他类似操作。
