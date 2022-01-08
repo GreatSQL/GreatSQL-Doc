@@ -16,6 +16,7 @@
 - [1. MGR简介](https://gitee.com/GreatSQL/GreatSQL-Doc/blob/master/deep-dive-mgr/deep-dive-mgr-01.md)
 - [2. 组复制技术架构](https://gitee.com/GreatSQL/GreatSQL-Doc/blob/master/deep-dive-mgr/deep-dive-mgr-02.md)
 - [3. 安装部署MGR集群](https://gitee.com/GreatSQL/GreatSQL-Doc/blob/master/deep-dive-mgr/deep-dive-mgr-03.md)
+- [4. 利用MySQL Shell安装部署MGR集群](https://gitee.com/GreatSQL/GreatSQL-Doc/blob/master/deep-dive-mgr/deep-dive-mgr-04.md)
 
 ## 读者群体
 本专栏适合以下读者群体：
