@@ -193,6 +193,9 @@ The instance '172.16.16.11:3306' was successfully added to the cluster.  <-- 新
 
 至此，利用MySQL Shell构建一个三节点的MGR集群做好了，可以尝试向 Primary 节点写入数据观察测试。
 
+## 3. 小结
+本文主要介绍了如何利用MySQL Shell构建一个三节点的MGR集群，相对于手工方式搭建MGR集群，用MySQL Shell操作会方便很多，推荐使用。
+
 ## 参考资料、文档
 - [MySQL 8.0 Reference Manual](https://dev.mysql.com/doc/refman/8.0/en/group-replication.html) 
 - [数据库内核开发 - 温正湖](https://www.zhihu.com/column/c_206071340)
