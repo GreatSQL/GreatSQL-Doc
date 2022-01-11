@@ -193,8 +193,54 @@ The instance '172.16.16.11:3306' was successfully added to the cluster.  <-- 新
 
 至此，利用MySQL Shell构建一个三节点的MGR集群做好了，可以尝试向 Primary 节点写入数据观察测试。
 
-## 3. 小结
-本文主要介绍了如何利用MySQL Shell构建一个三节点的MGR集群，相对于手工方式搭建MGR集群，用MySQL Shell操作会方便很多，推荐使用。
+## 3. MySQL Shell接管现存的MGR集群
+对于已经在运行中的MGR集群，也是可以用MySQL Shell接管的。只需要在调用 `createCluster()` 函数时，加上 `adoptFromGR:true` 选项即可。实际上不加这个选项的话，MySQL Shell也会自动检测到该MGR集群已存在，并询问是否要接管。
+
+在这里简单演示下：
+```
+#不加上 adoptFromGr:true 选项
+ MySQL  172.16.16.10:3306 ssl  JS > var c=dba.createCluster('MGR1');
+A new InnoDB cluster will be created on instance '172.16.16.10:3306'.
+
+You are connected to an instance that belongs to an unmanaged replication group.
+Do you want to setup an InnoDB cluster based on this replication group? [Y/n]:
+```
+可以看到，会有提示信息询问是否要接管。
+
+如果加上 `adoptFromGr:true` 选项，则会直接创建集群，不再询问：
+```
+var c=dba.createCluster('MGR1', {adoptFromGr:true});
+A new InnoDB cluster will be created based on the existing replication group on instance '172.16.16.10:3306'.
+
+Creating InnoDB cluster 'MGR1' on '172.16.16.10:3306'...
+
+Adding Seed Instance...
+Adding Instance '172.16.16.10:3306'...
+Adding Instance '172.16.16.11:3306'...
+Adding Instance '172.16.16.12:3306'...
+...
+```
+
+如果是MGR集群的metadata发生变化，这时候无论调用 `dba.getCluster()` 还是 `dba.createCluster` 都可能会报告类似下面的错误：
+```
+Dba.getCluster: Unable to get an InnoDB cluster handle. The instance '192.168.6.27:3306' may belong to a different cluster from the one registered in the Metadata since the value of 'group_replication_group_name' does not match the one registered in the Metadata: possible split-brain scenario. Please retry while connected to another member of the cluster. (RuntimeError)
+```
+
+这种情况下，可以调用 `dba.dropMetadataSchema()` 函数删除元数据，再调用 `dba.createCluster()` 接管集群：
+```
+#确保不影响正常业务的话，删除无用MGR元数据
+ MySQL  172.16.16.10:3306 ssl  JS > dba.dropMetadataSchema()
+Are you sure you want to remove the Metadata? [y/N]: y
+Metadata Schema successfully removed.
+
+#接管现有集群
+ MySQL  172.16.16.10:3306 ssl  JS > var c=dba.createCluster('MGR1', {adoptFromGr:true})
+...
+```
+这样就可以了接管了。
+
+## 4. 小结
+本文主要介绍了如何利用MySQL Shell构建一个三节点的MGR集群，以及如何用MySQL Shell接管现有集群，处理元数据冲突的问题。相对于手工方式搭建MGR集群，用MySQL Shell操作会方便很多，推荐使用。
 
 ## 参考资料、文档
 - [MySQL 8.0 Reference Manual](https://dev.mysql.com/doc/refman/8.0/en/group-replication.html) 
