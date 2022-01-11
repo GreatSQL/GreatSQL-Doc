@@ -19,6 +19,7 @@
 - [4. 利用MySQL Shell安装部署MGR集群](https://gitee.com/GreatSQL/GreatSQL-Doc/blob/master/deep-dive-mgr/deep-dive-mgr-04.md)
 - [5. MGR管理维护](https://gitee.com/GreatSQL/GreatSQL-Doc/blob/master/deep-dive-mgr/deep-dive-mgr-05.md)
 - [6. MGR状态监控](https://gitee.com/GreatSQL/GreatSQL-Doc/blob/master/deep-dive-mgr/deep-dive-mgr-06.md)
+- [7. 利用MySQL Router构建读写分离MGR集群](https://gitee.com/GreatSQL/GreatSQL-Doc/blob/master/deep-dive-mgr/deep-dive-mgr-07.md)
 
 ## 读者群体
 本专栏适合以下读者群体：
