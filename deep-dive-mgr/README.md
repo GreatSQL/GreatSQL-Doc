@@ -20,6 +20,8 @@
 - [5. MGR管理维护](https://gitee.com/GreatSQL/GreatSQL-Doc/blob/master/deep-dive-mgr/deep-dive-mgr-05.md)
 - [6. MGR状态监控](https://gitee.com/GreatSQL/GreatSQL-Doc/blob/master/deep-dive-mgr/deep-dive-mgr-06.md)
 - [7. 利用MySQL Router构建读写分离MGR集群](https://gitee.com/GreatSQL/GreatSQL-Doc/blob/master/deep-dive-mgr/deep-dive-mgr-07.md)
+- [8. 利用Ansible快速构建MGR](https://gitee.com/GreatSQL/GreatSQL-Doc/blob/master/deep-dive-mgr/deep-dive-mgr-08.md)
+- [9. 利用Docker快速构建MGR](https://gitee.com/GreatSQL/GreatSQL-Doc/blob/master/deep-dive-mgr/deep-dive-mgr-09.md)
 
 ## 读者群体
 本专栏适合以下读者群体：
