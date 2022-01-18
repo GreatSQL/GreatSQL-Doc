@@ -169,8 +169,8 @@ mysql> select * from performance_schema.replication_group_members;
 | CHANNEL_NAME              | MEMBER_ID                            | MEMBER_HOST  | MEMBER_PORT | MEMBER_STATE | MEMBER_ROLE | MEMBER_VERSION |
 +---------------------------+--------------------------------------+--------------+-------------+--------------+-------------+----------------+
 | group_replication_applier | 4ebd3504-11d9-11ec-8f92-70b5e873a570 | 172.16.16.10 |        3306 | ONLINE       | PRIMARY     | 8.0.25         |
-| group_replication_applier | 549b92bf-11d9-11ec-88e1-70b5e873a570 | 172.16.16.11 |        3307 | ONLINE       | SECONDARY   | 8.0.25         |
-| group_replication_applier | 5596116c-11d9-11ec-8624-70b5e873a570 | 172.16.16.12 |        3308 | ONLINE       | SECONDARY   | 8.0.25         |
+| group_replication_applier | 549b92bf-11d9-11ec-88e1-70b5e873a570 | 172.16.16.11 |        3306 | ONLINE       | SECONDARY   | 8.0.25         |
+| group_replication_applier | 5596116c-11d9-11ec-8624-70b5e873a570 | 172.16.16.12 |        3306 | ONLINE       | SECONDARY   | 8.0.25         |
 +---------------------------+--------------------------------------+--------------+-------------+--------------+-------------+----------------+
 ```
 看到上面这个集群共有3个节点处于ONLINE状态，其中 *172.16.16.10* 是 **PRIMARY** 节点，其余两个都是 **SECONDARY** 节点，也就是说当前这个集群采用 **单主** 模式。如果采用多主模式，则所有节点的角色都是 **PRIMARY**。
