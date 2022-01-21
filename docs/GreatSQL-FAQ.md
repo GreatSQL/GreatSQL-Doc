@@ -2,7 +2,7 @@
 
 > 关于GreatSQL及MGR的FAQ，持续更新中。
 >
-> Last Update: 2022.01.07。
+> Last Update: 2022.01.21。
 
 ## 0. GreatSQL简介
 GreatSQL是由万里数据库维护的MySQL分支，开源、免费。GreatSQL基于Percona Server，在其基础上进一步提升MGR（MySQL Group Replication）的性能及可靠性。此外，GreatSQL合并了华为鲲鹏计算团队贡献的Patch，实现了InnoDB并行查询特性，以及对InnoDB事务锁的优化。
@@ -406,3 +406,10 @@ MySQL Router通过两个端口来区分读写服务请求，默认是 6446端口
 7. 没设置正确的allowlist。有可能加入MGR各节点的IP不在默认的allowlist中，可参考这篇文章：[MySQL Group Replication集群对IP地址的限制导致的一些问题与解决办法](https://mp.weixin.qq.com/s/sbYufrlOx4cKiT8sV3hCaw)。
 8. 个别节点的本地事务更多，例如误操作写入数据，也会无法加入MGR，这种情况需要重建本地节点。
 9. 个别节点的本地事务缺失太多，且加入MGR时无法自动完成恢复，这种情况比较少见，需要手动执行clone复制数据，或者其他类似操作。
+
+## 26. MySQL Shell 8.0能管理MySQL 5.7的MGR集群吗
+答案是肯定的。
+
+不过由于MySQL 5.7里没有MGR管理的几个UDF，因此在MySQL Shell里调用 `setPrimaryInstance()`、`switchToMultiPrimaryMode()` 等函数时会报错，是不支持的。
+
+所以说，还是尽量升级到MySQL 8.0吧。
