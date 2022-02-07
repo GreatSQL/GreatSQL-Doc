@@ -98,7 +98,7 @@ mysql> set session sql_log_bin=0;
 mysql> create user repl@'%' identified by 'repl';
 mysql> GRANT BACKUP_ADMIN, REPLICATION SLAVE ON *.* TO `repl`@`%`;
 #创建完用户后继续启用binlog记录
-mysql> set session sql_log_bin=0;
+mysql> set session sql_log_bin=1;
 
 #配置MGR服务通道
 #通道名字 group_replication_recovery 是固定的，不能修改
