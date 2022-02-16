@@ -22,7 +22,7 @@ MySQL Shell是一个客户端工具，可用于方便管理和操作MySQL，支�
 $ yum install mysql-shell-8.0.25
 ```
 
-假定已经参考前文 [**3. 安装部署MGR集群**](xx) 做好MySQL Server的初始化并启动三个实例。
+假定已经参考前文 [**3. 安装部署MGR集群**](https://gitee.com/GreatSQL/GreatSQL-Doc/blob/master/deep-dive-mgr/deep-dive-mgr-03.md) 做好MySQL Server的初始化并启动三个实例。
 
 接下来直接利用MySQL Shell部署MGR。
 
