@@ -591,7 +591,7 @@
 日志比较多，简化后会发现和手动加入的过程基本上是一样的。
 
 ## 3. 小结
-本文主要介绍MGR集群中当有新节点加入，数据是如何完成同步复制的。
+本文主要介绍MGR集群中新节点加入的过程是怎样的。
 
 ## 参考资料、文档
 - [MySQL 8.0 Reference Manual](https://dev.mysql.com/doc/refman/8.0/en/group-replication.html) 
