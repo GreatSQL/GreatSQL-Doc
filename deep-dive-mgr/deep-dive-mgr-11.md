@@ -6,8 +6,7 @@
 
 ## 1. MGR架构
 再来看一遍MGR的架构图：
-![](https://gitee.com/GreatSQL/GreatSQL-Doc/blob/master/deep-dive-mgr/MGR-arch.jpg)
-图1：MGR整体技术架构
+![图1：MGR整体技术架构](MGR-arch.jpg)
 
 从上图可知，MGR工作时，主要涉及到以下三层：
 1. **Server层**：负责处理用户请求，接收用户事务，返回结果等。
@@ -41,7 +40,7 @@ MGR集群由DB1、DB2、DB3三个节点构成，则对于DB1来说，DB2、DB3�
 P.S，事务认证过程也叫做冲突检测，是同一个意思。
 
 下图展示了事务在MGR的流转过程：
-![](https://gitee.com/GreatSQL/GreatSQL-Doc/blob/master/deep-dive-mgr/deep-dive-mgr-02-03.jpg)
+![事务在MGR的流转过程](deep-dive-mgr-02-03.jpg)
 
 下面介绍MGR工作流程中的一些关键点。
 
