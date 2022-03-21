@@ -22,7 +22,7 @@ MySQL Shell是一个客户端工具，可用于方便管理和操作MySQL，支�
 $ yum install mysql-shell-8.0.25
 ```
 
-假定已经参考前文 [**3. 安装部署MGR集群**](xx) 做好MySQL Server的初始化并启动三个实例。
+假定已经参考前文 [**3. 安装部署MGR集群**](https://gitee.com/GreatSQL/GreatSQL-Doc/blob/master/deep-dive-mgr/deep-dive-mgr-03.md) 做好MySQL Server的初始化并启动三个实例。
 
 接下来直接利用MySQL Shell部署MGR。
 
@@ -239,7 +239,17 @@ Metadata Schema successfully removed.
 ```
 这样就可以了接管了。
 
-## 4. 小结
+## 4. 使用MySQL Shell的窍门
+在mysql shell中，也是可以启用pager（分页器）的，像下面这样设置即可：
+```
+mysqlsh> shell.enablePager();
+mysqlsh> shell.options["pager"]="less -i -n -S";
+Pager has been set to 'less -i -n -S'.
+```
+
+在用mysql shell连接时，也可以加上 `--dba-log-sql=2 --log-level=debug3` 参数，以启用debug模式，并记录运行过程中实际调用的SQL命令，默认日志文件是 `~/.mysqlsh/mysqlsh.log`。
+
+## 5. 小结
 本文主要介绍了如何利用MySQL Shell构建一个三节点的MGR集群，以及如何用MySQL Shell接管现有集群，处理元数据冲突的问题。相对于手工方式搭建MGR集群，用MySQL Shell操作会方便很多，推荐使用。
 
 ## 参考资料、文档

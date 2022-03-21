@@ -57,6 +57,8 @@ $ /usr/local/GreatSQL-8.0.25-15-Linux-glibc2.28-x86_64/bin/mysqld --defaults-fil
 ```
 如果不出意外，则能正常启动MySQL Server。用同样的方法也完成对另外两个节点的初始化。
 
+此外，建议把GreatSQL加入系统systemd服务中，方便管理。具体方法可以参考这篇文章：[将GreatSQL添加到系统systemd服务](https://mp.weixin.qq.com/s/tSA-DrWT13GN45Csq2tQoA)。
+
 ## 3. 初始化MGR第一个节点
 接下来准备初始化MGR的第一个节点，也称之为 **引导节点**。
 
@@ -96,7 +98,7 @@ mysql> set session sql_log_bin=0;
 mysql> create user repl@'%' identified by 'repl';
 mysql> GRANT BACKUP_ADMIN, REPLICATION SLAVE ON *.* TO `repl`@`%`;
 #创建完用户后继续启用binlog记录
-mysql> set session sql_log_bin=0;
+mysql> set session sql_log_bin=1;
 
 #配置MGR服务通道
 #通道名字 group_replication_recovery 是固定的，不能修改
@@ -167,8 +169,8 @@ mysql> select * from performance_schema.replication_group_members;
 | CHANNEL_NAME              | MEMBER_ID                            | MEMBER_HOST  | MEMBER_PORT | MEMBER_STATE | MEMBER_ROLE | MEMBER_VERSION |
 +---------------------------+--------------------------------------+--------------+-------------+--------------+-------------+----------------+
 | group_replication_applier | 4ebd3504-11d9-11ec-8f92-70b5e873a570 | 172.16.16.10 |        3306 | ONLINE       | PRIMARY     | 8.0.25         |
-| group_replication_applier | 549b92bf-11d9-11ec-88e1-70b5e873a570 | 172.16.16.11 |        3307 | ONLINE       | SECONDARY   | 8.0.25         |
-| group_replication_applier | 5596116c-11d9-11ec-8624-70b5e873a570 | 172.16.16.12 |        3308 | ONLINE       | SECONDARY   | 8.0.25         |
+| group_replication_applier | 549b92bf-11d9-11ec-88e1-70b5e873a570 | 172.16.16.11 |        3306 | ONLINE       | SECONDARY   | 8.0.25         |
+| group_replication_applier | 5596116c-11d9-11ec-8624-70b5e873a570 | 172.16.16.12 |        3306 | ONLINE       | SECONDARY   | 8.0.25         |
 +---------------------------+--------------------------------------+--------------+-------------+--------------+-------------+----------------+
 ```
 看到上面这个集群共有3个节点处于ONLINE状态，其中 *172.16.16.10* 是 **PRIMARY** 节点，其余两个都是 **SECONDARY** 节点，也就是说当前这个集群采用 **单主** 模式。如果采用多主模式，则所有节点的角色都是 **PRIMARY**。

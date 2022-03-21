@@ -261,8 +261,15 @@ Rejoining instance '172.16.16.13:3306' to cluster 'MGR1'...
 The instance '172.16.16.13:3306' was successfully rejoined to the cluster.
 ```
 
-## 6. 小结
-本文介绍了MGR集群几种常见管理维护操作方法，包括切换主节点，切换单主/多主模式，添加节点，删除节点，异常节点重加入等。总的来看，利用MySQL Shell管理MGR集群会更简单方便些，也有利于管理平台的封装，不过手工操作的方式也不能忘记，有些时候可能没有配套的MySQL Shell工具，就得靠手工了。
+## 6. 重启MGR集群
+正常情况下，MGR集群中的Primary节点退出时，剩下的节点会自动选出新的Primary节点。当最后一个节点也退出时，相当于整个MGR集群都关闭了。这时候任何一个节点启动MGR服务后，都不会自动成为Primary节点，需要在启动MGR服务前，先设置 `group_replication_bootstrap_group=ON`，使其成为引导节点，再启动MGR服务，它才会成为Primary节点，后续启动的其他节点也才能正常加入集群。可自行测试，这里不再做演示。
+
+P.S，第一个节点启动完毕后，记得重置选项 `group_replication_bootstrap_group=OFF`，避免在后续的操作中导致MGR集群分裂。
+
+如果是用MySQL Shell重启MGR集群，调用 `rebootClusterFromCompleteOutage()` 函数即可，它会自动判断各节点的状态，选择其中一个作为Primary节点，然后拉起各节点上的MGR服务，完成MGR集群重启。可以参考这篇文章：[万答#12，MGR整个集群挂掉后，如何才能自动选主，不用手动干预](https://mp.weixin.qq.com/s/07o1poO44zwQIvaJNKEoPA)
+
+## 7. 小结
+本文介绍了MGR集群几种常见管理维护操作方法，包括切换主节点，切换单主/多主模式，添加节点，删除节点，异常节点重加入，重启整个MGR集群等。总的来看，利用MySQL Shell管理MGR集群会更简单方便些，也有利于管理平台的封装，不过手工操作的方式也不能忘记，有些时候可能没有配套的MySQL Shell工具，就得靠手工了。
 
 
 ## 参考资料、文档

@@ -20,6 +20,9 @@
 - [5. MGR管理维护](https://gitee.com/GreatSQL/GreatSQL-Doc/blob/master/deep-dive-mgr/deep-dive-mgr-05.md)
 - [6. MGR状态监控](https://gitee.com/GreatSQL/GreatSQL-Doc/blob/master/deep-dive-mgr/deep-dive-mgr-06.md)
 - [7. 利用MySQL Router构建读写分离MGR集群](https://gitee.com/GreatSQL/GreatSQL-Doc/blob/master/deep-dive-mgr/deep-dive-mgr-07.md)
+- [8. 利用Ansible快速构建MGR](https://gitee.com/GreatSQL/GreatSQL-Doc/blob/master/deep-dive-mgr/deep-dive-mgr-08.md)
+- [9. 利用Docker快速构建MGR](https://gitee.com/GreatSQL/GreatSQL-Doc/blob/master/deep-dive-mgr/deep-dive-mgr-09.md)
+- [10. 选主算法、多版本兼容性及滚动升级](https://gitee.com/GreatSQL/GreatSQL-Doc/blob/master/deep-dive-mgr/deep-dive-mgr-10.md)
 
 ## 读者群体
 本专栏适合以下读者群体：
@@ -28,6 +31,18 @@
 - 架构师
 - 技术主管&经理
 - 其他爱好者
+
+## 已知在用MGR的企业
+- 多家国有大型银行、大型股份制银行、地方城商行
+- 某知名互联网大厂
+- 某知名生活服务平台
+- 某知名社交网络平台
+- 某在线旅游平台
+- 某知名新能源充电网络企业
+- 某中国领先的汽车平台网
+- 某知名在线教育平台
+- 某知名数字零售联合云
+- 某电信集成运营服务商
 
 ## 参考资料、文档
 - [MySQL 8.0 Reference Manual](https://dev.mysql.com/doc/refman/8.0/en/group-replication.html) 
