@@ -12,9 +12,10 @@ libevent-devel libffi-devel libicu-devel libssh libssl libtirpc libtirpc-devel l
 libzstd libzstd-devel libzstd-static lz4-devel lz4-static make ncurses-devel ncurses-libs net-tools \
 numactl numactl-devel numactl-libs openldap-clients openldap-devel openssl openssl-devel pam pam-devel \
 patchelf perl perl-Env perl-JSON perl-Memoize perl-Time-HiRes pkg-config psmisc re2-devel python-devel \
-readline-devel redhat-lsb-core rpcgen rpm* scl-utils-build snappy-devel tar time unzip valgrind vim wget zlib-devel
+readline-devel redhat-lsb-core rpcgen rpm* scl-utils-build snappy-devel tar time unzip valgrind vim wget zlib-devel \
+cyrus-sasl-devel cyrus-sasl-scram python36 python36-devel
 
-RUN yum install -y devtoolset-10-gcc*
+RUN yum install -y centos-release-scl && yum makecache && yum install -y devtoolset-10-gcc*
 RUN scl enable devtoolset-10 bash
 RUN echo 'scl enable devtoolset-10 bash' >> /root/.bash_profile
 
