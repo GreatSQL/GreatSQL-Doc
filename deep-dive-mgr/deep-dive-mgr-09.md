@@ -2,7 +2,7 @@
 
 [toc]
 
-为了方面社区用户体验GreatSQL，我们同时还提供Docker镜像，本文详细介绍如何在Docker中部署GreatSQL，并且构建一个MGR集群。
+为了方便社区用户体验GreatSQL，我们同时还提供Docker镜像，本文详细介绍如何在Docker中部署GreatSQL，并且构建一个MGR集群。
 
 本文涉及的运行环境如下：
 ```
