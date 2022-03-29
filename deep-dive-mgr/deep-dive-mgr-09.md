@@ -59,7 +59,7 @@ docker.io/greatsql/greatsql   latest              1130a28e310b        3 days ago
 -e MYSQL_INIT_MGR=1 \
 -e MYSQL_MGR_USER='repl' \
 -e MYSQL_MGR_USER_PWD='repl' \
--e MYSQL_SID=330602
+-e MYSQL_SID=330602 \
 greatsql/greatsql
 ```
 
@@ -379,7 +379,7 @@ Creating mgr3 ...
 
 查看运行状态：
 ```
-[root@greatsql]# docker-compose -f /data/docker-compose/compose-mgr.yml up -d
+[root@greatsql]# docker-compose -f /data/docker-compose/compose-mgr.yml ps
 Name             Command              State               Ports
 ----------------------------------------------------------------------------
 mgr1   /docker-entrypoint.sh mysqld   Up      3306/tcp, 33060/tcp, 33061/tcp
