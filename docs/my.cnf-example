@@ -60,7 +60,7 @@ log_bin = /data/GreatSQL/binlog
 binlog_format = ROW
 sync_binlog = 1
 binlog_cache_size = 4M
-max_binlog_cache_size = 2G
+max_binlog_cache_size = 6G
 max_binlog_size = 1G
 binlog_rows_query_log_events = 1
 binlog_expire_logs_seconds = 604800
@@ -95,15 +95,20 @@ loose-plugin_load_add = 'mysql_clone.so'
 loose-plugin_load_add = 'group_replication.so'
 loose-group_replication_group_name = "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa1"
 #MGR本地节点IP:PORT，请自行替换
-loose-group_replication_local_address = 192.168.5.160:33061
+loose-group_replication_local_address = "172.16.160:33061"
 #MGR集群所有节点IP:PORT，请自行替换
-loose-group_replication_group_seeds = 172.16.16.10:33061,172.16.16.11:33061,172.16.16.12:33061
+loose-group_replication_group_seeds = '172.16.16.10:33061,72.16.16.12:33061,72.16.16.12:33061'
 loose-group_replication_start_on_boot = OFF
 loose-group_replication_bootstrap_group = OFF
 loose-group_replication_exit_state_action = READ_ONLY
 loose-group_replication_flow_control_mode = "DISABLED"
 loose-group_replication_single_primary_mode = ON
 loose-group_replication_communication_max_message_size = 10M
+loose-group_replication_transaction_size_limit = 3G
+loose-group_replication_arbitrator = 0
+loose-group_replication_single_primary_fast_mode = 1
+loose-group_replication_request_time_threshold = 20000
+report_host = "172.16.16.10"
 
 #innodb settings
 transaction_isolation = READ-COMMITTED
