@@ -55,7 +55,10 @@ my.cnf配置文件可参考[这份样例](https://gitee.com/GreatSQL/GreatSQL-Do
 
 # 版本历史
 ---
+## GreatSQL 8.0
 - [GreatSQL 更新说明 8.0.25(2021-8-26)](https://gitee.com/GreatSQL/GreatSQL-Doc/blob/master/relnotes/changes-greatsql-8-0-25-20210820.md)
+
+## GreatSQL 5.7
 - [GreatSQL 更新说明 5.7.36(2022-4-7)](https://gitee.com/GreatSQL/GreatSQL-Doc/blob/master/relnotes/changes-greatsql-5-7-36-20220407.md)
 
 
