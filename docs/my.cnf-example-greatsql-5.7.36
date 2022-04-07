@@ -1,0 +1,113 @@
+#my.cnf for greatsql 5.7.36
+#my.cnf
+[client]
+socket = /data/GreatSQL/mysql.sock
+[mysql]
+prompt="[\\u@db160] [\\d]>"
+[mysqld]
+user    = mysql
+port = 3306
+server_id = 3306
+basedir = /usr/local/GreatSQL-5.7.36-39-Linux-glibc2.28-x86_64
+lower_case_table_names = 1
+pid-file = mysql.pid
+character-set-server = UTF8MB4
+skip_name_resolve = 1
+#若你的MySQL数据库主要运行在境外，请务必根据实际情况调整本参数
+default_time_zone = "+8:00"
+
+#performance setttings
+lock_wait_timeout = 3600
+open_files_limit    = 65535
+back_log = 1024
+max_connections = 512
+max_connect_errors = 1000000
+table_open_cache = 1024
+table_definition_cache = 1024
+thread_stack = 512K
+sort_buffer_size = 4M
+join_buffer_size = 4M
+read_buffer_size = 8M
+read_rnd_buffer_size = 4M
+bulk_insert_buffer_size = 64M
+thread_cache_size = 768
+interactive_timeout = 600
+wait_timeout = 600
+tmp_table_size = 32M
+max_heap_table_size = 32M
+
+#log settings
+log_timestamps = SYSTEM
+log_error = /data/GreatSQL/error.log
+log_error_verbosity = 3
+slow_query_log = 1
+slow_query_log_file = /data/GreatSQL/slow.log
+long_query_time = 0.01
+log_queries_not_using_indexes = 1
+log_throttle_queries_not_using_indexes = 60
+min_examined_row_limit = 0
+log_slow_admin_statements = 1
+log_slow_slave_statements = 1
+log_bin
+binlog_format = ROW
+sync_binlog = 1
+binlog_cache_size = 4M
+max_binlog_cache_size = 2G
+max_binlog_size = 1G
+binlog_rows_query_log_events = 1
+#MySQL 8.0.22前，想启用MGR的话，需要设置binlog_checksum=NONE才行
+binlog_checksum = NONE
+gtid_mode = ON
+enforce_gtid_consistency = TRUE
+log_slave_updates = 1
+expire_logs_days = 1
+
+#myisam settings
+key_buffer_size = 32M
+myisam_sort_buffer_size = 128M
+
+#replication settings
+master_info_repository = TABLE
+relay_log_info_repository = TABLE
+relay_log_recovery = 1
+slave_parallel_type = LOGICAL_CLOCK
+#可以设置为逻辑CPU数量的2倍
+slave_parallel_workers = 4
+binlog_transaction_dependency_tracking = WRITESET
+transaction_write_set_extraction = XXHASH64
+slave_preserve_commit_order = 1
+slave_checkpoint_period = 2
+
+#mgr settings
+loose-plugin_load_add = 'group_replication.so'
+loose-group_replication_group_name = "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa1"
+#MGR本地节点IP:PORT，请自行替换
+loose-group_replication_local_address = "172.16.160:33061"
+#MGR集群所有节点IP:PORT，请自行替换
+loose-group_replication_group_seeds = '172.16.16.10:33061,72.16.16.12:33061,72.16.16.12:33061'
+loose-group_replication_start_on_boot = OFF
+loose-group_replication_bootstrap_group = OFF
+loose-group_replication_exit_state_action = READ_ONLY
+loose-group_replication_flow_control_mode = "DISABLED"
+loose-group_replication_single_primary_mode = ON
+loose-group_replication_request_time_threshold = 0 #当怀疑MGR成为性能瓶颈时再开启，例如设置为50000(50ms)
+report-host = 172.16.16.10
+
+#innodb settings
+transaction_isolation = REPEATABLE-READ
+innodb_buffer_pool_size = 6G
+innodb_buffer_pool_instances = 8
+innodb_data_file_path = ibdata1:12M:autoextend
+innodb_flush_log_at_trx_commit = 1
+innodb_log_buffer_size = 32M
+innodb_log_file_size = 2G
+innodb_log_files_in_group = 3
+innodb_io_capacity = 4000
+innodb_io_capacity_max = 8000
+innodb_open_files = 65534
+innodb_flush_method = O_DIRECT
+innodb_lru_scan_depth = 4000
+innodb_lock_wait_timeout = 10
+innodb_rollback_on_timeout = 1
+innodb_print_all_deadlocks = 1
+innodb_status_file = 1
