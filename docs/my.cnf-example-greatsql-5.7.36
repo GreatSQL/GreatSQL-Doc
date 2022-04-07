@@ -50,7 +50,7 @@ log_slow_admin_statements = 1
 log_slow_slave_statements = 1
 log_bin
 binlog_format = ROW
-sync_binlog = 0
+sync_binlog = 1
 binlog_cache_size = 4M
 max_binlog_cache_size = 2G
 max_binlog_size = 1G
@@ -98,7 +98,7 @@ transaction_isolation = READ-COMMITTED
 innodb_buffer_pool_size = 6G
 innodb_buffer_pool_instances = 8
 innodb_data_file_path = ibdata1:12M:autoextend
-innodb_flush_log_at_trx_commit = 0
+innodb_flush_log_at_trx_commit = 1
 innodb_log_buffer_size = 32M
 innodb_log_file_size = 2G
 innodb_log_files_in_group = 3
