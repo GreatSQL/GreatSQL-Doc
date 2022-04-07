@@ -1,7 +1,7 @@
 # 关于 GreatSQL
 --- 
 
-GreatSQL是源于Percona Server的分支版本，除了Percona Server已有的稳定可靠、高效、管理更方便等优势外，特别是进一步提升了MGR（MySQL Group Replication）的性能及可靠性，以及众多bug修复。此外，GreatSQL还合并了由华为鲲鹏计算团队贡献的两个Patch，分别针对OLTP和OLAP两种业务场景，尤其是InnoDB并行查询特性，TPC-H测试中平均提升聚合分析型SQL性能15倍，最高提升40多倍，特别适用于周期性数据汇总报表之类的SAP、财务统计等业务。
+GreatSQL是由万里数据库维护的MySQL分支，专注于提升MGR可靠性及性能，支持InnoDB并行查询特性，是适用于金融级应用的MySQL分支版本。
 
 GreatSQL可以作为MySQL或Percona Server的可选替代方案，用于线上生产环境。
 
@@ -56,9 +56,7 @@ my.cnf配置文件可参考[这份样例](https://gitee.com/GreatSQL/GreatSQL-Do
 # 版本历史
 ---
 - [GreatSQL 更新说明 8.0.25(2021-8-26)](https://gitee.com/GreatSQL/GreatSQL-Doc/blob/master/relnotes/changes-greatsql-8-0-25-20210820.md)
-- [GreatSQL 更新说明 8.0.22 v20210410(2021-4-10)](https://gitee.com/GreatSQL/GreatSQL-Doc/blob/master/relnotes/changes-greatsql-8-0-22-v20210410.md)
-- [GreatSQL 更新说明 8.0.22(2021-4-1)](https://gitee.com/GreatSQL/GreatSQL-Doc/blob/master/relnotes/changes-greatsql-8-0-22.md)
-
+- [GreatSQL 更新说明 5.7.36(2022-4-7)](https://gitee.com/GreatSQL/GreatSQL-Doc/blob/master/relnotes/changes-greatsql-5-7-36-20220407.md)
 
 
 # 使用文档
