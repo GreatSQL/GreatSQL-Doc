@@ -90,7 +90,7 @@ loose-group_replication_bootstrap_group = OFF
 loose-group_replication_exit_state_action = READ_ONLY
 loose-group_replication_flow_control_mode = "DISABLED"
 loose-group_replication_single_primary_mode = ON
-loose-group_replication_request_time_threshold=20000
+loose-group_replication_request_time_threshold = 0 #当怀疑MGR成为性能瓶颈时再开启，例如设置为50000(50ms)
 report-host = 172.16.16.10
 
 #innodb settings
