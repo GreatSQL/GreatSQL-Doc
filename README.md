@@ -11,7 +11,11 @@ GreatSQL完全免费并兼容MySQL或Percona Server。
 # 下载GreatSQL
 ---
 
-[戳此下载GreatSQL](https://gitee.com/GreatSQL/GreatSQL/releases)
+## GreatSQL 8.0
+- [GreatSQL 8.0.25](https://gitee.com/GreatSQL/GreatSQL/releases/GreatSQL-8.0.25-15)
+
+## GreatSQL 5.7
+- [GreatSQL 5.7.36](https://gitee.com/GreatSQL/GreatSQL/releases/GreatSQL-5.7.36-39)
 
 
 # 版本特性
@@ -30,7 +34,7 @@ GreatSQL除了提升MGR性能及可靠性，还引入InnoDB事务锁优化及并
 
 # 注意事项
 ---
-运行GreatSQL可能需要依赖jemalloc库，因此请先先安装上
+运行GreatSQL可能需要依赖jemalloc库（推荐5.2.1+版本），因此请先先安装上
 ```
 yum -y install jemalloc jemalloc-devel
 ```
@@ -47,8 +51,12 @@ yum -y install jemalloc jemalloc-devel
         libjemalloc.so.1 (libc6,x86-64) => /usr/local/lib64/libjemalloc.so.1
         libjemalloc.so (libc6,x86-64) => /usr/local/lib64/libjemalloc.so
 ```
+jemalloc下载地址：https://centos.pkgs.org/8/epel-x86_64/jemalloc-5.2.1-2.el8.x86_64.rpm.html
 
-my.cnf配置文件可参考[这份样例](https://gitee.com/GreatSQL/GreatSQL-Doc/blob/master/docs/my.cnf-example)。
+# my.cnf参考
+
+- [my.cnf for GreatSQL 8.0.25](https://gitee.com/GreatSQL/GreatSQL-Doc/blob/master/docs/my.cnf-example)
+- [my.cnf for GreatSQL 5.7.36](https://gitee.com/GreatSQL/GreatSQL-Doc/blob/master/docs/my.cnf-example-greatsql-5.7.36)
 
 就可以正常启动GreatSQL服务了。
 
