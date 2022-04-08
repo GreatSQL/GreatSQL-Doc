@@ -31,20 +31,21 @@ mysql> select * from performance_schema.replication_group_members;
 在节点状态发生变化时，或者有节点加入、退出时，表 `performance_schema.replication_group_members` 的数据都会更新，各节点间会交换和共享这些状态信息，因此可以在任意节点查看。
 
 ## 2. MGR事务状态监控
-另一个需要重点关注的是Secondary节点的事务状态，更确切的说是关注待认证事务及待应用事务队列大小。执行下面的SQL即可查看，主要关注非Primary节点的 `COUNT_TRANSACTIONS_IN_QUEUE` 和 `COUNT_TRANSACTIONS_REMOTE_IN_APPLIER_QUEUE` 这两列的值是否较大：
-```
-mysql> SELECT MEMBER_ID AS id, COUNT_TRANSACTIONS_IN_QUEUE AS trx_tobe_verified, COUNT_TRANSACTIONS_REMOTE_IN_APPLIER_QUEUE AS trx_tobe_applied, COUNT_TRANSACTIONS_CHECKED AS trx_chkd, COUNT_TRANSACTIONS_REMOTE_APPLIED AS trx_done, COUNT_TRANSACTIONS_LOCAL_PROPOSED AS proposed FROM performance_schema.replication_group_member_stats;
-+--------------------------------------+-------------------+------------------+----------+----------+----------+
-| id                                   | trx_tobe_verified | trx_tobe_applied | trx_chkd | trx_done | proposed |
-+--------------------------------------+-------------------+------------------+----------+----------+----------+
-| 4ebd3504-11d9-11ec-8f92-70b5e873a570 |                 0 |                0 |   422248 |        6 |   422248 |
-| 549b92bf-11d9-11ec-88e1-70b5e873a570 |                 0 |           238391 |   422079 |   183692 |        0 |
-| 5596116c-11d9-11ec-8624-70b5e873a570 |              2936 |           238519 |   422115 |   183598 |        0 |
-| ed5fe7ba-37c2-11ec-8e12-70b5e873a570 |              2976 |           238123 |   422167 |   184044 |        0 |
-+--------------------------------------+-------------------+------------------+----------+----------+----------+
-```
+另一个需要重点关注的是Secondary节点的事务状态，更确切的说是关注待认证事务及待应用事务队列大小。
 
-其中，`COUNT_TRANSACTIONS_REMOTE_IN_APPLIER_QUEUE` 的值表示等待被apply的事务队列大小，`COUNT_TRANSACTIONS_IN_QUEUE` 表示等待被认证的事务队列大小，这二者任何一个值大于0，都表示当前有一定程度的延迟。
+可以执行下面的命令查看当前除了 **PRIMARY** 节点外，其他节点的 `trx_tobe_certified` 或 `relaylog_tobe_applied` 值是否较大：
+```
+[root@GreatSQL]> SELECT MEMBER_ID AS id, COUNT_TRANSACTIONS_IN_QUEUE AS trx_tobe_certified, COUNT_TRANSACTIONS_REMOTE_IN_APPLIER_QUEUE AS relaylog_tobe_applied, COUNT_TRANSACTIONS_CHECKED AS trx_chkd, COUNT_TRANSACTIONS_REMOTE_APPLIED AS trx_done, COUNT_TRANSACTIONS_LOCAL_PROPOSED AS proposed FROM performance_schema.replication_group_member_stats;
++--------------------------------------+-------------------+---------------------+----------+----------+----------+
+| id                                   |trx_tobe_certified |relaylog_tobe_applied| trx_chkd | trx_done | proposed |
++--------------------------------------+-------------------+---------------------+----------+----------+----------+
+| 4ebd3504-11d9-11ec-8f92-70b5e873a570 |                 0 |                   0 |   422248 |        6 |   422248 |
+| 549b92bf-11d9-11ec-88e1-70b5e873a570 |                 0 |              238391 |   422079 |   183692 |        0 |
+| 5596116c-11d9-11ec-8624-70b5e873a570 |              2936 |              238519 |   422115 |   183598 |        0 |
+| ed5fe7ba-37c2-11ec-8e12-70b5e873a570 |              2976 |              238123 |   422167 |   184044 |        0 |
++--------------------------------------+-------------------+---------------------+----------+----------+----------+
+```
+其中，`relaylog_tobe_applied` 的值表示远程事务写到relay log后，等待回放的事务队列，`trx_tobe_certified` 表示等待被认证的事务队列大小，这二者任何一个值大于0，都表示当前有一定程度的延迟。
 
 还可以通过关注上述两个数值的变化，看看两个队列是在逐步加大还是缩小，据此判断Primary节点是否"跑得太快"了，或者Secondary节点是否"跑得太慢"。
 
