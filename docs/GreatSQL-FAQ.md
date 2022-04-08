@@ -280,19 +280,19 @@ The instance 'GreatSQL:3309' was successfully elected as primary.
 P.S，强烈建议采用单主模式，遇到bug或其他问题的概率更低，运行MGR更稳定可靠。
 
 ## 18. 怎么查看MGR从节点是否有延迟
-首先，可以执行下面的命令查看当前除了 **PRIMARY** 节点外，其他节点的 `trx_tobe_applied` 或 `trx_tobe_verified` 值是否较大：
+首先，可以执行下面的命令查看当前除了 **PRIMARY** 节点外，其他节点的 `trx_tobe_certified` 或 `relaylog_tobe_applied` 值是否较大：
 ```
-[root@GreatSQL]> SELECT MEMBER_ID AS id, COUNT_TRANSACTIONS_IN_QUEUE AS trx_tobe_verified, COUNT_TRANSACTIONS_REMOTE_IN_APPLIER_QUEUE AS trx_tobe_applied, COUNT_TRANSACTIONS_CHECKED AS trx_chkd, COUNT_TRANSACTIONS_REMOTE_APPLIED AS trx_done, COUNT_TRANSACTIONS_LOCAL_PROPOSED AS proposed FROM performance_schema.replication_group_member_stats;
-+--------------------------------------+-------------------+------------------+----------+----------+----------+
-| id                                   | trx_tobe_verified | trx_tobe_applied | trx_chkd | trx_done | proposed |
-+--------------------------------------+-------------------+------------------+----------+----------+----------+
-| 4ebd3504-11d9-11ec-8f92-70b5e873a570 |                 0 |                0 |   422248 |        6 |   422248 |
-| 549b92bf-11d9-11ec-88e1-70b5e873a570 |                 0 |           238391 |   422079 |   183692 |        0 |
-| 5596116c-11d9-11ec-8624-70b5e873a570 |              2936 |           238519 |   422115 |   183598 |        0 |
-| ed5fe7ba-37c2-11ec-8e12-70b5e873a570 |              2976 |           238123 |   422167 |   184044 |        0 |
-+--------------------------------------+-------------------+------------------+----------+----------+----------+
+[root@GreatSQL]> SELECT MEMBER_ID AS id, COUNT_TRANSACTIONS_IN_QUEUE AS trx_tobe_certified, COUNT_TRANSACTIONS_REMOTE_IN_APPLIER_QUEUE AS relaylog_tobe_applied, COUNT_TRANSACTIONS_CHECKED AS trx_chkd, COUNT_TRANSACTIONS_REMOTE_APPLIED AS trx_done, COUNT_TRANSACTIONS_LOCAL_PROPOSED AS proposed FROM performance_schema.replication_group_member_stats;
++--------------------------------------+-------------------+---------------------+----------+----------+----------+
+| id                                   |trx_tobe_certified |relaylog_tobe_applied| trx_chkd | trx_done | proposed |
++--------------------------------------+-------------------+---------------------+----------+----------+----------+
+| 4ebd3504-11d9-11ec-8f92-70b5e873a570 |                 0 |                   0 |   422248 |        6 |   422248 |
+| 549b92bf-11d9-11ec-88e1-70b5e873a570 |                 0 |              238391 |   422079 |   183692 |        0 |
+| 5596116c-11d9-11ec-8624-70b5e873a570 |              2936 |              238519 |   422115 |   183598 |        0 |
+| ed5fe7ba-37c2-11ec-8e12-70b5e873a570 |              2976 |              238123 |   422167 |   184044 |        0 |
++--------------------------------------+-------------------+---------------------+----------+----------+----------+
 ```
-其中，`trx_tobe_applied` 的值表示等待被apply的事务队列大小，`trx_tobe_verified` 表示等待被认证的事务队列大小，这二者任何一个值大于0，都表示当前有一定程度的延迟。
+其中，`relaylog_tobe_applied` 的值表示远程事务写到relay log后，等待回放的事务队列，`trx_tobe_certified` 表示等待被认证的事务队列大小，这二者任何一个值大于0，都表示当前有一定程度的延迟。
 
 另外，也可以查看接收到的事务和已执行完的事务之间的差距来判断：
 ```
