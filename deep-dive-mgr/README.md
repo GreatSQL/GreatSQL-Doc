@@ -23,6 +23,10 @@
 - [8. 利用Ansible快速构建MGR](https://gitee.com/GreatSQL/GreatSQL-Doc/blob/master/deep-dive-mgr/deep-dive-mgr-08.md)
 - [9. 利用Docker快速构建MGR](https://gitee.com/GreatSQL/GreatSQL-Doc/blob/master/deep-dive-mgr/deep-dive-mgr-09.md)
 - [10. 选主算法、多版本兼容性及滚动升级](https://gitee.com/GreatSQL/GreatSQL-Doc/blob/master/deep-dive-mgr/deep-dive-mgr-10.md)
+- [11. MGR技术架构及数据同步、认证机制](https://gitee.com/GreatSQL/GreatSQL-Doc/blob/master/deep-dive-mgr/deep-dive-mgr-11.md)
+- [12. 新节点加入过程解读](https://gitee.com/GreatSQL/GreatSQL-Doc/blob/master/deep-dive-mgr/deep-dive-mgr-12.md)
+- [13. 分布式恢复](https://gitee.com/GreatSQL/GreatSQL-Doc/blob/master/deep-dive-mgr/deep-dive-mgr-13.md)
+
 
 ## 读者群体
 本专栏适合以下读者群体：
