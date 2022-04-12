@@ -56,6 +56,7 @@ log_throttle_queries_not_using_indexes = 60
 min_examined_row_limit = 0
 log_slow_admin_statements = 1
 log_slow_slave_statements = 1
+log_slow_verbosity = FULL
 log_bin = /data/GreatSQL/binlog
 binlog_format = ROW
 sync_binlog = 1
