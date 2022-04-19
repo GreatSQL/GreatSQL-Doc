@@ -1,12 +1,7 @@
 # 关于 GreatSQL
 --- 
 
-GreatSQL是由万里数据库维护的MySQL分支，专注于提升MGR可靠性及性能，支持InnoDB并行查询特性，是适用于金融级应用的MySQL分支版本。
-
-GreatSQL可以作为MySQL或Percona Server的可选替代方案，用于线上生产环境。
-
-GreatSQL完全免费并兼容MySQL或Percona Server。
-
+GreatSQL开源数据库专注于提升MGR可靠性及性能，支持InnoDB并行查询等特性，是适用于金融级应用的国内自主MySQL版本；可以作为MySQL或Percona Server的可选替换，用于线上生产环境；且完全免费并兼容MySQL或Percona Server。
 
 # 下载GreatSQL
 ---
