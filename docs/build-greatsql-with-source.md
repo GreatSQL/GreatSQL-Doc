@@ -310,7 +310,6 @@ loose-group_replication_single_primary_mode = ON
 loose-group_replication_communication_max_message_size = 10M
 
 #innodb settings
-transaction_isolation = REPEATABLE-READ
 innodb_buffer_pool_size = 64G
 innodb_buffer_pool_instances = 8
 innodb_data_file_path = ibdata1:12M:autoextend

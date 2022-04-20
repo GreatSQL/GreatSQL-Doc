@@ -112,7 +112,6 @@ loose-group_replication_request_time_threshold = 20000
 report_host = "172.16.16.10"
 
 #innodb settings
-transaction_isolation = READ-COMMITTED
 innodb_buffer_pool_size = 192G
 innodb_buffer_pool_instances = 8
 innodb_data_file_path = ibdata1:12M:autoextend
