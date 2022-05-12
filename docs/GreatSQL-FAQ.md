@@ -411,3 +411,8 @@ MySQL Router通过两个端口来区分读写服务请求，默认是 6446端口
 不过由于MySQL 5.7里没有MGR管理的几个UDF，因此在MySQL Shell里调用 `setPrimaryInstance()`、`switchToMultiPrimaryMode()` 等函数时会报错，是不支持的。
 
 所以说，还是尽量升级到MySQL 8.0吧。
+
+## 27. GreatSQL怎么备份
+可以利用GreatSQL安装包中提供的mysqldump工具执行逻辑备份。
+
+也可以利用相同版本号的Percona Xtrabackup执行物理备份，例如利用Percona XtraBackup 8.0.25-17备份GreatSQL 8.0.25-15、GreatSQL 8.0.25-16版本，利用Percona XtraBackup 2.4备份GreatSQL 5.7.36-39版本。
