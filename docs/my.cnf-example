@@ -83,20 +83,20 @@ slave_preserve_commit_order = 1
 slave_checkpoint_period = 2
 
 #启用InnoDB并行查询优化功能
-force_parallel_execute = ON
+loose-force_parallel_execute = ON
 #设置每个SQL语句的并行查询最大并发度
-parallel_default_dop = 8
+loose-parallel_default_dop = 8
 #设置系统中总的并行查询线程数，可以和最大逻辑CPU数量一样
-parallel_max_threads = 64
+loose-parallel_max_threads = 64
 #并行执行时leader线程和worker线程使用的总内存大小上限，可以设置物理内存的5-10%左右
-parallel_memory_limit = 12G
+loose-parallel_memory_limit = 12G
 
 #mgr settings
 loose-plugin_load_add = 'mysql_clone.so'
 loose-plugin_load_add = 'group_replication.so'
 loose-group_replication_group_name = "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa1"
 #MGR本地节点IP:PORT，请自行替换
-loose-group_replication_local_address = "172.16.160:33061"
+loose-group_replication_local_address = "172.16.16.10:33061"
 #MGR集群所有节点IP:PORT，请自行替换
 loose-group_replication_group_seeds = '172.16.16.10:33061,72.16.16.12:33061,72.16.16.12:33061'
 loose-group_replication_start_on_boot = OFF
@@ -112,7 +112,7 @@ loose-group_replication_request_time_threshold = 20000
 report_host = "172.16.16.10"
 
 #innodb settings
-innodb_buffer_pool_size = 192G
+innodb_buffer_pool_size = 16G
 innodb_buffer_pool_instances = 8
 innodb_data_file_path = ibdata1:12M:autoextend
 innodb_flush_log_at_trx_commit = 1
