@@ -99,7 +99,7 @@ loose-group_replication_group_name = "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa1"
 loose-group_replication_local_address = "172.16.16.10:33061"
 #MGR集群所有节点IP:PORT，请自行替换
 loose-group_replication_group_seeds = '172.16.16.10:33061,72.16.16.12:33061,72.16.16.12:33061'
-loose-group_replication_start_on_boot = OFF
+loose-group_replication_start_on_boot = ON
 loose-group_replication_bootstrap_group = OFF
 loose-group_replication_exit_state_action = READ_ONLY
 loose-group_replication_flow_control_mode = "DISABLED"
