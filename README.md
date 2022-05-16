@@ -48,9 +48,43 @@ yum -y install jemalloc jemalloc-devel
 ```
 jemalloc下载地址：https://centos.pkgs.org/8/epel-x86_64/jemalloc-5.2.1-2.el8.x86_64.rpm.html
 
+# 安装GreatSQL
+推荐安装GreatSQL RPM包。
+[戳此链接下载GreatSQL RPM包](https://gitee.com/GreatSQL/GreatSQL/releases/GreatSQL-8.0.25-16)。
+
+执行下面的命令安装GreatSQL：
+```
+#首先，查找GreatSQL是否已安装
+$ yum search greatsql
+...
+No matches found.
+
+#然后安装
+$ rpm -ivh greatsql-client-8.0.25-16.1.el8.x86_64.rpm greatsql-devel-8.0.25-16.1.el8.x86_64.rpm greatsql-mysql-router-8.0.25-16.1.el8.x86_64.rpm greatsql-server-8.0.25-16.1.el8.x86_64.rpm greatsql-shared-8.0.25-16.1.el8.x86_64.rpm
+```
+
+安装完成后，GreatSQL会自行完成初始化，可以再检查是否已加入系统服务或已启动：
+```
+$ systemctl status mysqld
+● mysqld.service - MySQL Server
+   Loaded: loaded (/usr/lib/systemd/system/mysqld.service; enabled; vendor preset: disabled)
+...
+     Docs: man:mysqld(8)
+           http://dev.mysql.com/doc/refman/en/using-systemd.html
+  Process: 1137698 ExecStartPre=/usr/bin/mysqld_pre_systemd (code=exited, status=0/SUCCESS)
+ Main PID: 1137732 (mysqld)
+   Status: "Server is operational"
+    Tasks: 39 (limit: 149064)
+   Memory: 336.7M
+   CGroup: /system.slice/mysqld.service
+           └─1137732 /usr/sbin/mysqld
+...
+```
+
 # my.cnf参考
 
-- [my.cnf for GreatSQL 8.0.25](https://gitee.com/GreatSQL/GreatSQL-Doc/blob/master/docs/my.cnf-example)
+- [my.cnf for GreatSQL 8.0.25-16](https://gitee.com/GreatSQL/GreatSQL-Doc/blob/master/docs/my.cnf-example-greatsql-8.0.25-16)
+- [my.cnf for GreatSQL 8.0.25-15](https://gitee.com/GreatSQL/GreatSQL-Doc/blob/master/docs/my.cnf-example-greatsql-8.0.25-15)
 - [my.cnf for GreatSQL 5.7.36](https://gitee.com/GreatSQL/GreatSQL-Doc/blob/master/docs/my.cnf-example-greatsql-5.7.36)
 
 就可以正常启动GreatSQL服务了。
@@ -59,7 +93,8 @@ jemalloc下载地址：https://centos.pkgs.org/8/epel-x86_64/jemalloc-5.2.1-2.el
 # 版本历史
 ---
 ## GreatSQL 8.0
-- [GreatSQL 更新说明 8.0.25(2021-8-26)](https://gitee.com/GreatSQL/GreatSQL-Doc/blob/master/relnotes/changes-greatsql-8-0-25-20210820.md)
+- [GreatSQL 更新说明 8.0.25-16(2021-5-16)](https://gitee.com/GreatSQL/GreatSQL-Doc/blob/master/relnotes/changes-greatsql-8-0-25-16-20220516.md)
+- [GreatSQL 更新说明 8.0.25-15(2021-8-26)](https://gitee.com/GreatSQL/GreatSQL-Doc/blob/master/relnotes/changes-greatsql-8-0-25-20210820.md)
 
 ## GreatSQL 5.7
 - [GreatSQL 更新说明 5.7.36(2022-4-7)](https://gitee.com/GreatSQL/GreatSQL-Doc/blob/master/relnotes/changes-greatsql-5-7-36-20220407.md)
@@ -69,7 +104,7 @@ jemalloc下载地址：https://centos.pkgs.org/8/epel-x86_64/jemalloc-5.2.1-2.el
 ---
 - [GreatSQL MGR FAQ](https://gitee.com/GreatSQL/GreatSQL-Doc/blob/master/docs/GreatSQL-FAQ.md)
 - [在Linux下源码编译安装GreatSQL](https://gitee.com/GreatSQL/GreatSQL-Doc/blob/master/docs/build-greatsql-with-source.md)
-- [利用Ansible安装GreatSQL并构建MGR集群](https://gitee.com/GreatSQL/GreatSQL-Doc/blob/master/docs/install-greatsql-with-ansible.md)
+- [ansible一键安装GreatSQL 8.0.25并构建MGR集群](https://gitee.com/GreatSQL/GreatSQL-Ansible/wikis/ansible%E4%B8%80%E9%94%AE%E5%AE%89%E8%A3%85GreatSQL%208.0.25%E5%B9%B6%E6%9E%84%E5%BB%BAMGR%E9%9B%86%E7%BE%A4)
 - [在Docker中部署GreatSQL并构建MGR集群](https://gitee.com/GreatSQL/GreatSQL-Doc/blob/master/docs/install-greatsql-with-docker.md)
 - [MGR优化配置参考](https://gitee.com/GreatSQL/GreatSQL-Doc/blob/master/docs/mgr-best-options-ref.md)
 - [InnoDB并行查询优化参考](https://gitee.com/GreatSQL/GreatSQL-Doc/blob/master/docs/innodb-parallel-execute.md)
