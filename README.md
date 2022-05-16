@@ -7,7 +7,8 @@ GreatSQL开源数据库专注于提升MGR可靠性及性能，支持InnoDB并行
 ---
 
 ## GreatSQL 8.0
-- [GreatSQL 8.0.25](https://gitee.com/GreatSQL/GreatSQL/releases/GreatSQL-8.0.25-15)
+- [GreatSQL 8.0.25-16](https://gitee.com/GreatSQL/GreatSQL/releases/GreatSQL-8.0.25-16)
+- [GreatSQL 8.0.25-15](https://gitee.com/GreatSQL/GreatSQL/releases/GreatSQL-8.0.25-15)
 
 ## GreatSQL 5.7
 - [GreatSQL 5.7.36](https://gitee.com/GreatSQL/GreatSQL/releases/GreatSQL-5.7.36-39)
