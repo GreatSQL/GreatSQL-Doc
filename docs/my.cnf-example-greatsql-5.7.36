@@ -48,6 +48,7 @@ log_throttle_queries_not_using_indexes = 60
 min_examined_row_limit = 0
 log_slow_admin_statements = 1
 log_slow_slave_statements = 1
+log_slow_verbosity = FULL
 log_bin
 binlog_format = ROW
 sync_binlog = 1
@@ -82,10 +83,10 @@ slave_checkpoint_period = 2
 loose-plugin_load_add = 'group_replication.so'
 loose-group_replication_group_name = "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa1"
 #MGR本地节点IP:PORT，请自行替换
-loose-group_replication_local_address = "172.16.160:33061"
+loose-group_replication_local_address = "172.16.16.10:33061"
 #MGR集群所有节点IP:PORT，请自行替换
 loose-group_replication_group_seeds = '172.16.16.10:33061,72.16.16.12:33061,72.16.16.12:33061'
-loose-group_replication_start_on_boot = OFF
+loose-group_replication_start_on_boot = ON
 loose-group_replication_bootstrap_group = OFF
 loose-group_replication_exit_state_action = READ_ONLY
 loose-group_replication_flow_control_mode = "DISABLED"
@@ -94,8 +95,7 @@ loose-group_replication_request_time_threshold = 0 #当怀疑MGR成为性能瓶�
 report-host = 172.16.16.10
 
 #innodb settings
-transaction_isolation = REPEATABLE-READ
-innodb_buffer_pool_size = 6G
+innodb_buffer_pool_size = 16G
 innodb_buffer_pool_instances = 8
 innodb_data_file_path = ibdata1:12M:autoextend
 innodb_flush_log_at_trx_commit = 1

@@ -14,7 +14,7 @@ no-auto-rehash
 user    = mysql
 port    = 3306
 server_id = 3306
-basedir = /usr/local/GreatSQL-8.0.25-15-Linux-glibc2.28-x86_64
+basedir = /usr/
 datadir    = /data/GreatSQL
 socket    = /data/GreatSQL/mysql.sock
 pid-file = mysql.pid
@@ -104,11 +104,12 @@ loose-group_replication_bootstrap_group = OFF
 loose-group_replication_exit_state_action = READ_ONLY
 loose-group_replication_flow_control_mode = "DISABLED"
 loose-group_replication_single_primary_mode = ON
+loose-group_replication_majority_after_mode = ON
 loose-group_replication_communication_max_message_size = 10M
-loose-group_replication_transaction_size_limit = 3G
 loose-group_replication_arbitrator = 0
 loose-group_replication_single_primary_fast_mode = 1
-loose-group_replication_request_time_threshold = 20000
+loose-group_replication_request_time_threshold = 100
+loose-group_replication_primary_election_mode = GTID_FIRST
 report_host = "172.16.16.10"
 
 #innodb settings
