@@ -28,6 +28,7 @@
 - [13. 分布式恢复](https://gitee.com/GreatSQL/GreatSQL-Doc/blob/master/deep-dive-mgr/deep-dive-mgr-13.md)
 - [14. 流量控制（流控）](https://gitee.com/GreatSQL/GreatSQL-Doc/blob/master/deep-dive-mgr/deep-dive-mgr-14.md)
 - [15. 故障检测与网络分区](https://gitee.com/GreatSQL/GreatSQL-Doc/blob/master/deep-dive-mgr/deep-dive-mgr-15.md)
+- [16. 数据一致性、安全性保障](https://gitee.com/GreatSQL/GreatSQL-Doc/blob/master/deep-dive-mgr/deep-dive-mgr-16.md)
 
 
 ## 读者群体
