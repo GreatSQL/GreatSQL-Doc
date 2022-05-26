@@ -76,6 +76,14 @@ log_error_verbosity=3
 - `slave_preserve_commit_order = 1`
     - `slave_checkpoint_period = 2`
 
+
+## 3. MGR使用建议
+在使用MGR时，有以下几个建议：
+- 不同版本不要混用，尤其是不同大版本不要混用，要尽快完成升级。
+- 对同一个表的DDL和DML都只在同一个节点，否则可能会造成节点意外退出MGR。
+- 不要跑大事务，每个事务尽量控制在10MB以内。
+
+
 ## 参考资料、文档
 - [MySQL 8.0 Reference Manual](https://dev.mysql.com/doc/refman/8.0/en/group-replication.html) 
 - [数据库内核开发 - 温正湖](https://www.zhihu.com/column/c_206071340)
