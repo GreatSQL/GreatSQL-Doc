@@ -30,7 +30,9 @@ GreatSQL完全免费并兼容MySQL或Percona Server。
 无论是更可靠的MGR还是性能更好的InnoDB，都值得将当前的MySQL或Percona Server升级到GreatSQL。
 
 关于GreatSQL的优势可阅读下面几篇文章：
-- [GreatSQL 更新说明 8.0.25](https://gitee.com/GreatSQL/GreatSQL-Doc/blob/master/relnotes/changes-greatsql-8-0-25-20210820.md)
+- [GreatSQL 8.0.25-16](https://gitee.com/GreatSQL/GreatSQL-Doc/blob/master/relnotes/changes-greatsql-8-0-25-16-20220516.md)
+- [GreatSQL 8.0.25-15](https://gitee.com/GreatSQL/GreatSQL-Doc/blob/master/relnotes/changes-greatsql-8-0-25-20210820.md)
+- [GreatSQL 5.7.36-39](https://gitee.com/GreatSQL/GreatSQL-Doc/blob/master/relnotes/changes-greatsql-5-7-36-20220407.md)
 - [GreatSQL重磅特性，InnoDB并行并行查询优化测试](https://mp.weixin.qq.com/s/_LeEtwJlfyvIlxzLoyNVdA)
 - [面向金融级应用的GreatSQL正式开源](https://mp.weixin.qq.com/s/cI_wPKQJuXItVWpOx_yNTg)
 
@@ -86,11 +88,23 @@ GreatSQL不计划每个小版本都跟随，暂定奇数版本跟随方式，即
 
 未来若有版本计划变更我们再更新。
 
+目前已有的版本：
+### GreatSQL 8.0
+- [GreatSQL 8.0.25-16](https://gitee.com/GreatSQL/GreatSQL-Doc/blob/master/relnotes/changes-greatsql-8-0-25-16-20220516.md)
+- [GreatSQL 8.0.25-15](https://gitee.com/GreatSQL/GreatSQL-Doc/blob/master/relnotes/changes-greatsql-8-0-25-20210820.md)
+
+### GreatSQL 5.7
+- [GreatSQL 5.7.36-39](https://gitee.com/GreatSQL/GreatSQL-Doc/blob/master/relnotes/changes-greatsql-5-7-36-20220407.md)
+
 ## 5. GreatSQL支持读写分离吗
 可以利用MySQL Router来实现读写分离。
 
 ## 6. 可以使用MySQL Shell来管理GreatSQL吗
 是可以的，最好采用相同版本号的MySQL Shell即可。
+
+GreatSQL 8.0.25-16起，如果有仲裁节点，则需要用GreatSQL MySQL Shell版本才能管理，否则只能在MySQL命令行下管理。
+
+GreatSQL MySQL Shell下载链接 [https://gitee.com/GreatSQL/GreatSQL/releases/GreatSQL-8.0.25-16](https://gitee.com/GreatSQL/GreatSQL/releases/GreatSQL-8.0.25-16)。
 
 ## 7. 使用MGR有什么限制吗
 下面是关于MGR使用的一些限制：
@@ -128,7 +142,7 @@ GreatSQL不计划每个小版本都跟随，暂定奇数版本跟随方式，即
 MGR最多可支持9个节点，无论是单主还是多主模式。
 
 ## 9. MGR可以设置为自启动吗
-设置参数 `group_replication_bootstrap_group=ON` 即可。但是当MGR第一个节点初始化启动时，或者整个MGR集群都关闭再重启时，第一个节点都必须先采用引导模式 `group_replication_bootstrap_group=ON`。
+设置参数 `group_replication_start_on_boot = ON` 即可。但是当MGR第一个节点初始化启动时，或者整个MGR集群都关闭再重启时，第一个节点都必须先采用引导模式 `group_replication_bootstrap_group = ON`。
 
 ## 10. MGR支持读负载均衡吗
 支持的。可以在MGR集群的前端挂载MySQL Router，即可实现读负载均衡。
@@ -348,6 +362,8 @@ root@GreatSQL# mysqlrouter --bootstrap mymgr@192.168.1.1:4306 --name=MGR2 --dire
 
 ## 22. MGR可以像主从复制那样只启动两个节点吗
 MGR在初始化启动时，是可以只启动两个节点，甚至只有一个节点，但是这样就失去MGR的意义了。**因为只要少于三个节点，就没办法进行多数派投票**，当发生网络故障等情况时，无法投票确认哪些节点该被踢出集群。
+
+如果是为了节省服务器成本，则可以选用 GreatSQL 8.0.25-16 及以上版本，它支持仲裁节点角色，可以用一个低配服务器来运行，也就是几乎可以用接近于两台服务器的成本来运行一个三节点的MGR集群。详情参考：[1.1 新增仲裁节点（投票节点）角色](https://gitee.com/GreatSQL/GreatSQL-Doc/blob/master/relnotes/changes-greatsql-8-0-25-16-20220516.md#11-%E6%96%B0%E5%A2%9E%E4%BB%B2%E8%A3%81%E8%8A%82%E7%82%B9%E6%8A%95%E7%A5%A8%E8%8A%82%E7%82%B9%E8%A7%92%E8%89%B2)。
 
 ## 23. MGR中可以创建无主键的InnoDB表吗
 是可以的，并且会复制到所有MGR节点，但是仅能创建空表，业务上不能写入数据。
