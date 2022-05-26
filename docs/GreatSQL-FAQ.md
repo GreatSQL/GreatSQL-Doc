@@ -416,3 +416,15 @@ MySQL Router通过两个端口来区分读写服务请求，默认是 6446端口
 可以利用GreatSQL安装包中提供的mysqldump工具执行逻辑备份。
 
 也可以利用相同版本号的Percona Xtrabackup执行物理备份，例如利用Percona XtraBackup 8.0.25-17备份GreatSQL 8.0.25-15、GreatSQL 8.0.25-16版本，利用Percona XtraBackup 2.4备份GreatSQL 5.7.36-39版本。
+
+
+## 28. 用MySQL Shell创建MGR时新增的 mysql_innodb_cluster_* 账号是干嘛用的
+这是用MySQL Shell创建MGR时才有的特点，这些账户用于后续的节点分布式恢复场景。其账户名规则是：`mysql_innodb_cluster_server_id@%,`
+
+详情见手册 [Internal User Accounts Created by InnoDB Cluster](https://dev.mysql.com/doc/mysql-shell/8.0/en/innodb-cluster-user-accounts.html#admin-api-configuring-users) 中的描述：
+```
+As part of using Group Replication, InnoDB Cluster creates internal recovery users which enable connections between the servers in the cluster. 
+These users are internal to the cluster, and the user name of the generated users follows a naming scheme of mysql_innodb_cluster_server_id@%, 
+where server_id is unique to the instance. In versions earlier than 8.0.17 the user name of the generated users followed a naming 
+scheme of mysql_innodb_cluster_r[10_numbers].
+```
