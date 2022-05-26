@@ -31,6 +31,7 @@
 - [16. 数据一致性、安全性保障](https://gitee.com/GreatSQL/GreatSQL-Doc/blob/master/deep-dive-mgr/deep-dive-mgr-16.md)
 - [17. MGR性能优化](https://gitee.com/GreatSQL/GreatSQL-Doc/blob/master/deep-dive-mgr/deep-dive-mgr-17.md)
 - [18. 最佳实践参考](https://gitee.com/GreatSQL/GreatSQL-Doc/blob/master/deep-dive-mgr/deep-dive-mgr-18.md)
+- [19. GreatSQL特性](https://gitee.com/GreatSQL/GreatSQL-Doc/blob/master/deep-dive-mgr/deep-dive-mgr-18.md)
 
 
 ## 读者群体
