@@ -110,6 +110,9 @@ loose-group_replication_arbitrator = 0
 loose-group_replication_single_primary_fast_mode = 1
 loose-group_replication_request_time_threshold = 100
 loose-group_replication_primary_election_mode = GTID_FIRST
+loose-group_replication_unreachable_majority_timeout = 30
+loose-group_group_replication_member_expel_timeout = 5
+loose-group_replication_autorejoin_tries = 288
 report_host = "172.16.16.10"
 
 #innodb settings
