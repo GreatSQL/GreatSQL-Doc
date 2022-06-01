@@ -94,7 +94,7 @@ $ systemctl status mysqld
 # 版本历史
 ---
 ## GreatSQL 8.0
-- [GreatSQL 更新说明 8.0.25-16(2021-5-16)](https://gitee.com/GreatSQL/GreatSQL-Doc/blob/master/relnotes/changes-greatsql-8-0-25-16-20220516.md)
+- [GreatSQL 更新说明 8.0.25-16(2022-5-16)](https://gitee.com/GreatSQL/GreatSQL-Doc/blob/master/relnotes/changes-greatsql-8-0-25-16-20220516.md)
 - [GreatSQL 更新说明 8.0.25-15(2021-8-26)](https://gitee.com/GreatSQL/GreatSQL-Doc/blob/master/relnotes/changes-greatsql-8-0-25-20210820.md)
 
 ## GreatSQL 5.7
