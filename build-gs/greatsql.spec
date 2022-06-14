@@ -42,14 +42,14 @@
   %global TOKUDB_DEBUG_ON -DTOKU_DEBUG_PARANOID=ON
   %global TOKUDB_DEBUG_OFF -DTOKU_DEBUG_PARANOID=OFF
 %else
-  %global TOKUDB_FLAGS -DWITHOUT_TOKUDB=0
+  %global TOKUDB_FLAGS -DWITHOUT_TOKUDB=1
   %global TOKUDB_DEBUG_ON %{nil}
   %global TOKUDB_DEBUG_OFF %{nil}
 %endif
 
 # Setup cmake flags for RocksDB
 %if 0%{?rocksdb}
-  %global ROCKSDB_FLAGS -DWITH_ROCKSDB=0
+  %global ROCKSDB_FLAGS -DWITH_ROCKSDB=1
 %else
   %global ROCKSDB_FLAGS -DWITH_ROCKSDB=0
 %endif
@@ -365,6 +365,54 @@ if [ "x$(id -u)" = "x0" ] ; then
 fi
 %endif
 
+# Build debug versions of mysqld and libmysqld.a
+mkdir debug
+(
+  cd debug
+  # Attempt to remove any optimisation flags from the debug build
+  optflags=$(echo "%{optflags}" | sed -e 's/-O2 / /' -e 's/-Wp,-D_FORTIFY_SOURCE=2/ -Wno-missing-field-initializers -Wno-error /')
+  cmake ../%{src_dir} \
+           -DBUILD_CONFIG=mysql_release \
+           -DINSTALL_LAYOUT=RPM \
+           -DCMAKE_BUILD_TYPE=Debug \
+           -DWITH_BOOST=.. \
+           -DCMAKE_C_FLAGS="$optflags -fcommon" \
+           -DCMAKE_CXX_FLAGS="$optflags -fcommon" \
+%if 0%{?systemd}
+           -DWITH_SYSTEMD=1 \
+%endif
+           -DWITH_INNODB_MEMCACHED=1 \
+           -DINSTALL_LIBDIR="%{_lib}/mysql" \
+           -DINSTALL_PLUGINDIR="%{_lib}/mysql/plugin" \
+           -DMYSQL_UNIX_ADDR="%{mysqldatadir}/mysql.sock" \
+           -DINSTALL_MYSQLSHAREDIR=share/greatsql \
+           -DINSTALL_SUPPORTFILESDIR=share/greatsql \
+           -DFEATURE_SET="%{feature_set}" \
+           -DWITH_PAM=1 \
+           -DWITH_ROCKSDB=1 \
+           -DROCKSDB_DISABLE_AVX2=1 \
+           -DROCKSDB_DISABLE_MARCH_NATIVE=1 \
+           -DMYSQL_MAINTAINER_MODE=OFF \
+           -DFORCE_INSOURCE_BUILD=1 \
+           -DWITH_NUMA=ON \
+           -DWITH_LDAP=system \
+           -DWITH_PACKAGE_FLAGS=OFF \
+           -DWITH_SYSTEM_LIBS=ON \
+           -DWITH_PROTOBUF=bundled \
+           -DWITH_RAPIDJSON=bundled \
+           -DWITH_ICU=bundled \
+           -DWITH_LZ4=bundled \
+           -DWITH_ZLIB=bundled \
+           -DWITH_ZSTD=bundled \
+           -DWITH_READLINE=system \
+           -DWITH_LIBEVENT=bundled \
+           -DWITH_KEYRING_VAULT=ON \
+           %{?ssl_option} \
+           %{?mecab_option} \
+           -DCOMPILATION_COMMENT="%{compilation_comment_debug}" %{TOKUDB_FLAGS} %{TOKUDB_DEBUG_OFF} %{ROCKSDB_FLAGS}
+  echo BEGIN_DEBUG_CONFIG ; egrep '^#define' include/config.h ; echo END_DEBUG_CONFIG
+  make %{?_smp_mflags} VERBOSE=1
+)
 # Build full release
 mkdir release
 (
@@ -374,30 +422,43 @@ mkdir release
            -DINSTALL_LAYOUT=RPM \
            -DCMAKE_BUILD_TYPE=RelWithDebInfo \
            -DWITH_BOOST=.. \
+           -DCMAKE_C_FLAGS="%{optflags} -fcommon" \
+           -DCMAKE_CXX_FLAGS="%{optflags} -fcommon" \
 %if 0%{?systemd}
            -DWITH_SYSTEMD=1 \
 %endif
+           -DWITH_INNODB_MEMCACHED=1 \
            -DINSTALL_LIBDIR="%{_lib}/mysql" \
            -DINSTALL_PLUGINDIR="%{_lib}/mysql/plugin" \
            -DMYSQL_UNIX_ADDR="%{mysqldatadir}/mysql.sock" \
            -DINSTALL_MYSQLSHAREDIR=share/greatsql \
            -DINSTALL_SUPPORTFILESDIR=share/greatsql \
            -DFEATURE_SET="%{feature_set}" \
-           -DWITH_ROCKSDB=0 \
-	   -DWITH_TOKUDB=OFF -DWITH_ROCKSDB=OFF \
-           -DROCKSDB_DISABLE_AVX2=0 \
-           -DROCKSDB_DISABLE_MARCH_NATIVE=0 \
+           -DWITH_PAM=1 \
+           -DWITH_ROCKSDB=1 \
+           -DROCKSDB_DISABLE_AVX2=1 \
+           -DROCKSDB_DISABLE_MARCH_NATIVE=1 \
+           -DMYSQL_MAINTAINER_MODE=OFF \
+           -DFORCE_INSOURCE_BUILD=1 \
            -DWITH_NUMA=ON \
+           -DWITH_LDAP=system \
+           -DWITH_PACKAGE_FLAGS=OFF \
+           -DWITH_SYSTEM_LIBS=ON \
+           -DWITH_LZ4=bundled \
            -DWITH_ZLIB=bundled \
-	   -DWITH_UNIT_TESTS=OFF -DWITH_NDBCLUSTER=OFF -DWITH_SSL=system -DWITH_SYSTEMD=ON \
-	   -DWITH_AUTHENTICATION_LDAP=OFF \
+           -DWITH_PROTOBUF=bundled \
+           -DWITH_RAPIDJSON=bundled \
+           -DWITH_ICU=bundled \
+           -DWITH_READLINE=system \
+           -DWITH_LIBEVENT=bundled \
+           -DWITH_ZSTD=bundled \
+           -DWITH_KEYRING_VAULT=ON \
            %{?ssl_option} \
            %{?mecab_option} \
            -DCOMPILATION_COMMENT="%{compilation_comment_release}" %{TOKUDB_FLAGS} %{TOKUDB_DEBUG_OFF} %{ROCKSDB_FLAGS}
   echo BEGIN_NORMAL_CONFIG ; egrep '^#define' include/config.h ; echo END_NORMAL_CONFIG
   make %{?_smp_mflags} VERBOSE=1
 )
-
 
 %install
 MBD=$RPM_BUILD_DIR/%{src_dir}
