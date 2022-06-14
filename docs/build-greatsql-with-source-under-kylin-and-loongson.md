@@ -257,6 +257,8 @@ MGR集群的部署可以自己手动一步步操作，也可通过MySQL Shell快
 - [InnoDB Cluster+GreatSQL部署MGR集群](https://mp.weixin.qq.com/s/1QUt-rK_5L_UnaLClyve1w)
 - [在Docker中部署GreatSQL并构建MGR集群](https://mp.weixin.qq.com/s/CfrYEQD54EXD9mLJJPGs-A)
 
+## 5、下载龙芯平台GreatSQL二进制包
+GreatSQL for 龙芯平台的二进制包也已发布，下载链接：[https://gitee.com/GreatSQL/GreatSQL/releases/GreatSQL-8.0.25-16](https://gitee.com/GreatSQL/GreatSQL/releases/GreatSQL-8.0.25-16)，找到 “**4. 龙芯/Loongson - Generic**” 标签下载即可。
 
 全文完。
 
