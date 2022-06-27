@@ -83,7 +83,7 @@ slave_preserve_commit_order = 1
 slave_checkpoint_period = 2
 
 #启用InnoDB并行查询优化功能
-loose-force_parallel_execute = ON
+loose-force_parallel_execute = OFF
 #设置每个SQL语句的并行查询最大并发度
 loose-parallel_default_dop = 8
 #设置系统中总的并行查询线程数，可以和最大逻辑CPU数量一样
