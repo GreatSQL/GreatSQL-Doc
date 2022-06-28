@@ -21,12 +21,12 @@ Linux ky10 4.19.90-23.19.v2101.a.ky10.loongarch64 #1 SMP Mon Sep 13 22:33:20 CST
 参考这份Dockerfile，安装相应的软件包，如果发现个别软件包在麒麟OS环境里没有的话，直接去掉即可：
 ```
 dnf install -y automake bison bison-devel boost-devel bzip2 bzip2-devel clang \
-cmake cmake3 diffutils expat-devel file flex gcc gcc-c++ gflags-devel git jemalloc jemalloc-devel \
-graphviz gtest-devel libaio-devel libarchive libcurl-devel libevent-devel libffi-devel libicu-devel libssh \
+cmake cmake3 diffutils expat-devel file flex gcc gcc-c++ git jemalloc jemalloc-devel \
+graphviz libaio-devel libarchive libcurl-devel libevent-devel libffi-devel libicu-devel libssh \
 libtirpc libtirpc-devel libtool libxml2-devel libzstd libzstd-devel lz4-devel \
 lz4-static make ncurses-devel ncurses-libs net-tools numactl numactl-devel numactl-libs openldap-clients \
 openldap-devel openssl openssl-devel pam pam-devel perl perl-Env perl-JSON perl-Memoize \
-perl-Time-HiRes pkg-config psmisc re2-devel python-devel readline-devel rpcgen \
+perl-Time-HiRes pkg-config psmisc re2-devel readline-devel rpcgen \
 snappy-devel tar time unzip vim wget zlib-devel
 ```
 Dockerfile参考：https://gitee.com/GreatSQL/GreatSQL-Doc/blob/master/build-gs/Dockerfile/Dockerfile-centos8-x86
