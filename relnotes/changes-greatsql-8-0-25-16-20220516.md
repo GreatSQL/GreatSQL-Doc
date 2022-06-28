@@ -207,5 +207,5 @@ GreatSQL中增加一个新的工作模式：**单主快速模式**，在这个�
 
 ## 6. GreatSQL Release Notes
 - [Changes in MySQL 8.0.25-16 (2022-5-16)](https://gitee.com/GreatSQL/GreatSQL-Doc/blob/master/relnotes/changes-greatsql-8-0-25-16-20220516.md)
-- [Changes in MySQL 8.0.25-15 (2022-8-26)](https://gitee.com/GreatSQL/GreatSQL-Doc/blob/master/relnotes/changes-greatsql-8-0-25-20210820.md)
+- [Changes in MySQL 8.0.25-15 (2021-8-26)](https://gitee.com/GreatSQL/GreatSQL-Doc/blob/master/relnotes/changes-greatsql-8-0-25-20210820.md)
 - [Changes in MySQL 5.7.36-39 (2022-4-7)](https://gitee.com/GreatSQL/GreatSQL-Doc/blob/master/relnotes/changes-greatsql-5-7-36-20220407.md)
