@@ -260,6 +260,35 @@ MGR集群的部署可以自己手动一步步操作，也可通过MySQL Shell快
 ## 5、下载龙芯平台GreatSQL二进制包
 GreatSQL for 龙芯平台的二进制包也已发布，下载链接：[https://gitee.com/GreatSQL/GreatSQL/releases/GreatSQL-8.0.25-16](https://gitee.com/GreatSQL/GreatSQL/releases/GreatSQL-8.0.25-16)，找到 “**4. 龙芯/Loongson - Generic**” 标签下载即可。
 
+## 6、补充： 编译sysbench
+在龙芯平台下编译sysbench时，如果用默认参数可能会遇到luajit编译报错，例如：
+```
+make[2]: Entering directory '/opt/sysbench-1.0.20/third_party/luajit/luajit'
+make -C src clean
+make[3]: Entering directory '/opt/sysbench-1.0.20/third_party/luajit/luajit/src'
+lj_arch.h:59:2: error: #error "No support for this architecture (yet)"
+ #error "No support for this architecture (yet)"
+  ^~~~~
+lj_arch.h:357:2: error: #error "No target architecture defined"
+ #error "No target architecture defined"
+  ^~~~~
+```
+这时修改编译参数，改成用操作系统自带的luajit库即可：
+```
+$ ./configure --with-system-luajit
+```
+
+修改前后，执行 `./configure` 的区别是这样的：
+```
+# 修改前
+LuaJIT             : bundled
+LUAJIT_CFLAGS      : -I$(abs_top_builddir)/third_party/luajit/inc
+
+# 修改后
+LuaJIT             : system
+LUAJIT_CFLAGS      : -I/usr/include/luajit-2.1
+```
+
 全文完。
 
 Enjoy GreatSQL :)
