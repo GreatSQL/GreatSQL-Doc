@@ -1,5 +1,5 @@
-#GreatSQL文档
-
+# GreatSQL文档
+---
 ## [发行说明](./1-docs-intro/1-docs-intro.md)
 ### [用户须知](./1-docs-intro/1-1-notes-to-users.md)
 ### [版本历史](./1-docs-intro/1-2-release-history.md)
