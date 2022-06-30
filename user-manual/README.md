@@ -9,13 +9,13 @@
 ### [社区行为守则](./1-docs-intro/1-6-community-rules.md)
 ### [致谢](./1-docs-intro/1-7-thanks.md)
 
-## 关于GreatSQL
-- [GreatSQL简介](./2-greatsql-intro/2-greatsql-intro.md)
-- [产品定位]()
-- [系统架构]()
-- [使用闲置]()
-- [术语约定]()
-- [术语约定]()
+## [关于GreatSQL](./2-greatsql-intro/2-about-greatsql.md)
+### [GreatSQL简介](./2-greatsql-intro/2-1-greatsql-intro.md)
+### [产品定位]()
+### [系统架构]()
+### [使用闲置]()
+### [术语约定]()
+### [术语约定]()
 
 ## 运行环境
 
