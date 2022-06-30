@@ -1,5 +1,5 @@
 # GreatSQL社区行为守则
-
+---
 GreatSQL社区遵守开源社区[《贡献者公约》](https://gitee.com/link?target=https%3A%2F%2Fcontributor-covenant.org)v1.4中规定的行为守则，请参考[v1.4版本](https://gitee.com/link?target=https%3A%2F%2Fwww.contributor-covenant.org%2Fzh-cn%2Fversion%2F1%2F4%2Fcode-of-conduct.html)。
 
 ## 贡献者和维护者的承诺
