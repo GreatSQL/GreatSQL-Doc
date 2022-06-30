@@ -3,7 +3,7 @@
 ## [发行说明](./1-docs-intro/1-docs-intro.md)
 ### [用户须知](./1-docs-intro/1-1-notes-to-users.md)
 ### [版本历史](./1-docs-intro/1-2-release-history.md)
-### [特性介绍](./1-docs-intro/1-3-greatsql-features)
+### [特性介绍](./1-docs-intro/1-3-greatsql-features.md)
 ### [已知问题](./1-docs-intro/1-4-issues-known.md)
 ### [参与贡献](./1-docs-intro/1-5-contribute-to-greatsql.md)
 ### [社区行为守则](./1-docs-intro/1-6-community-rules.md)
