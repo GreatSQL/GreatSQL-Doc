@@ -155,6 +155,8 @@ GreatSQL中增加一个新的工作模式：**单主快速模式**，在这个�
 ## 3.其他调整
 1. 选项 `group_replication_flow_control_replay_lag_behind` 默认值由60秒调整为600秒，以适应更多业务场景。该选项用于控制MGR主从节点复制延迟阈值，当MGR主从节点因为大事务等原因延迟超过阈值时，就会触发流控机制。
 2. 新增选项 `group_replication_communication_flp_timeout`（单位：秒）。当多数派节点超过该阈值为收到某节点发送的消息时，会将该节点判定为可疑节点。在网络条件较差的环境中，可以适当调大该阈值，以避免频繁抖动。
+3. 新增选项 `group_replication_zone_id_sync_mode`（类型：布尔型，可选值：ON/OFF，默认值：ON）。如果设置了 `group_replication_zone_id` 启用地理标签功能，需要保证所有节点都同步数据。但当 `group_replication_zone_id_sync_mode = OFF` 时，地理标签就只是个标记，不再保证各节点都同步数据。
+
 
 ## 4.bug修复
 01. 修复了InnoDB并行查询crash的问题（[issue#I4J1IH](https://gitee.com/GreatSQL/GreatSQL/issues/I4J1IH)）。
