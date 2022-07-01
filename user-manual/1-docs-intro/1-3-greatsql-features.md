@@ -1,7 +1,6 @@
 # 版本特性
 ---
-GreatSQL开源数据库专注于提升MGR可靠性及性能，支持InnoDB并行查询等特性，是适用于金融级应用的国内自主MySQL版本；可以作为MySQL或Percona Server的可选替换，用于线上
-生产环境；且完全免费并兼容MySQL或Percona Server。
+GreatSQL开源数据库是适用于金融级应用的国内自主MySQL版本，专注于提升MGR可靠性及性能，支持InnoDB并行查询等特性，可以作为MySQL或Percona Server的可选替换，用于线上生产环境，且完全免费并兼容MySQL或Percona Server。
 
 GreatSQL除了提升MGR性能及可靠性，还引入InnoDB事务锁优化及并行查询优化等特性，以及众多BUG修复。
 
@@ -58,6 +57,7 @@ GreatSQL除了提升MGR性能及可靠性，还引入InnoDB事务锁优化及并
 | 修复TCP self-connect问题| ⭐️⭐️⭐️⭐️⭐️ | / | 
 | PROCESSLIST增强 | ⭐️⭐️⭐️⭐️⭐️ | /  | 
 
+GreatSQL同时也是gitee（码云）平台上的GVP项目，详见：[https://gitee.com/gvp](https://gitee.com/gvp) **数据库相关**类目。
 
 **问题反馈**
 ---
