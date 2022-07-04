@@ -78,6 +78,7 @@ MGR具备以下几个特点：
 ---
 
 首先来个MGR的技术架构图：
+
 ![MGR技术架构图](/deep-dive-mgr/deep-dive-mgr-02-03.jpg)
 
 **架构说明**
