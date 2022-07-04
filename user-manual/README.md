@@ -12,9 +12,9 @@
 ## [关于GreatSQL](./2-about-greatsql/2-about-greatsql.md)
 ### [GreatSQL简介](./2-about-greatsql/2-1-greatsql-brief-intro.md)
 ### [产品定位](./2-about-greatsql/2-2-greatsql-product-positioning.md)
-### [系统架构](./2-about-greatsql/2-2-greatsql-arch.md)
-### [使用限制](./2-about-greatsql/2-2-greatsql-limitations.md)
-### [术语约定](./2-about-greatsql/2-2-greatsql-glossary.md)
+### [系统架构](./2-about-greatsql/2-3-greatsql-arch.md)
+### [使用限制](./2-about-greatsql/2-4-greatsql-limitations.md)
+### [术语约定](./2-about-greatsql/2-5-greatsql-glossary.md)
 
 ## 快速上手
 ### RPM安装
