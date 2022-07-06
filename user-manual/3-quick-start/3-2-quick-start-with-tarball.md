@@ -210,6 +210,8 @@ $ systemctl stop greatsql
 $ systemctl restart greatsql
 ```
 
+至此，二进制包方式安装GreatSQL数据库完成。
+
 **问题反馈**
 ---
 - [问题反馈 gitee](https://gitee.com/GreatSQL/GreatSQL-Doc/issues)

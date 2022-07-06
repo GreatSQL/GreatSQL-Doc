@@ -176,6 +176,8 @@ $ systemctl stop mysqld
 $ systemctl restart mysqld
 ```
 
+至此，RPM包方式安装GreatSQL数据库完成。
+
 **问题反馈**
 ---
 - [问题反馈 gitee](https://gitee.com/GreatSQL/GreatSQL-Doc/issues)
