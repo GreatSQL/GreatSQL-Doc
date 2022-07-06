@@ -1,6 +1,6 @@
 GreatSQL文档
 
-最后更新: 2022-07-05 (revision: 00024)
+最后更新: 2022-07-05 (revision: 00026)
 
 ---
 # [发行说明](./1-docs-intro/1-docs-intro.md)
@@ -19,11 +19,11 @@ GreatSQL文档
 ## [使用限制](./2-about-greatsql/2-4-greatsql-limitations.md)
 ## [术语表](./2-about-greatsql/2-5-greatsql-glossary.md)
 
-# 快速上手
-## RPM安装
-## 二进制包安装
-## 容器化安装
-## 访问数据库
+# [快速上手](./3-quick-start/3-quick-start.md)
+## [RPM安装](./3-quick-start/3-1-quick-start-with-rpm.md)
+## [二进制包安装](./3-quick-start/3-2-quick-start-with-tarball.md)
+## [容器化安装](./3-quick-start/3-3-quick-start-with-docker.md)
+## [访问数据库](./3-quick-start/3-4-quick-start-dbrw.md)
 
 # 安装指南
 ## 安装准备
