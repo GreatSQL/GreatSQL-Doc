@@ -35,7 +35,7 @@ $ systemctl stop iptables
 
 安装GreatSQL RPM包时，要先安装这些相关依赖包。
 ```
-$ yum install -y pkg-config perl libaio-devel numactl-devel numactl-libs net-tools openssl openssl-devel
+$ yum install -y pkg-config perl libaio-devel numactl-devel numactl-libs net-tools openssl openssl-devel jemalloc jemalloc-devel
 ```
 如果有更多依赖包需要安装，请自行添加。
 
