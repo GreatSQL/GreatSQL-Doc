@@ -1,4 +1,4 @@
-## 容器化安装
+# 容器化安装
 ---
 
 本文档主要介绍如何用Docker方式安装GreatSQL数据库，假定本次安装是在CentOS 8.x x86_64环境中安装，并且是以root用户身份执行安装操作。
@@ -29,6 +29,9 @@ latest: Pulling from greatsql/greatsql
 a1d0c7532777: Already exists
 0689c7a54f49: Pull complete
 ...
+Digest: sha256:03969daaaaaeb0f51dde0c9e92ef327302607cdde3afbe5c2b071098000c52c1
+Status: Downloaded newer image for greatsql/greatsql:latest
+docker.io/greatsql/greatsql:latest
 ```
 
 3. 创建一个新容器，容器中会安装并启动GreatSQL数据库
