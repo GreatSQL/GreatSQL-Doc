@@ -48,9 +48,9 @@ GreatSQL 支持主流的 Linux 操作系统环境。
 
 | Linux 操作系统    | 版本 |
 | --- | --- |
-| Red Hat Enterprise Linux    | 7.3 及以上的版本 |
-| CentOS    | 7.3 及以上的版本 |
-| Oracle Enterprise Linux    | 7.3 及以上的版本 |
+| Red Hat Enterprise Linux    | 7.x 及以上的版本 |
+| CentOS    | 7.x 及以上的版本 |
+| Oracle Enterprise Linux    | 7.x 及以上的版本 |
 | Ubuntu LTS    | 16.04 及以上的版本 |
 | openEuler | 20.03 及以上的版本 |
 | Kylin Linux | V10 及以上的版本 |
@@ -87,7 +87,7 @@ $ mount | grep /data
 
 数据库服务器通常运行在内部网络，此外部署MGR时也需要对内网开放多个TCP端口，因此可以关闭防火墙及selinux设置。
 
-**提醒：**虽然数据部署在内部网络，但也要时刻警惕数据泄漏的风险，做好必要的安全防护措施。
+**提醒：** 虽然数据部署在内部网络，但也要时刻警惕数据泄漏的风险，做好必要的安全防护措施。
 
 1. **关闭防火墙服务**
 ```
@@ -189,6 +189,18 @@ $ yum install -y pkg-config perl libaio-devel numactl-devel numactl-libs net-too
 ```
 如果有更多依赖包需要安装，请自行添加。
 
+添加/修改系统文件 `/etc/sysconfig/mysql`：
+```
+LD_PRELOAD=/usr/lib64/libjemalloc.so
+THP_SETTING=never
+```
+确认文件 `/usr/lib64/libjemalloc.so` 是否存在（可能是个软链接文件）：
+```
+$ ls -la /usr/lib64/libjemalloc.so*
+lrwxrwxrwx 1 root root     16 Oct  2  2019 /usr/lib64/libjemalloc.so -> libjemalloc.so.2
+-rwxr-xr-x 1 root root 608096 Oct  2  2019 /usr/lib64/libjemalloc.so.2
+```
+这样在启动MySQL时就会加载 `jemalloc` 动态库了。
 
 2. **配置正确的NTP服务**
 
