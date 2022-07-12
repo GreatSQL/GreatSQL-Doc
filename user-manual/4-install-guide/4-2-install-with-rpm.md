@@ -26,7 +26,7 @@
 - greatsql-shared-8.0.25-16.1.el8.x86_64.rpm
 - greatsql-server-8.0.25-16.1.el8.x86_64.rpm 
 
-## 安装RPM包
+## 安装GreatSQL RPM包
 
 执行下面的命令安装PRM包，如果一切顺利的话，相应的过程如下所示：
 ```
@@ -48,6 +48,10 @@ Updating / installing...
 [参考这份文件](https://gitee.com/GreatSQL/GreatSQL-Doc/blob/master/docs/my.cnf-example-greatsql-8.0.25-16)，可根据实际情况修改，一般主要涉及数据库文件分区、目录，内存配置等少数几个选项。以下面这份为例：
 ```
 #my.cnf
+[client]
+user = root
+datadir	= /data/GreatSQL/mysql.sock
+
 [mysqld]
 user	= mysql
 port	= 3306
@@ -57,7 +61,7 @@ port	= 3306
 server_id = 3306
 basedir = /usr/
 datadir	= /data/GreatSQL
-socket	= /data/GreatSQL/mysql.sock
+socket	= mysql.sock
 pid-file = mysql.pid
 character-set-server = UTF8MB4
 skip_name_resolve = 1
@@ -86,18 +90,18 @@ max_heap_table_size = 32M
 
 #log settings
 log_timestamps = SYSTEM
-log_error = /data/GreatSQL/error.log
+log_error = error.log
 log_error_verbosity = 3
 slow_query_log = 1
 log_slow_extra = 1
-slow_query_log_file = /data/GreatSQL/slow.log
+slow_query_log_file = slow.log
 long_query_time = 0.1
 log_queries_not_using_indexes = 1
 log_throttle_queries_not_using_indexes = 60
 min_examined_row_limit = 100
 log_slow_admin_statements = 1
 log_slow_slave_statements = 1
-log_bin = /data/GreatSQL/binlog
+log_bin = binlog
 binlog_format = ROW
 sync_binlog = 1
 binlog_cache_size = 4M
@@ -309,7 +313,7 @@ Server characterset:    utf8mb4
 Db     characterset:    utf8mb4
 Client characterset:    utf8mb4
 Conn.  characterset:    utf8mb4
-UNIX socket:        /var/lib/mysql/mysql.sock
+UNIX socket:        /data/GreatSQL/mysql.sock
 Binary data as:        Hexadecimal
 Uptime:            20 min 8 sec
 
@@ -417,7 +421,7 @@ WARNING: Found errors loading plugins, for more details look at the log at: /roo
 
 接下来，执行 `dba.configure_instance`命令开始检查当前实例是否准备好了，可以作为MGR集群的一个节点：
 ```
-# 开始配置MIC
+# 开始配置MGR节点
 MySQL  172.16.16.10:3306 ssl  JS > dba.configure_instance();
 Configuring local MySQL instance listening at port 3306 for use in an InnoDB cluster...
 
