@@ -26,12 +26,12 @@ GreatSQL文档
 ## [访问数据库](./3-quick-start/3-4-quick-start-dbrw.md)
 
 # [安装指南](./4-install-guide/4-install-guide.md)
-## [安装准备](./4-install-guild/4-1-install-prepare.md)
-## [RPM安装](./4-install-guild/4-2-install-with-rpm.md)
-## [二进制包安装](./4-install-guild/4-3-install-with-tarball.md)
-## [容器化安装](./4-install-guild/4-4-install-with-docker.md)
-## [Ansible安装](./4-install-guild/4-5-install-with-ansible.md)
-## [编译源码安装](./4-install-guild/4-6-install-with-source-code.md)
+## [安装准备](./4-install-guide/4-1-install-prepare.md)
+## [RPM安装](./4-install-guide/4-2-install-with-rpm.md)
+## [二进制包安装](./4-install-guide/4-3-install-with-tarball.md)
+## [容器化安装](./4-install-guide/4-4-install-with-docker.md)
+## [Ansible安装](./4-install-guide/4-5-install-with-ansible.md)
+## [编译源码安装](./4-install-guide/4-6-install-with-source-code.md)
 
 # 运维管理
 ## 日常管理
