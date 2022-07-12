@@ -152,6 +152,7 @@ networks:
       config:
         - subnet: 172.18.0.0/24
 ```
+关于GreatSQL容器启动选项说明，详见[GreatSQL For Docker文档](https://hub.docker.com/r/greatsql/greatsql)。
 
 启动三个实例：
 ```
