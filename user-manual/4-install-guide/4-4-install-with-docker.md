@@ -154,6 +154,10 @@ networks:
 ```
 关于GreatSQL容器启动选项说明，详见[GreatSQL For Docker文档](https://hub.docker.com/r/greatsql/greatsql)。
 
+如果不想要仲裁节点，则可以修改最后一个节点的属性 `MYSQL_MGR_ARBITRATOR: 0` 就行了。
+
+另外，利用 docker-compose 方式暂时无法构建多主模式的MGR集群，需要手动部署。
+
 启动三个实例：
 ```
 $ docker-compose -f /data/docker-compose/mgr-3nodes.yml up -d
