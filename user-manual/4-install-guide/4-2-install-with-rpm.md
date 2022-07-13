@@ -5,7 +5,7 @@
 
 在开始安装前，请根据文档 [安装准备](./4-1-install-prepare.md) 已经完成准备工作。
 
-## MGR集群规划
+## 1. MGR集群规划
 
 本次计划在3台服务器上安装GreatSQL数据库并部署MGR集群：
 
@@ -17,7 +17,7 @@
 
 以下安装配置工作先在三个节点都同样操作一遍。
 
-## 下载安装包
+## 2. 下载安装包
 
 [点击此处](https://gitee.com/GreatSQL/GreatSQL/releases/)下载最新的安装包，下载以下几个就可以：
 
@@ -26,7 +26,7 @@
 - greatsql-shared-8.0.25-16.1.el8.x86_64.rpm
 - greatsql-server-8.0.25-16.1.el8.x86_64.rpm 
 
-## 安装GreatSQL RPM包
+## 3. 安装GreatSQL RPM包
 
 执行下面的命令安装PRM包，如果一切顺利的话，相应的过程如下所示：
 ```
@@ -41,9 +41,9 @@ Updating / installing...
 ```
 这就安装成功了。
 
-## 启动前准备
+## 4. 启动前准备
 
-1. **修改 /etc/my.cnf 配置文件**
+4.1、**修改 /etc/my.cnf 配置文件**
 
 [参考这份文件](https://gitee.com/GreatSQL/GreatSQL-Doc/blob/master/docs/my.cnf-example-greatsql-8.0.25-16)，可根据实际情况修改，一般主要涉及数据库文件分区、目录，内存配置等少数几个选项。以下面这份为例：
 ```
@@ -208,14 +208,14 @@ performance_schema_instrument = '%lock%=on'
 
 ```
 
-2. **新建数据库主目录，并修改权限模式及属主**
+4.2、**新建数据库主目录，并修改权限模式及属主**
 ```
 $ mkdir -p /data/GreatSQL
 $ chown -R mysql:mysql /data/GreatSQL
 $ chmod -R 700 /data/GreatSQL
 ```
 
-## 启动GreatSQL
+## 5. 启动GreatSQL
 
 执行下面的命令启动GreatSQL服务
 ```
@@ -266,7 +266,7 @@ $ lsof -p 43653 | grep -i jema
 mysqld  52003 mysql  mem       REG              253,0     608096   68994440 /usr/lib64/libjemalloc.so.2
 ```
 
-## 连接登入GreatSQL
+## 6. 连接登入GreatSQL
 
 RPM方式安装GreatSQL后，会随机生成管理员root的密码，通过搜索日志文件获取：
 ```
@@ -334,7 +334,7 @@ mysql> show databases;  #<--查看数据库列表
 mysql>
 ```
 
-## 关闭/重启GreatSQL
+## 7. 关闭/重启GreatSQL
 
 执行下面的命令关闭GreatSQL数据库。
 ```
@@ -348,7 +348,7 @@ $ systemctl restart mysqld
 
 GreatSQL数据库安装并初始化完毕。
 
-## 安装MySQL Shell
+## 8. 安装MySQL Shell
 
 为了支持仲裁节点特性，需要安装GreatSQL提供的MySQL Shell发行包。打开[GreatSQL下载页面](https://gitee.com/GreatSQL/GreatSQL/releases/GreatSQL-8.0.25-16)，找到 **5. GreateSQL MySQL Shell**，下载相应的MySQL Shell安装包（目前值提供二进制安装包）。
 
@@ -391,7 +391,7 @@ WARNING: Found errors loading plugins, for more details look at the log at: /roo
 $ pip3.6 install --user certifi
 ```
 
-## 准备构建MGR集群
+## 9. 准备构建MGR集群
 
 在这里建议用MySQL Shell来构建MGR集群，相对于手工构建方便快捷很多，如果想要体验手工构建的同学可以参考这篇文档：[3. 安装部署MGR集群 | 深入浅出MGR](https://gitee.com/GreatSQL/GreatSQL-Doc/blob/master/deep-dive-mgr/deep-dive-mgr-03.md)。
 
@@ -403,7 +403,7 @@ $ pip3.6 install --user certifi
 
 接下来一步步执行。
 
-1. **MGR节点预检查**
+9.1. **MGR节点预检查**
 
 用管理员账号 root 连接到第一个节点：
 ```
@@ -456,7 +456,7 @@ GreatSQL提供的MySQL Shell二进制包不支持Javascript语法，因为编译
 
 **截止到这里，以上所有步骤在另外两个节点 GreatSQL-02、GreatSQL-03 也同样执行一遍。**
 
-**2. 创建并初始化一个集群**
+9.2、**创建并初始化一个集群**
 
 在正式初始化MGR集群前，再次提醒要先再其他节点完成上述初始化工作。
 
@@ -492,7 +492,7 @@ MySQL  172.16.16.10:3306 ssl  JS >
 ```
 集群已经创建并初始化完毕，接下来就是继续添加其他节点了。
 
-**3. 逐个添加实例**
+9.3、**逐个添加实例**
 
 可以在GreatSQL-01（PRIMARY）节点上直接添加其他节点，也可以用mysqlsh客户端登入其他节点执行添加节点操作。这里采用前者：
 ```
@@ -591,7 +591,7 @@ MySQL  172.16.16.10:3306 ssl  JS > c.status()
 
 如果不想体验仲裁节点特性的话，可以照着上面操作再次正常加入 GreatSQL-03 节点作为 Secondary 节点即可，到这里就可以结束MGR集群构建工作了。
 
-** 4. 添加仲裁节点**
+9.4、**添加仲裁节点**
 
 编辑 GreatSQL-03 节点上的 `/etc/my.cnf` 配置文件，加入/修改下面这行内容：
 ```

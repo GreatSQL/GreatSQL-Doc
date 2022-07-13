@@ -3,7 +3,7 @@
 
 本文详细介绍如何在Docker中部署GreatSQL，并且构建一个MGR集群。
 
-## 1、安装Docker
+## 1. 安装Docker
 直接用yum/dnf安装docker，非常省事
 ```
 $ yum install -y docker
@@ -15,7 +15,7 @@ $ systemctl enable docker
 $ systemctl start docker
 ```
 
-## 2、拉取GreatSQL镜像，并创建容器
+## 2. 拉取GreatSQL镜像，并创建容器
 ### 2.1 拉取镜像
 拉取GreatSQL官方镜像
 ```
@@ -72,7 +72,7 @@ Threads: 2  Questions: 18  Slow queries: 0  Opens: 119  Flush tables: 3  Open ta
 
 看到容器已经完成初始化，并且可以直接无密码登入。
 
-## 3、利用Docker-compose创建Docker容器并构建MGR集群
+## 3. 利用Docker-compose创建Docker容器并构建MGR集群
 
 手工管理Docker比较麻烦，建议采用 `docker-compose` ，它可以更方便的管理docker容器。
 

@@ -18,7 +18,7 @@ GreatSQL 支持以下几种安装方式：
 
 本章节文档若无特别说明，所有安装环境均是指 **CentOS 8.x x86_64 环境**。
 
-## 硬件环境
+## 1. 硬件环境
 
 GreatSQL 支持部署和运行在 Intel x86_64 架构的 64 位通用硬件服务器平台或者 ARM 架构的硬件服务器平台。
 
@@ -42,7 +42,7 @@ GreatSQL 支持部署和运行在 Intel x86_64 架构的 64 位通用硬件服�
 | 磁盘 | 100 GB+ |
 | 网络 | 千兆网络 |
 
-## 系统环境
+## 2. 系统环境
 
 GreatSQL 支持主流的 Linux 操作系统环境。
 
@@ -55,7 +55,7 @@ GreatSQL 支持主流的 Linux 操作系统环境。
 | openEuler | 20.03 及以上的版本 |
 | Kylin Linux | V10 及以上的版本 |
 
-## 挂载数据库专用分区
+## 3. 挂载数据库专用分区
 建议采用XFS文件系统的分区来存储 GreatSQL 数据库文件，其综合性能、可靠性、安全性、稳定性已经在大量线上场景中得到证实。
 
 以 /dev/nvme0n1 数据盘为例，具体操作步骤如下：
@@ -83,7 +83,7 @@ $ mount | grep /data
 /dev/nvme0n1 on /data type xfs (rw,noatime,nodiratime,attr2,inode64,logbufs=8,logbsize=32k,noquota)
 ```
 
-## 关闭防火墙及selinux
+## 4. 关闭防火墙及selinux
 
 数据库服务器通常运行在内部网络，此外部署MGR时也需要对内网开放多个TCP端口，因此可以关闭防火墙及selinux设置。
 
@@ -100,7 +100,7 @@ $ setenforce=0
 $ sed -i '/^SELINUX=/c'SELINUX=disabled /etc/selinux/config
 ```
 
-## 关闭swap
+## 5. 关闭swap
 
 运行 GreatSQL 建议配置足够的物理内存。如果内存不足，不建议使用 swap 作为缓冲，因为这会降低性能。建议永久关闭系统 swap。
 ```
@@ -109,7 +109,7 @@ $ swapoff -a && swapon -a
 $ sysctl -p
 ```
 
-## 检查和配置操作系统优化参数
+## 6. 检查和配置操作系统优化参数
 
 1. **修改数据库分区的 I/O Scheduler 设置为 noop / deadline**
 
@@ -175,9 +175,9 @@ mysql           soft    stack          32768
 mysql           hard    stack          32768
 ```
 
-## 其他
+## 7. 其他
 
-1. **配置正确的YUM源，并提前安装一些依赖包**
+7.1、**配置正确的YUM源，并提前安装一些依赖包**
 
 要确认YUM源可用，因为安装GreatSQL时还要先安装其他依赖包，通过YUM安装最省事。
 
@@ -202,13 +202,13 @@ lrwxrwxrwx 1 root root     16 Oct  2  2019 /usr/lib64/libjemalloc.so -> libjemal
 ```
 这样在启动MySQL时就会加载 `jemalloc` 动态库了。
 
-2. **配置正确的NTP服务**
+7.2、**配置正确的NTP服务**
 
 构建MGR需要由多节点组成，各节点间要保证时间同步。
 
 通常采用 NTP 服务来保证时间同步，具体解决方案可参考这篇文档：[How to configure NTP server on RHEL 8 / CentOS 8 Linux](https://linuxconfig.org/redhat-8-configure-ntp-server)。
 
-3. **安装其他常用辅助工具包**
+7.3、**安装其他常用辅助工具包**
 
 建议提前安装DBA常用的辅助工具包：
 ```

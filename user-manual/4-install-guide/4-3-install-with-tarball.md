@@ -5,7 +5,7 @@
 
 在开始安装前，请根据文档 [安装准备](./4-1-install-prepare.md) 已经完成准备工作。
 
-## MGR集群规划
+## 1. MGR集群规划
 
 本次计划在3台服务器上安装GreatSQL数据库并部署MGR集群：
 
@@ -17,7 +17,7 @@
 
 以下安装配置工作先在三个节点都同样操作一遍。
 
-## 下载安装包
+## 2. 下载安装包
 
 [点击此处](https://gitee.com/GreatSQL/GreatSQL/releases/)下载最新的安装包，下载以下几个就可以：
 
@@ -30,9 +30,9 @@ $ curl -o GreatSQL-8.0.25-16-Linux-glibc2.28-x86_64.tar.xz https://product.great
 $ tar xf GreatSQL-8.0.25-16-Linux-glibc2.28-x86_64.tar.xz
 ```
 
-## 启动前准备
+## 3. 启动前准备
 
-1. **修改 /etc/my.cnf 配置文件**
+3.1、**修改 /etc/my.cnf 配置文件**
 
 [参考这份文件](https://gitee.com/GreatSQL/GreatSQL-Doc/blob/master/docs/my.cnf-example-greatsql-8.0.25-16)，可根据实际情况修改，一般主要涉及数据库文件分区、目录，内存配置等少数几个选项。以下面这份为例：
 ```
@@ -197,20 +197,20 @@ performance_schema_instrument = '%lock%=on'
 
 ```
 
-2. **新建mysql用户**
+3.2、**新建mysql用户**
 ```
 $ /sbin/groupadd mysql
 $ /sbin/useradd -g mysql mysql -d /dev/null -s /sbin/nologin
 ```
 
-3. **新建数据库主目录，并修改权限模式及属主**
+3.3、**新建数据库主目录，并修改权限模式及属主**
 ```
 $ mkdir -p /data/GreatSQL
 $ chown -R mysql:mysql /data/GreatSQL
 $ chmod -R 700 /data/GreatSQL
 ```
 
-4. **增加GreatSQL系统服务**
+3.4、**增加GreatSQL系统服务**
 ```
 $ vim /lib/systemd/system/greatsql.service
 
@@ -246,7 +246,7 @@ $ systemctl daemon-reload
 
 这就安装成功并将GreatSQL添加到系统服务中，后面可以用 `systemctl` 来管理GreatSQL服务。
 
-5. **下载mysqld_pre_systemd文件**
+3.5、**下载mysqld_pre_systemd文件**
 
 GreatSQL二进制包中没有自带 `mysqld_pre_systemd` 脚本文件，需要自行下载。
 
@@ -260,7 +260,7 @@ MYSQL_BASEDIR = /usr/local/GreatSQL-8.0.25-16-Linux-glibc2.28-x86_64
 $ chmod ug+x /usr/local/GreatSQL-8.0.25-16-Linux-glibc2.28-x86_64/bin/mysqld_pre_systemd
 ```
 
-## 启动GreatSQL
+## 4. 启动GreatSQL
 
 执行下面的命令启动GreatSQL服务
 ```
@@ -306,7 +306,7 @@ $ ls /data/GreatSQL
 可以看到，GreatSQL服务已经正常启动了。
 
 
-## 连接登入GreatSQL
+## 5. 连接登入GreatSQL
 
 二进制包方式安装GreatSQL后，初始化的root密码是空的，可以直接登入并修改成安全密码：
 ```
