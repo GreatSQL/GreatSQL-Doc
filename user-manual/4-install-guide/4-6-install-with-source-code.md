@@ -98,6 +98,8 @@ SOURCE_DIR=greatsql-8.0.25-16
 
 确认都没问题的话，就可以执行该脚本开始编译源码了：
 ```
+# 记得执行这步，切换到gcc 10编译环境下
+$ source ~/.bash_profile
 $ time sh /opt/greatsql_docker_build/greatsql-automake.sh
 
 -- Running cmake version 3.20.2
