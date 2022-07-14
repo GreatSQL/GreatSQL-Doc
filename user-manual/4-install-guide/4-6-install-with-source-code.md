@@ -15,6 +15,15 @@ $ cd /opt/
 $ tar xf greatsql_docker_build.tar.xz
 $ cd greatsql_docker_build
 $ ls
+Dockerfile  greatsql-automake.sh  greatsql-docker-build.sh  patchelf-0.12.tar.gz  rpcsvc-proto-1.4.tar.gz
+```
+
+下载 boost_1_73_0 源码包：
+```
+$ pwd
+/opt/greatsql_docker_build
+$ curl -o boost_1_73_0.tar.gz https://nchc.dl.sourceforge.net/project/boost/boost/1.73.0/boost_1_73_0.tar.gz
+$ ls
 boost_1_73_0.tar.gz  Dockerfile  greatsql-automake.sh  greatsql-docker-build.sh  patchelf-0.12.tar.gz  rpcsvc-proto-1.4.tar.gz
 ```
 
