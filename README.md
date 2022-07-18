@@ -1,7 +1,11 @@
 # 关于 GreatSQL
 --- 
 
-GreatSQL开源数据库专注于提升MGR可靠性及性能，支持InnoDB并行查询等特性，是适用于金融级应用的国内自主MySQL版本；可以作为MySQL或Percona Server的可选替换，用于线上生产环境；且完全免费并兼容MySQL或Percona Server。
+GreatSQL开源数据库是适用于金融级应用的国内自主MySQL版本，专注于提升MGR可靠性及性能，支持InnoDB并行查询等特性，可以作为MySQL或Percona Server的可选替换，用于线上生产环境，且完全免费并兼容MySQL或Percona Server。
+
+GreatSQL除了提升MGR性能及可靠性，还引入InnoDB事务锁优化及并行查询优化等特性，以及众多BUG修复。
+
+![GreatSQL LOGO](/GreatSQL-logo-01.png "GreatSQL LOGO")
 
 # 下载GreatSQL
 ---
