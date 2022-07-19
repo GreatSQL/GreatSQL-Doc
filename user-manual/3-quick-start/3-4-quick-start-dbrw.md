@@ -5,7 +5,7 @@
 
 GreatSQL中除去少数新增的特性外，绝大多数语法和MySQL是完全一样的。
 
-MySQL相关SQL语法详见手册：[Chapter 13 SQL Statements](https://dev.mysql.com/doc/refman/8.0/en/sql-statements.html)。
+MySQL相关SQL语法详见手册：[SQL Statements](https://dev.mysql.com/doc/refman/8.0/en/sql-statements.html)。
 
 本文档中所有操作都采用命令行模式下的cli工具来演示。
 
@@ -92,7 +92,7 @@ mysql> SELECT * FROM t1;
 ```
 成功。
 
-更多相关SQL命令/语法详见手册：[Chapter 13 SQL Statements](https://dev.mysql.com/doc/refman/8.0/en/sql-statements.html)。
+更多相关SQL命令/语法详见手册：[SQL Statements](https://dev.mysql.com/doc/refman/8.0/en/sql-statements.html)。
 
 **问题反馈**
 ---
