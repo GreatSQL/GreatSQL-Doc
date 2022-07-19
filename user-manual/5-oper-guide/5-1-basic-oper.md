@@ -36,7 +36,7 @@ $ journalctl -ex
 
 ## 2. 修改参数选项
 
-**2.1 SQL命令行修改并立即生效**
+### 2.1 SQL命令行修改并立即生效
 
 可以通过SQL命令在线修改GreatSQL中的大多数参数选项并立即生效。
 
@@ -85,7 +85,7 @@ mysql> show global variables like 'innodb_buffer_pool_size';
 
 不过也可能DBA在排查问题时，只记得查看 `my.cnf` 文件，而忘记检查 `mysqld-auto.cnf` 文件，这个也要注意下。
 
-**2.2 只修改选项值，重启后生效**
+### 2.2 只修改选项值，重启后生效
 
 还可以只修改选项值，但不立即生效，数据库重启后才生效，可以有几种方式。
 
@@ -120,7 +120,8 @@ $ grep innodb_buffer_pool_size /data/GreatSQL/mysqld-auto.cnf
 
 ## 3. 其他管理
 
-**3.1 日志管理**
+### 3.1 日志管理
+
 数据库运行期间，会生成各种日志，包括请求日志（general log）、错误日志（error log）、慢查询日志（slow query log）、二进制日志（binary log）、中继日志（relay log）等。
 
 默认情况下，只会启用error log、binary log、relay log，而general log、slow query log则默认不会启用。
@@ -137,7 +138,8 @@ $ grep innodb_buffer_pool_size /data/GreatSQL/mysqld-auto.cnf
 | redo log | InnoDB引擎记录数据页修改的日志，遵循WAL原则，用于保障数据库的crash safe，同时也用于在线热备 |
 | undo log | 记录数据变更前的信息，主要用于事务回滚，同时也用于多版本并发控制 |
 
-**3.2 清理binlog**
+### 3.2 清理binlog
+
 数据库运行过程中，随着用户对数据库不断执行各种操作，binlog会不断增加，默认设置是30天（`binlog_expire_logs_seconds
 = 2592000`）才会自动清理，因此当可用磁盘空间较为紧张时，就需要手动执行清理binlog操作。例如：
 ```
@@ -178,7 +180,7 @@ mysql> set persist binlog_expire_logs_seconds = 604800;
 ```
 **提醒：**清理binlog前，请务必记得做好备份，避免影响后续的数据库恢复需要。
 
-**3.3 清理slow query log**
+### 3.3 清理slow query log
 
 当启用记录slow query log时，可能会因为业务压力较大，或者因为`long_query_time`阈值设置太低，或者因为设置了`log_queries_not_using_indexes = ON`而记录大量无索引SQL请求，最终导致slow query log文件过大，也需要定期检查清理。
 
@@ -208,7 +210,7 @@ mysql> flush slow logs;
 ```
 这样就可以清空slow query log了。
 
-**3.4 清理general log/error log**
+### 3.4 清理general log/error log
 
 和清理slow query log差不多，也是先做好日志文件备份，然后执行SQL命令：
 ```
@@ -218,7 +220,7 @@ mysql> flush error logs;
 ``
 详情参考文档：[FLUSH Statement](https://dev.mysql.com/doc/refman/8.0/en/flush.html)。
 
-**3.5 数据安全维护建议**
+### 3.5 数据安全维护建议
 
 为了让GreatSQL数据库运行更安全，建议遵循以下几点规范：
 
@@ -232,7 +234,7 @@ mysql> flush error logs;
 - 生产环境中的数据，导入开发测试环境前，要先进行转码脱敏操作，避免信息泄漏。
 - 做好连接请求检测和监控，发现有异常频繁请求时，及时阻断处理。
 
-**3.6 例行维护表**
+### 3.6 例行维护表
 
 通常来说，生产环境中的数据表是无需维护的，除非出现以下几种情况：
 
