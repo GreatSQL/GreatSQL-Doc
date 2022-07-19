@@ -217,7 +217,8 @@ mysql> flush slow logs;
 mysql> flush general logs;
 
 mysql> flush error logs;
-``
+```
+
 详情参考文档：[FLUSH Statement](https://dev.mysql.com/doc/refman/8.0/en/flush.html)。
 
 ### 3.5 数据安全维护建议
