@@ -1,6 +1,6 @@
 GreatSQL文档
 
-最后更新: 2022-07-05 (revision: 00052)
+最后更新: 2022-07-05 (revision: 00054)
 
 ---
 # [发行说明](./1-docs-intro/1-docs-intro.md)
@@ -33,14 +33,17 @@ GreatSQL文档
 ## [Ansible安装](./4-install-guide/4-5-install-with-ansible.md)
 ## [编译源码安装](./4-install-guide/4-6-install-with-source-code.md)
 
-# 运维管理
-## 日常管理
-## MGR管理维护
-## 读写分离
-## 监控告警
-## 备份恢复
+# [运维管理](./5-oper-guide/5-oper-guide.md)
+## [日常管理](./5-oper-guide/5-1-basic-oper.md)
+## [MGR管理维护](./5-oper-guide/5-2-mgr-oper.md)
+## [读写分离](./5-oper-guide/5-3-oper-rw-splitting.md)
+## [监控告警](./5-oper-guide/5-4-monitoring-and-alerting.md)
+## [备份恢复](./5-oper-guide/5-5-backup-and-restore.md)
+## [单机多实例](./5-oper-guide/5-6-multi-instances.md)
+## [慢查询SQL诊断](./5-oper-guide/5-7-slowlog-diag.md)
 
 # 迁移升级
+## GreatSQL 5.7升级到8.0
 ## 从MySQL迁移到GreatSQL
 ## 从Percona Server迁移到GreatSQL
 ## 从MariaDB迁移到GreatSQL
