@@ -422,7 +422,7 @@ WARNING: Found errors loading plugins, for more details look at the log at: /roo
 接下来，执行 `dba.configure_instance`命令开始检查当前实例是否准备好了，可以作为MGR集群的一个节点：
 ```
 # 开始配置MGR节点
-MySQL  172.16.16.10:3306 ssl  JS > dba.configure_instance();
+MySQL  172.16.16.10:3306 ssl  Py > dba.configure_instance();
 Configuring local MySQL instance listening at port 3306 for use in an InnoDB cluster...
 
 This instance reports its own address as GreatSQL-01:3306
@@ -472,7 +472,7 @@ No default schema selected; type \use <schema> to set one.
 
 # 选定GreatSQL-01节点作为PRIMARY，开始创建MGR集群
 # 集群命名为 GreatSQLMGR，后面mysqlrouter读取元数据时用得上
-MySQL  172.16.16.10:3306 ssl  JS > c = dba.createCluster('GreatSQLMGR');
+MySQL  172.16.16.10:3306 ssl  Py > c = dba.create_cluster('GreatSQLMGR');
 A new InnoDB cluster will be created on instance '172.16.16.10:3306'.
 
 Validating instance configuration at 172.16.16.10:3306...
@@ -488,7 +488,7 @@ Adding Seed Instance...
 Cluster successfully created. Use Cluster.add_instance() to add MySQL instances.
 At least 3 instances are needed for the cluster to be able to withstand up to
 one server failure.
-MySQL  172.16.16.10:3306 ssl  JS > 
+MySQL  172.16.16.10:3306 ssl  Py > 
 ```
 集群已经创建并初始化完毕，接下来就是继续添加其他节点了。
 
@@ -498,7 +498,7 @@ MySQL  172.16.16.10:3306 ssl  JS >
 ```
 # 此时mysqlsh客户端还保持连接到GreatSQL-01节点
 # 可以直接添加GreatSQL-02节点
-MySQL  172.16.16.10:3306 ssl  JS > c.add_instance('GreatSQL@172.16.16.11:3306');  <-- 添加GreatSQL-02节点
+MySQL  172.16.16.10:3306 ssl  Py > c.add_instance('GreatSQL@172.16.16.11:3306');  <-- 添加GreatSQL-02节点
 NOTE: The target instance 'GreatSQL-02:3306' has not been pre-provisioned (GTID set is empty). The Shell is unable to decide whether incremental state recovery can correctly provision it.
 The safest and most convenient way to provision a new instance is through automatic clone provisioning, which will completely overwrite the state of 'GreatSQL-02:3306' with a physical snapshot from an existing cluster member. To use this method by default, set the 'recoveryMethod' option to 'clone'.
 
@@ -551,7 +551,7 @@ The instance 'GreatSQL-02:3306' was successfully added to the cluster.
 这就将 GreatSQL-02 节点加入MGRT集群中了，此时可以先查看下集群状态。
 
 ```
-MySQL  172.16.16.10:3306 ssl  JS > c.status()
+MySQL  172.16.16.10:3306 ssl  Py > c.status()
 {
     "clusterName": "GreatSQLMGR",
     "defaultReplicaSet": {
@@ -601,7 +601,7 @@ loose-group_replication_arbitrator = 1
 
 然后照着第三步的操作，调用 `dba.add_instance()` 添加新节点，就可以直接将仲裁节点加入MGR集群了，再次查看集群状态：
 ```
-MySQL  172.16.16.10:3306 ssl  JS > c.status()
+MySQL  172.16.16.10:3306 ssl  Py > c.status()
 {
     "clusterName": "GreatSQLMGR",
     "defaultReplicaSet": {
