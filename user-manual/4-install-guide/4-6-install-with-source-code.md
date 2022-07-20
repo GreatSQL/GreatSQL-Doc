@@ -117,10 +117,10 @@ CMake Deprecation Warning at cmake/cmake_policies.cmake:54 (CMAKE_POLICY):
   The OLD behavior for policy CMP0075 will be removed from a future version
   of CMake.
 ...
--- Up-to-date: /usr/local/GreatSQL-8.0.27-18-Linux-glibc2.28-x86_64/man/man8/mysqld.8
--- Up-to-date: /usr/local/GreatSQL-8.0.27-18-Linux-glibc2.28-x86_64/man/man1/mysqlrouter.1
--- Up-to-date: /usr/local/GreatSQL-8.0.27-18-Linux-glibc2.28-x86_64/man/man1/mysqlrouter_passwd.1
--- Up-to-date: /usr/local/GreatSQL-8.0.27-18-Linux-glibc2.28-x86_64/man/man1/mysqlrouter_plugin_info.1
+-- Up-to-date: /usr/local/GreatSQL-8.0.25-16-Linux-glibc2.28-x86_64/man/man8/mysqld.8
+-- Up-to-date: /usr/local/GreatSQL-8.0.25-16-Linux-glibc2.28-x86_64/man/man1/mysqlrouter.1
+-- Up-to-date: /usr/local/GreatSQL-8.0.25-16-Linux-glibc2.28-x86_64/man/man1/mysqlrouter_passwd.1
+-- Up-to-date: /usr/local/GreatSQL-8.0.25-16-Linux-glibc2.28-x86_64/man/man1/mysqlrouter_plugin_info.1
 ```
 
 编译过程中如果没问题，就会在 `/usr/local` 目录下生成GreatSQL二进制安装文件，例如：
