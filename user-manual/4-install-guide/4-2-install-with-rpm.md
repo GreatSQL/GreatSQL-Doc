@@ -43,7 +43,7 @@ Updating / installing...
 
 ## 4. 启动前准备
 
-4.1、**修改 /etc/my.cnf 配置文件**
+### 4.1、修改 /etc/my.cnf 配置文件
 
 [参考这份文件](https://gitee.com/GreatSQL/GreatSQL-Doc/blob/master/docs/my.cnf-example-greatsql-8.0.25-16)，可根据实际情况修改，一般主要涉及数据库文件分区、目录，内存配置等少数几个选项。以下面这份为例：
 ```
@@ -208,7 +208,7 @@ performance_schema_instrument = '%lock%=on'
 
 ```
 
-4.2、**新建数据库主目录，并修改权限模式及属主**
+### 4.2、新建数据库主目录，并修改权限模式及属主
 ```
 $ mkdir -p /data/GreatSQL
 $ chown -R mysql:mysql /data/GreatSQL
@@ -403,7 +403,7 @@ $ pip3.6 install --user certifi
 
 接下来一步步执行。
 
-9.1. **MGR节点预检查**
+### 9.1、MGR节点预检查
 
 用管理员账号 root 连接到第一个节点：
 ```
@@ -456,7 +456,7 @@ GreatSQL提供的MySQL Shell二进制包不支持Javascript语法，因为编译
 
 **截止到这里，以上所有步骤在另外两个节点 GreatSQL-02、GreatSQL-03 也同样执行一遍。**
 
-9.2、**创建并初始化一个集群**
+### 9.2、创建并初始化一个集群
 
 在正式初始化MGR集群前，再次提醒要先再其他节点完成上述初始化工作。
 
@@ -492,7 +492,7 @@ MySQL  172.16.16.10:3306 ssl  Py >
 ```
 集群已经创建并初始化完毕，接下来就是继续添加其他节点了。
 
-9.3、**逐个添加实例**
+### 9.3、逐个添加实例
 
 可以在GreatSQL-01（PRIMARY）节点上直接添加其他节点，也可以用mysqlsh客户端登入其他节点执行添加节点操作。这里采用前者：
 ```
@@ -591,7 +591,7 @@ MySQL  172.16.16.10:3306 ssl  Py > c.status()
 
 如果不想体验仲裁节点特性的话，可以照着上面操作再次正常加入 GreatSQL-03 节点作为 Secondary 节点即可，到这里就可以结束MGR集群构建工作了。
 
-9.4、**添加仲裁节点**
+### 9.4、添加仲裁节点
 
 编辑 GreatSQL-03 节点上的 `/etc/my.cnf` 配置文件，加入/修改下面这行内容：
 ```
