@@ -57,7 +57,7 @@ sys     0m0.004s
 
 ## 2. 锁、等待事件
 
-**2.1 当前行锁数量**
+### 2.1 当前行锁数量
 ```
 mysql> select * from performance_schema.global_status where variable_name = 'Innodb_row_lock_current_waits';
 +-------------------------------+----------------+
@@ -68,7 +68,7 @@ mysql> select * from performance_schema.global_status where variable_name = 'Inn
 ```
 当该值大于0的时候，就要立即发出告警，表示当前存在行锁等待事件，要检查是否有事务持有行锁未释放。
 
-**2.2 IBP wait free**
+### 2.2 IBP wait free
 ```
 mysql> select * from performance_schema.global_status where variable_name = 'Innodb_buffer_pool_wait_free';
 +-------------------------------+----------------+
@@ -79,7 +79,7 @@ mysql> select * from performance_schema.global_status where variable_name = 'Inn
 ```
 当该值大于0的时候，就要立即发出告警，表示InnoDB Buffer Pool严重不够用，如果物理内存足够，则适当加大，或者迁移到更高内存的服务器上。
 
-**2.3 InnoDB log wait**
+### 2.3 InnoDB log wait
 ```
 mysql> select * from performance_schema.global_status where variable_name = 'Innodb_log_waits';
 +------------------+----------------+
@@ -90,7 +90,7 @@ mysql> select * from performance_schema.global_status where variable_name = 'Inn
 ```
 当该值大于0的时候，就要立即发出告警，表示InnoDB Log Buffer严重不够用，如果物理内存足够，则适当加大，或者迁移到更高内存的服务器上。
 
-**2.4 InnoDB Purge Lag**
+### 2.4 InnoDB Purge Lag
 ```
 mysql> SELECT `COUNT`,`COMMENT` FROM INFORMATION_SCHEMA.INNODB_METRICS WHERE NAME = 'trx_rseg_history_len';
 +-------+-------------------------------------+
