@@ -96,11 +96,13 @@ $ mysql -f -S/data/GreatSQL/mysql.sock greatsql < /backup/GreatSQL/greatsql-2022
 
 本文重点介绍利用 `Xtrabackup` 和 `Clone` 进行物理备份恢复。
 
-## 3 Xtrabackup备份恢复
+## 3. Xtrabackup备份恢复
 
 `Xtrabackup` 是由Percona公司出品的开源免费备份工具，它能很方便的对MySQL数据库进行在线热备，并且支持压缩、加密、流式备份等多种方式。
 
 这是`Xtrabackup`安装包[下载地址](https://www.percona.com/downloads/Percona-XtraBackup-LATEST/)，这是[文档地址](https://docs.percona.com/percona-xtrabackup/latest/manual.html)。
+
+本文档环境选择的是 `Xtrabackup 8.0.25-17` 版本。
 
 可根绝个人喜好选择RPM包抑或二进制包，安装步骤略过。
 
@@ -125,7 +127,7 @@ $ mysql -f -S/data/GreatSQL/mysql.sock greatsql < /backup/GreatSQL/greatsql-2022
 ### 3.1 常规全量备份
 
 ```
-$ xtrabackup --backup --datadir=/data/GreatSQL/ --target-dir=/backup/GreatSQL/`date +'%Y%m%d'`/
+$ xtrabackup --backup --datadir=/data/GreatSQL/ --target-dir=/backup/GreatSQL/full/`date +'%Y%m%d'`/
 ...
 xtrabackup: Transaction log of lsn (46865086) to (46876581) was copied.
 220722 10:24:59 completed OK!
@@ -152,7 +154,7 @@ ibdata1         mysql          performance_schema             db2   xtrabackup_b
 ### 3.2 只备份部分库表
 
 ```
-$ xtrabackup --backup --datadir=/data/GreatSQL/ --tables="db1.t_user_*,db2.t_log_*" --target-dir=/backup/GreatSQL/`date +'%Y%m%d'`/
+$ xtrabackup --backup --datadir=/data/GreatSQL/ --tables="db1.t_user_*,db2.t_log_*" --target-dir=/backup/GreatSQL/partial/`date +'%Y%m%d'`/
 ...
 xtrabackup: Transaction log of lsn (48318000) to (48324707) was copied.
 220722 10:45:46 completed OK!
@@ -166,13 +168,13 @@ ib_buffer_pool  binlog.000006  mysql.ibd     db2  undo_002  xtrabackup_checkpoin
 
 在原来的基础上增加 `--compress` 选项即可，例如：
 ```
-$ xtrabackup --backup --compress --datadir=/data/GreatSQL/ --target-dir=/backup/GreatSQL/`date +'%Y%m%d'`/
+$ xtrabackup --backup --compress --datadir=/data/GreatSQL/ --target-dir=/backup/GreatSQL/full/`date +'%Y%m%d'`/
 ```
 通常而言，大概有4倍左右的压缩比。
 
 ### 3.4 并行压缩，并且流式备份
 ```
-$ xtrabackup --backup --stream=xbstream --compress --compress-threads=4 --datadir=/data/GreatSQL/ > /backup/GreatSQL/xbk-`date +'%Y%m%d'`.xbstream
+$ xtrabackup --backup --stream=xbstream --compress --compress-threads=4 --datadir=/data/GreatSQL/ > /backup/GreatSQL/full/xbk-`date +'%Y%m%d'`.xbstream
 ```
 并发4个线程压缩，并且采用流文件方式备份。
 
@@ -184,7 +186,7 @@ Xtrabackup还支持增量备份，即在上一次备份的基础上，只备份�
 ```
 # 假定全备文件放在 /backup/GreatSQL/ 目录下
 # 发起增量备份
-$ xtrabackup --backup --incremental-basedir=/backup/GreatSQL --target-dir=/backup/GreatSQL/inc-backup
+$ xtrabackup --backup --incremental-basedir=/backup/GreatSQL/full/`date +'%Y%m%d'`/ --target-dir=/backup/GreatSQL/inc-backup/`date +'%Y%m%d%H'`/
 ```
 查看`xtrabackup_info`和`xtrabackup_checkpoints`文件内容：
 ```
@@ -207,34 +209,52 @@ last_lsn = 98574379
 flushed_lsn = 98574369
 ```
 
+**建议：** 增量备份总是基于上一次全量备份的基础，不要基于上一次增量备份，这样在还原时会更方便。例如每天0点做一次全量备份，每小时做一次增量备份，执行增备时指定基于0点的全备。
+
 ### 3.5 全备还原
 
 XtraBackup备份文件不能直接用来拉起数据库，需要先做预处理：
 ```
-$ cd /backup/GreatSQL
+$ cd /backup/GreatSQL/full/`date +'%Y%m%d'`/
 $ xtrabackup --prepare --target-dir=./
+...
+Starting shutdown...
+Log background threads are being closed...
+Shutdown completed; log sequence number 176148580
+Number of pools: 1
+220725 16:54:30 completed OK!
 ```
 
 预处理没问题的话，就可以将数据文件copy/move到数据库目录下，用于拉起。
 
 目标目录需要先清空，否则会报错。
 ```
+$ cd /backup/GreatSQL/full/`date +'%Y%m%d'`/
 $ xtrabackup --copy-back --target-dir=./ --datadir=/data/GreatSQL
+...
+220725 17:01:08 [01] Copying ./xtrabackup_master_key_id to /data/GreatSQL/xtrabackup_master_key_id
+220725 17:01:08 [01]        ...done
+220725 17:01:08 completed OK!
 
 # 如果不想copy，而是move的话，修改下即可
 $ xtrabackup --move-back --target-dir=./ --datadir=/data/GreatSQL
+...
+220725 17:02:01 [01] Moving ./xtrabackup_master_key_id to /data/GreatSQL/xtrabackup_master_key_id
+220725 17:02:01 [01]        ...done
+220725 17:02:01 completed OK!
 ```
 
 ### 3.6 全量压缩备份还原
 
 先将流式文件恢复成正常压缩文件
 ```
-$ cd /backup/GreatSQL
+$ cd /backup/GreatSQL/full/`date +'%Y%m%d'`
 $ xbstream -x < xbk-`date +'%Y%m%d'`.xbstream
 ```
 
 再进行解压缩：
 ```
+$ cd /backup/GreatSQL/full/`date +'%Y%m%d'`
 $ xtrabackup --decompress --target-dir=.
 ```
 
@@ -244,14 +264,120 @@ P.S，解压缩过程中需要安装 `qpress`，可以从[这里下载源码或�
 
 ### 3.7 增量备份还原
 
-假设每天做一次全备，每小时做一次增备，现在需要还原到
+假定每天0点做一次全备，每小时做一次相对0点的增备，现在需要还原到当天8:00的增备时间点。可以像下面这么做：
 
+首先，在全备文件目录下执行下面的操作（不执行事务回滚操作）：
+```
+$ cd /backup/GreatSQL/full/20220725
+$ xtrabackup --prepare --apply-log-only --target-dir=/backup/GreatSQL/full/20220725
+...
+Log background threads are being closed...
+Shutdown completed; log sequence number 101667236
+Number of pools: 1
+220725 10:45:23 completed OK!
+```
 
-参考资料：
+接下来应用增备日志：
+```
+$ xtrabackup --prepare --apply-log-only --target-dir=/backup/GreatSQL/full/20220725 --incremental-dir=/backup/GreatSQL/inc-backup/2022072508
+...
+incremental backup from 101659735 is enabled.
+xtrabackup: cd to /backup/GreatSQL/full/20220725
+xtrabackup: This target seems to be already prepared with --apply-log-only.
+Number of pools: 1
+xtrabackup: xtrabackup_logfile detected: size=8388608, start_lsn=(101688040)
+xtrabackup: using the following InnoDB configuration for recovery:
+xtrabackup:   innodb_data_home_dir = .
+xtrabackup:   innodb_data_file_path = ibdata1:12M:autoextend
+xtrabackup:   innodb_log_group_home_dir = /backup/GreatSQL/inc-backup/2022072508/
+...
+xtrabackup: page size for /backup/GreatSQL/inc-backup/2022072508//ibdata1.delta is 16384 bytes
+Applying /backup/GreatSQL/inc-backup/2022072508//ibdata1.delta to ./ibdata1...
+...
+220725 10:49:58 completed OK!
+```
 
+之后将还原后的数据文件copy/move到目标目录即可：
+```
+$ xtrabackup --copy-back --target-dir=/backup/GreatSQL/full/20220725 --datadir=/data/GreatSQL
+...
+220725 17:26:52 [01] Copying ./xtrabackup_info to /data/GreatSQL/xtrabackup_info
+220725 17:26:52 [01]        ...done
+220725 17:26:52 completed OK!
+```
+
+## 4. Clone备份恢复
+
+MySQL 8.0.17中开始引入Clone Plugin插件。
+
+利用Clone可以很方便的对MySQL中的InnoDB表（不支持非InnoDB表）执行物理备份，主要应用于几个场景：
+
+1. 物理备份。
+2. 主从复制架构中新增从节点。
+3. MGR架构中新增节点。
+
+使用Clone Plugin前，要先启用。有两种方法：
+
+1. 在 `my.cnf` 文件的 `[mysqld]` 部分添加一行 `plugin-load-add=mysql_clone.so`，下次重启后即可生效。
+2. 在mysql客户端中执行 `INSTALL PLUGIN clone SONAME 'mysql_clone.so';` 即可在线动态加载该Plugin。
+
+此外，运行Clone的账号需要至少授予 `BACKUP_ADMIN` 权限：
+```
+mysql> grant BACKUP_ADMIN on *.* to backup_user;
+```
+
+### 4.1 Clone备份到本地
+```
+mysql> CLONE LOCAL DATA DIRECTORY = '/backup/GreatSQL/full/20220725/';
+Query OK, 0 rows affected (0.17 sec)
+```
+这就完成了，是不是非常简单。
+
+当然了，目标目录 `/backup/GreatSQL/full/20220725` 对 mysqld 进程运行的属主用户要有写入权限才行。
+
+### 4.2 从远程主机Clone备份
+
+Clone Plugin还支持从远程节点直接备份数据到本地，不过有几个前提条件：
+
+1. 提供数据的远程实例需要至少授予 BACKUP_ADMIN 权限。
+2. 接收数据的本地实例需要至少授予 CLONE_ADMIN 权限。
+3. 提供和接收方必须是相同操作系统。
+4. 同样地，只支持InnoDB表。
+
+从远程主机Clone备份通常是在需要扩展主从复制或MGR新节点时使用，或者临时构建测试环境等。
+
+首先，启动一个刚安装完毕的空实例，并对备份账户授予必要的权限：
+```
+# 先登入本地实例
+$ mysql -h127.0.0.1 -ubackup_user -pXXX
+...
+# 开始Clone前，要设置 doner 节点
+mysql> SET GLOBAL clone_valid_donor_list = '172.16.16.10:3306';
+
+# 开始Clone
+mysql> clone INSTANCE FROM backup_user@172.16.16.10:3306 IDENTIFIED BY 'Backup-For@GreatSQL';
+
+# Clone完成后，会将本地数据全部覆盖，并且自动重启
+...
+ERROR 2013 (HY000): Lost connection to MySQL server during query
+No connection. Trying to reconnect...
+...
+```
+再次重连本地实例即可看到已经完成数据备份到当前实例了。
+
+## 小结
+
+MySQL的备份方式有多种多样，既有原生的mysqldump/mysqlpump/clone，也有第三方的xtrabackup/mydumper，周边生态非常完善，可根据实际情况及个人喜好自己选择趁手的工具。
+
+**参考资料：**
+
+- [The Clone Plugin](https://dev.mysql.com/doc/refman/8.0/en/clone-plugin.html)
+- [mysqldump](https://dev.mysql.com/doc/refman/8.0/en/mysqldump.html)
+- [mysqlpump](https://dev.mysql.com/doc/refman/8.0/en/mysqlpump.html)
+- [mydumper](https://github.com/mydumper/mydumper)
+- [如何从mysqldump全量备份中抽取部分库表用于恢复](https://imysql.com/2010/06/01/mysql-faq-how-to-extract-data-from-dumpfile.html)
 - [XtraBackup](https://docs.percona.com/percona-xtrabackup/latest/manual.html)
 
-### 2.2 Clone备份恢复
 
 **问题反馈**
 ---
