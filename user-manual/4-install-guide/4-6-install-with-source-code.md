@@ -5,7 +5,7 @@
 
 ## 1. 下载GeratSQL源码及Docker压缩包
 
-**1.1、下载Docker编译环境压缩包**
+### 1.1 下载Docker编译环境压缩包
 
 [戳此下载](https://product.greatdb.com/GreatSQL/greatsql_docker_build.tar.xz)GreatSQL Docker编译环境压缩包[greatsql_docker_build.tar.xz](https://product.greatdb.com/GreatSQL/greatsql_docker_build.tar.xz)。
 
@@ -27,7 +27,7 @@ $ ls
 boost_1_73_0.tar.gz  Dockerfile  greatsql-automake.sh  greatsql-docker-build.sh  patchelf-0.12.tar.gz  rpcsvc-proto-1.4.tar.gz
 ```
 
-**1.2、下载GreatSQL源码**
+### 1.2 下载GreatSQL源码
 
 [戳此下载](https://gitee.com/GreatSQL/GreatSQL/releases/)GreatSQL源码压缩包，解压缩后放在 `/opt` 目录下。
 

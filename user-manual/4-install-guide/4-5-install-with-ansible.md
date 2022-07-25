@@ -5,14 +5,14 @@
 
 ## 1. 安装准备
 
-**1.1、安装ansible**
+### 1.1 安装ansible
 
 首先利用dnf/yum安装ansible：
 ```
 $ yum install -y ansible
 ```
 
-**1.2、配置ansible**
+### 1.2 配置ansible
 
 修改 `/etc/ansible/hosts` 文件，把要安装GreatSQL的服务器IP加进去，例如：
 ```
@@ -36,7 +36,7 @@ greatsql_mgr_arbitrator
 
 三个组最后合并一起，成为一个新的组 **greatsql_dbs**。
 
-**1.3、建立ssh信任**
+### 1.3 建立ssh信任
 为了简单起见，直接建立ssh信任，方便ansible一键安装。
 
 首先生成ssh key
@@ -51,7 +51,7 @@ $ ssh-copy-id root@172.16.16.10
 ```
 按提示输入口令，完成后测试使用ssh登录不再提示输入口令。如果是在本机安装，那么ssh-copy-id也要对本机执行一遍。或者手动将ssh key复制到远程主机上，写到 ~/.ssh/authorized_keys 文件中（注意不要折行、断行）。
 
-**1.4、测试ansible**
+### 1.4 测试ansible
 随意执行一个指令，测试ansibile可连接远程主机：
 ```
 $ ansible greatsql_dbs -a "uptime"
@@ -64,7 +64,7 @@ $ ansible greatsql_dbs -a "uptime"
 ```
 这就表示可以正常运行了。
 
-**1.5、下载GreatSQL-Ansible安装包**
+### 1.5 下载GreatSQL-Ansible安装包
 
 [点击此处](https://gitee.com/GreatSQL/GreatSQL/releases/)下载最新的二进制安装包，可从下面几个任选一个：
 
@@ -83,7 +83,7 @@ $ ansible greatsql_dbs -a "uptime"
 
 ## 2. 安装GreatSQL并构建MGR集群
 
-**2.1、配置Ansible安装剧本**
+### 2.1 配置Ansible安装剧本
 
 在开始安装前，要先修改 `vars.yml` 这个Ansbile安装剧本中的几个配置选项：
 ```
@@ -117,7 +117,7 @@ wait_for_start: 60
 |mgr_seeds|172.16.16.10:33061,172.16.16.11:33061,172.16.16.12:33061|定义MGR运行时各节点的IP+端口列表，【需要自行调整】|
 |wait_for_start|60|初次启动时，要先进行一系列数据文件初始化等工作，后面的MGR初始化工作要等待前面的先完成，如果第一安装失败，可以将这个时间加长|
 
-**2.2、开始ansible安装**
+### 2.2 开始ansible安装
 
 执行下面的命令一键完成GreatSQL的安装、初始化，加入systemd服务、以及MGR初始化等所有工作：
 ```
@@ -129,7 +129,7 @@ GreatSQL-8.0.25-16-Linux-glibc2.28-x86_64-minimal.tar.xz  greatsql.yml          
 $ ansible-playbook ./greatsql.yml
 ```
 
-**2.3、检查ansible执行过程输出**
+### 2.3 检查ansible执行过程输出
 
 安装时会先行检查是否已有mysqld进程在运行，或者3306端口上是否已有其他服务，如果是的话，则输出内容可能会是这样的：
 ```
