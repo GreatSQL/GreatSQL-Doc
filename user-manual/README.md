@@ -1,6 +1,6 @@
 GreatSQL文档
 
-最后更新: 2022-07-05 (revision: 00054)
+最后更新: 2022-07-05 (revision: 00075)
 
 ---
 # [发行说明](./1-docs-intro/1-docs-intro.md)
@@ -42,24 +42,24 @@ GreatSQL文档
 ## [单机多实例](./5-oper-guide/5-6-multi-instances.md)
 ## [慢查询SQL诊断](./5-oper-guide/5-7-slowlog-diag.md)
 
-# 迁移升级
-## GreatSQL 5.7升级到8.0
-## 从MySQL迁移到GreatSQL
-## 从Percona Server迁移到GreatSQL
-## 从MariaDB迁移到GreatSQL
+# [迁移升级](./6-migrate-and-upgrade/6-migrate-and-upgrade.md)
+## [GreatSQL 5.7升级到8.0](./6-migrate-and-upgrade/6-1-upgrade-to-greatsql8.md)
+## [从MySQL迁移到GreatSQL](./6-migrate-and-upgrade/6-2-migrate-from-mysql-tograetsql.md)
+## [从Percona Server迁移到GreatSQL](./6-migrate-and-upgrade/6-3-migrate-from-percona-to-greatsql.md)
+## [从MariaDB迁移到GreatSQL](./6-migrate-and-upgrade/6-4-migrate-from-mariadb-to-greatsql.md)
 
-# 高可用架构
-## 单机多实例高可用
-## 单IDC高可用
-## 同城跨IDC高可用
-## 跨城多IDC高可用
+# [高可用架构](./7-ha/7-ha.md)
+## [单机多实例高可用](./7-ha/7-1-ha-single-machine-multi-instance.md)
+## [单IDC高可用](./7-ha/7-2-ha-single-idc.md)
+## [同城跨IDC高可用](./7-ha/7-3-ha-same-city-multi-idc.md)
+## [跨城多IDC高可用](./7-ha/7-4-ha-multi-city-multi-idc.md)
 
-# 性能优化
-## 硬件、系统优化
-## GreatSQL优化
-## 性能测试
+# [性能优化](./8-optimze/8-optimze.md)
+## [硬件、系统优化](./8-optimze/8-1-hardware-and-os-optimze.md)
+## [GreatSQL优化](./8-optimze/8-2-greatsql-optimze.md)
+## [性能测试](./8-optimze/8-3-performance-benchmark.md)
 
-# 常见问题/FAQ
+# [常见问题/FAQ](https://gitee.com/GreatSQL/GreatSQL-Doc/blob/master/docs/GreatSQL-FAQ.md)
 
 # 问题反馈
 ---
