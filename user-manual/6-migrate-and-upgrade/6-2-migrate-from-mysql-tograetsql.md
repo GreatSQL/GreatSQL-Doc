@@ -54,11 +54,11 @@ GreatSQL相对于MySQL社区版有着众多优秀特性，包括且不仅限以�
 接下来，要区分本次迁移/升级属于以下哪种情况：
 
 1. 从MySQL 5.7直接一次性迁移+升级到GreatSQL 8.0.25。
-2. MySQL 8.0.25及以下版本迁移/升级到GreatSQL 8.0.25。
+2. 从MySQL 8.0.25及以下版本迁移/升级到GreatSQL 8.0.25。
 3. 从MySQL 8.0.26及以上版本迁移/降级到GreatSQL 8.0.25。
 4. 从MySQL 5.6及更低版本迁移+升级到GreatSQL 8.0.25，则应该先逐次升级大版本，例如5.5=>5.6，5.6=>5.7最新版本，而后再一次性升级到GreatSQL 8.0.25。
 
-如果是前两种，直接参考上一篇文档：[GreatSQL 5.7升级到8.0](./6-1-upgrade-to-greatsql8.md) 的方法进行迁移/升级即可，过程是完全一样的。
+如果是前两种，直接参考文档：[GreatSQL 5.7升级到8.0](./6-1-upgrade-to-greatsql8.md) 的方法进行迁移/升级即可，过程是完全一样的。
 
 本文重点说说第三种场景。
 
@@ -102,6 +102,14 @@ ERROR 1146 (42S02) at line 586: Table 'mysql.replication_group_member_actions' d
 ...
 ```
 如果数据量较大的话，逻辑备份+导入过程耗时较久，要有心理准备。
+
+**参考文档**
+
+- [Percona Server for MySQL In-Place Upgrading Guide: From 5.7 to 8.0](https://docs.percona.com/percona-server/latest/upgrading_guide.html)
+- [Changes in MySQL 8.0](https://dev.mysql.com/doc/refman/8.0/en/upgrading-from-previous-series.html)
+- [Before You Begin](https://dev.mysql.com/doc/refman/8.0/en/upgrade-before-you-begin.html)
+- [What the MySQL Upgrade Process Upgrades](https://dev.mysql.com/doc/refman/8.0/en/upgrading-what-is-upgraded.html)
+- [MySQL 5.7 MGR平滑升级到GreatSQL 5.7](https://mp.weixin.qq.com/s/u0UAijfM8jHH948ml1PREg)
 
 **问题反馈**
 ---
