@@ -163,6 +163,13 @@ mysql> select @@server_uuid;
 
 该连接保持住不退出，继续新建到6447端口的连接，查看 `server_uuid`，应该会发现读取到的是另一个 SECONDARY 节点的值，因为 MySQL Router 默认的读负载均衡机制是在几个只读节点间自动轮询，除非所有 SECONDARY 节点都不可用，否则只读请求不会转发到PRIMARY节点。
 
+**特别说明：** 由于ARBITRATOR角色是在GreatSQL中特有的，原生的MySQL Router并不支持。这个节点不存储用户数据、日志等，仅参与MGR的网络投票，因此当MySQL Router轮询连接到该节点时，可能会出现类似下面的提示：
+```
+$ mysql -h172.16.16.14 -uGreatSQL -p -P6447
+mysql: [Warning] Using a password on the command line interface can be insecure.
+ERROR 1045 (28000): Access denied for user 'GreatSQL'@'172.16.16.14' (using password: YES)
+```
+忽略这个错误提示，并尝试重连即可。
 
 ## 5. 确认故障自动转移
 
