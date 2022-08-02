@@ -18,6 +18,8 @@ MySQL Router是一个轻量级的中间件，它采用多端口的方案实现�
 
 MySQL Router最好和应用服务器部署在一起，所以本次将MySQL Router安装在另一个服务器上，IP地址是 *172.16.16.14*。
 
+将MySQL Router和应用服务器部署在一起的好处在于，当某个后端数据库服务器发生宕机并下线及导致MGR发生切换时，部署在应用程序端的router程序能通过MGR的metadata信息感知到这个变化，并自动更新MGR拓扑结构，无需在应用程序上做任何变更，也无需针对router再次部署高可用切换方案。
+
 [戳此下载MySQL Router RPM安装包](https://gitee.com/GreatSQL/GreatSQL/releases/GreatSQL-8.0.25-16)，选择下面的安装包：
 
 - greatsql-mysql-router-8.0.25-16.1.el8.x86_64.rpm
