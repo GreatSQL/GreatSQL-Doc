@@ -171,6 +171,19 @@ ERROR 1045 (28000): Access denied for user 'GreatSQL'@'172.16.16.14' (using pass
 ```
 忽略这个错误提示，并尝试重连即可。
 
+当然了，也可以通过修改MySQL Router的配置文件，把ARBITRATOR节点从只读节点列表中排除，例如：
+```
+[routing:GreatSQLMGR_ro]
+bind_address=0.0.0.0
+bind_port=6447
+#destinations=metadata-cache://GreatSQLMGR/?role=SECONDARY
+destinations=172.16.16.11,172.16.11.13
+#routing_strategy=round-robin-with-fallback
+routing_strategy=round-robin
+protocol=classic
+```
+由于直接指定了只读节点列表，就无法再使用 *round-robin-with-fallback* 策略了，可以改成 *round-roubin* 策略。
+
 ## 5. 确认故障自动转移
 
 如果PRIMARY节点宕机或切换，mysqlrouter也能实现自动故障转移，应用端不需要做任何变更，只需最多尝试重连或重新发起请求。
