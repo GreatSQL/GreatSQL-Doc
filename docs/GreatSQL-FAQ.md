@@ -444,3 +444,25 @@ These users are internal to the cluster, and the user name of the generated user
 where server_id is unique to the instance. In versions earlier than 8.0.17 the user name of the generated users followed a naming 
 scheme of mysql_innodb_cluster_r[10_numbers].
 ```
+
+## 29. 为什么InnoDB并行查询(PQ)不可用
+可能原因有几种：
+1. 优化器认为没必要走并行，比如因为cost太小了。
+2. 不支持的SQL类型，目前还不支持子查询。
+3. 优化器认为可用资源不足，"无法"使用并行查询。
+
+例如，有个场景是因为 `parallel_memory_limit` 设置过低，优化器判断SQL的cost较大，所以只是尝试去使用并行，但没发挥最大优势
+```
+| PQ_memory_refused  | 0     |
+| PQ_memory_used     | 0     |  <-- 没真正用上，因为可用buffer不够
+| PQ_threads_refused | 82    |
+| PQ_threads_running | 4     |  <-- 尝试并行
+```
+
+在调大 `parallel_memory_limit` 之后就好了
+```
+| PQ_memory_refused  | 0       |
+| PQ_memory_used     | 4801552 |  <-- PQ消耗的内存
+| PQ_threads_refused | 82      |
+| PQ_threads_running | 4       |  <-- 并行线程4
+```
