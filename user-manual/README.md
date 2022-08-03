@@ -1,6 +1,6 @@
 GreatSQL文档
 
-最后更新: 2022-07-05 (revision: 00075)
+最后更新: 2022-07-05 (revision: 00100)
 
 ---
 # [发行说明](./1-docs-intro/1-docs-intro.md)
@@ -46,7 +46,6 @@ GreatSQL文档
 ## [GreatSQL 5.7升级到8.0](./6-migrate-and-upgrade/6-1-upgrade-to-greatsql8.md)
 ## [从MySQL迁移到GreatSQL](./6-migrate-and-upgrade/6-2-migrate-from-mysql-tograetsql.md)
 ## [从Percona Server迁移到GreatSQL](./6-migrate-and-upgrade/6-3-migrate-from-percona-to-greatsql.md)
-## [从MariaDB迁移到GreatSQL](./6-migrate-and-upgrade/6-4-migrate-from-mariadb-to-greatsql.md)
 
 # [高可用架构](./7-ha/7-ha.md)
 ## [单机多实例高可用](./7-ha/7-1-ha-single-machine-multi-instance.md)
