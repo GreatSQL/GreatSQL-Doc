@@ -453,6 +453,7 @@ scheme of mysql_innodb_cluster_r[10_numbers].
 
 例如，有个场景是因为 `parallel_memory_limit` 设置过低，优化器判断SQL的cost较大，所以只是尝试去使用并行，但没发挥最大优势
 ```
+mysql> show global status like 'PQ_%';
 | PQ_memory_refused  | 0     |
 | PQ_memory_used     | 0     |  <-- 没真正用上，因为可用buffer不够
 | PQ_threads_refused | 82    |
@@ -461,6 +462,7 @@ scheme of mysql_innodb_cluster_r[10_numbers].
 
 在调大 `parallel_memory_limit` 之后就好了
 ```
+mysql> show global status like 'PQ_%';
 | PQ_memory_refused  | 0       |
 | PQ_memory_used     | 4801552 |  <-- PQ消耗的内存
 | PQ_threads_refused | 82      |
