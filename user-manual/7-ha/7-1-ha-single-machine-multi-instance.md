@@ -42,6 +42,8 @@ MySQL Router的部署方法可以参考文档：[读写分离](../5-oper-guide/5
 
 ![MySQL Router单机多实例高可用方案](./7-1-ha-single-machine-multi-instance01.png)
 
+在本案中，因为是单机多实例环境，因此直接把MySQL Router和数据库服务器部署在一起，没有分开。
+
 **问题反馈**
 ---
 - [问题反馈 gitee](https://gitee.com/GreatSQL/GreatSQL-Doc/issues)
