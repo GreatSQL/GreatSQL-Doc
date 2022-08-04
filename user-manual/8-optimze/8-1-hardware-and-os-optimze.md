@@ -34,7 +34,7 @@
 5. 调整mysql用户使用资源上限，避免报告文件数不够等限制错误。
 6. 其他内核参数优化。
 
-详情参考文档：[安装准备](user-manual/4-install-guide/4-1-install-prepare.md#2-系统环境)。
+详情参考文档：[安装准备](/user-manual/4-install-guide/4-1-install-prepare.md#2-系统环境)。
 
 **问题反馈**
 ---
