@@ -96,7 +96,7 @@ $ systemctl stop firewalld ; systemctl disable firewalld
 
 2. **关闭selinux**
 ```
-$ setenforce=0
+$ setenforce 0
 $ sed -i '/^SELINUX=/c'SELINUX=disabled /etc/selinux/config
 ```
 
