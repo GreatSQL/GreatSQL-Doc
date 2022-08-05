@@ -161,6 +161,7 @@ $ echo "net.core.somaxconn = 32768" >> /etc/sysctl.conf
 $ echo "net.ipv4.tcp_tw_recycle = 0" >> /etc/sysctl.conf
 $ echo "net.ipv4.tcp_syncookies = 0" >> /etc/sysctl.conf
 $ echo "vm.overcommit_memory = 1" >> /etc/sysctl.conf
+$ sysctl -p
 ```
 
 5. *修改mysql用户使用资源上限**
