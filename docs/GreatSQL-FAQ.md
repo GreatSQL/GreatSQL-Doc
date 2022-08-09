@@ -3,29 +3,31 @@
 > 关于GreatSQL及MGR的FAQ，持续更新中。
 
 ## 0. GreatSQL简介
-GreatSQL是由万里数据库维护的MySQL分支，开源、免费。GreatSQL基于Percona Server，在其基础上进一步提升MGR（MySQL Group Replication）的性能及可靠性。此外，GreatSQL合并了华为鲲鹏计算团队贡献的Patch，实现了InnoDB并行查询特性，以及对InnoDB事务锁的优化。
 
-GreatSQL可以作为MySQL或Percona Server的可选替代方案，用于线上生产环境。
+GreatSQL开源数据库是适用于金融级应用的国内自主MySQL版本，专注于提升MGR可靠性及性能，支持InnoDB并行查询等特性，可以作为MySQL或Percona Server的可选替换，用于线上生产环境，且完全免费并兼容MySQL或Percona Server。
 
-GreatSQL完全免费并兼容MySQL或Percona Server。
+GreatSQL除了提升MGR性能及可靠性，还引入InnoDB事务锁优化及并行查询优化等特性，以及众多BUG修复。
 
 ## 1. GreatSQL的特色有哪些
 
-相对于MySQL官方社区版，GreatSQL有以下几个优势：
-- InnoDB性能更好
-    - 支持InnoDB并行查询，TPC-H测试中平均提升聚合分析型SQL性能15倍，最高提升40多倍。
-    - 优化InnoDB事务锁，tps性能可提升约10%。
-- MGR更可靠、稳定，性能也更好。
-    - MGR中引入地理标签特性，主要用于解决多机房数据同步的问题。
-    - MGR中优化了流控算法，运行更加平稳。
-    - 解决磁盘空间爆满时导致MGR集群阻塞的问题。
-    - 解决MGR多主模式下或切主时可能导致丢数据的问题。
-    - 解决节点异常退出MGR集群时导致性能抖动的问题。
-    - MGR节点异常状态判断更完善。
-    - 重新设计MGR事务认证队列清理算法，不复存在每隔60秒性能抖动的问题。
-    - 修复了recovery过程中长时间等待的问题。
-    - 修复了传输大数据可能导致逻辑判断死循环问题。
-    - 修复了多数派节点不同类型异常退出集群导致的视图更新的问题。
+相较于MySQL/Percona Server，GreatSQL主要增加几个特性：
+1. **地理标签**
+1. **仲裁节点**
+1. **快速单主**
+1. **智能选主**
+1. **并行查询**
+
+选用GreatSQl主要有以下几点优势：
+
+- 专注于提升MGR可靠性及性能，支持InnoDB并行查询特性
+- 是适用于金融级应用的MySQL分支版本
+- 地理标签，提升多机房架构数据可靠性
+- 仲裁节点，用更低的服务器成本实现更高可用
+- 单主模式下更快，选主机制更完善
+- InnoDB表也支持并行查询，让CPU资源不再浪费
+- 全新流控机制，让MGR运行更流畅不频繁抖动
+- 相对官方社区版，MGR运行更稳定、可靠
+- 其他...
 
 无论是更可靠的MGR还是性能更好的InnoDB，都值得将当前的MySQL或Percona Server升级到GreatSQL。
 
