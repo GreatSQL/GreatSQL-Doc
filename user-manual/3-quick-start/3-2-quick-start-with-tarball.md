@@ -62,6 +62,24 @@ After=syslog.target
 [Install]
 WantedBy=multi-user.target
 [Service]
+
+# some limits
+# file size
+LimitFSIZE=infinity
+# cpu time
+LimitCPU=infinity
+# virtual memory size
+LimitAS=infinity
+# open files
+LimitNOFILE=65535
+# processes/threads
+LimitNPROC=65535
+# locked memory
+LimitMEMLOCK=infinity
+# total threads (user+kernel)
+TasksMax=infinity
+TasksAccounting=false
+
 User=mysql
 Group=mysql
 Type=notify

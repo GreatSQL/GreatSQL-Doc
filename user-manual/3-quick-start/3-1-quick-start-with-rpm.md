@@ -57,6 +57,37 @@ Updating / installing...
 
 ## 启动GreatSQL
 
+启动GreatSQL服务前，先修改systemd文件，调高一些limit上限，避免出现文件数、线程数不够用的告警。
+```
+# 在[Server]区间增加下面几行内容
+$ vim /lib/systemd/system/mysqld.service
+...
+[Service]
+
+# some limits
+# file size
+LimitFSIZE=infinity
+# cpu time
+LimitCPU=infinity
+# virtual memory size
+LimitAS=infinity
+# open files
+LimitNOFILE=65535
+# processes/threads
+LimitNPROC=65535
+# locked memory
+LimitMEMLOCK=infinity
+# total threads (user+kernel)
+TasksMax=infinity
+TasksAccounting=false
+...
+```
+
+保存退出，然后再执行命令重载systemd，如果没问题就不会报错：
+```
+$ systemctl daemon-reload
+```
+
 执行下面的命令启动GreatSQL服务
 ```
 $ systemctl start mysqld
