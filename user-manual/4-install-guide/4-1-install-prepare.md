@@ -170,10 +170,12 @@ $ sysctl -p
 ```
 $ vim /etc/security/limits.conf
 ...
-mysql           soft    nofile         1000000
-mysql           hard    nofile         1000000
+mysql           soft    nofile         65535
+mysql           hard    nofile         65535
 mysql           soft    stack          32768
 mysql           hard    stack          32768
+mysql           soft    nproc          65535
+mysql           hard    nproc          65535
 ```
 
 ## 7. 其他
