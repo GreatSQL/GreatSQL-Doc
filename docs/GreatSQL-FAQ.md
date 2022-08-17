@@ -470,3 +470,33 @@ mysql> show global status like 'PQ_%';
 | PQ_threads_refused | 82      |
 | PQ_threads_running | 4       |  <-- 并行线程4
 ```
+
+## 30. GreatSQL相关资源有哪些
+
+一、文档
+目前GreatSQL相关文档全部发布在gitee上（[https://gitee.com/GreatSQL/GreatSQL-Doc/](https://gitee.com/GreatSQL/GreatSQL-Doc/)），主要有以下几部分
+1. GreatSQL历史版本说明
+- [https://gitee.com/GreatSQL/GreatSQL-Doc/blob/master/relnotes/changes-greatsql-8-0-25-16-20220516.md](https://gitee.com/GreatSQL/GreatSQL-Doc/blob/master/relnotes/changes-greatsql-8-0-25-16-20220516.md)
+- [https://gitee.com/GreatSQL/GreatSQL-Doc/blob/master/relnotes/changes-greatsql-8-0-25-20210820.md](https://gitee.com/GreatSQL/GreatSQL-Doc/blob/master/relnotes/changes-greatsql-8-0-25-20210820.md)
+- [https://gitee.com/GreatSQL/GreatSQL-Doc/blob/master/relnotes/changes-greatsql-5-7-36-20220407.md](https://gitee.com/GreatSQL/GreatSQL-Doc/blob/master/relnotes/changes-greatsql-5-7-36-20220407.md)
+
+2. 《深入浅出MGR》系列
+- [https://gitee.com/GreatSQL/GreatSQL-Doc/tree/master/deep-dive-mgr](https://gitee.com/GreatSQL/GreatSQL-Doc/tree/master/deep-dive-mgr)
+
+3. 《GreatSQL手册》系列，地址
+- [https://gitee.com/GreatSQL/GreatSQL-Doc/tree/master/user-manual](https://gitee.com/GreatSQL/GreatSQL-Doc/tree/master/user-manual)
+
+二、视频
+目前GreatSQL相关视频全部发布在B站上（[https://space.bilibili.com/1363850082](https://space.bilibili.com/1363850082)），主要有以下几部分
+
+1. 《实战MGR》
+- [https://space.bilibili.com/1363850082/channel/seriesdetail?sid=488623&ctype=0](https://space.bilibili.com/1363850082/channel/seriesdetail?sid=488623&ctype=0)
+
+2. 《深入浅出MGR》
+- [https://space.bilibili.com/1363850082/channel/collectiondetail?sid=343928&ctype=0](https://space.bilibili.com/1363850082/channel/collectiondetail?sid=343928&ctype=0)
+
+3. 《零基础学习MySQL》
+- [https://space.bilibili.com/1363850082/channel/collectiondetail?sid=328292&ctype=0](https://space.bilibili.com/1363850082/channel/collectiondetail?sid=328292&ctype=0)
+
+4. 万里数据库工程师的公开分享
+- [https://www.bilibili.com/medialist/detail/ml1406093582?type=1&spm_id_from=333.999.0.0](https://www.bilibili.com/medialist/detail/ml1406093582?type=1&spm_id_from=333.999.0.0)
