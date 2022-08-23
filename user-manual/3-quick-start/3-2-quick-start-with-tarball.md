@@ -103,6 +103,20 @@ $ systemctl daemon-reload
 
 这就安装成功并将GreatSQL添加到系统服务中，后面可以用 `systemctl` 来管理GreatSQL服务。
 
+GreatSQL二进制包中没有自带 `mysqld_pre_systemd` 脚本文件，需要自行下载。
+
+点击[本链接](https://gitee.com/GreatSQL/GreatSQL-Ansible/blob/master/mysql-support-files/mysqld_pre_systemd) 复制脚本内容，并保存成文件 `/usr/local/GreatSQL-8.0.25-16-Linux-glibc2.28-x86_64-minimal/bin/mysqld_pre_systemd`，确认第25行附近 `MYSQL_BASEDIR` 所指的路径是否正确：
+
+```
+MYSQL_BASEDIR = /usr/local/GreatSQL-8.0.25-16-Linux-glibc2.28-x86_64-minimal
+```
+
+之后修改文件属性，加上可执行权限：
+
+```
+$ chmod ug+x /usr/local/GreatSQL-8.0.25-16-Linux-glibc2.28-x86_64-minimal/bin/mysqld_pre_systemd
+```
+
 编辑GreatSQL全局配置文件 `/etc/my.cnf`，加入下面内容：
 ```
 [mysqld]
