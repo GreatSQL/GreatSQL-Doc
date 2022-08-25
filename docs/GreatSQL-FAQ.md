@@ -79,11 +79,11 @@ $ docker pull docker.io/greatsql/greatsql:8.0.25-aarch64
 
 使用GreatSQL过程中如果遇到问题，可将问题细节整理清楚后，联系GreatSQL社区寻求帮助。
 
-扫码添加GreatSQL社区助手
-![](media/16389331452344/16391157559903.jpg)
+扫码添加GreatSQL社区助手：<br/>
+-![扫码添加GreatSQL社区助手](greatsql-wx-assist.jpg)
 
-或扫码加入GreatSQL社区QQ群（533341697）：
-![](media/16389331452344/16391157647949.jpg)
+或扫码加入GreatSQL社区QQ群（533341697）：<br/>
+-![或扫码加入GreatSQL社区QQ群533341697](greatsql-qqqun.jpg)
 
 此外，我们已经在B站发布MGR相关系列视频，可以前往学习，视频链接：[https://space.bilibili.com/1363850082](https://space.bilibili.com/1363850082) 。
 
@@ -365,7 +365,7 @@ procs -----------memory---------- ---swap-- -----io---- -system-- ------cpu-----
 - 节点重启时，注意要先启动MGR服务，再启动M-S服务。这时候可以设置 `group_replication_start_on_boot=ON` 和 `skip_slave_start=ON` 予以保证
 
 在这两个MGR集群间的主从复制可以采用异步复制，也可以采用半同步复制，主要取决于两个集群间的网络延迟情况及架构设计方案。这时候，整体架构方案类似下面这样：
-![](media/16389331452344/16404213602884.jpg)
+-![两个MGR间构建M-S复制架构](6.%E5%90%8C%E5%9F%8EMGR.png)
 
 在这个架构下，两个MGR集群间是相互独立的，如果前端挂载MySQL Router的话，需要单独创建对应的连接。
 
