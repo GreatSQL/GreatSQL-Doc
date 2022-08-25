@@ -386,7 +386,7 @@ MySQL Router通过两个端口来区分读写服务请求，默认是 6446端口
 - first-available，只连接第一个可用节点
 - round-robin（默认），在多个主节点间轮询
 
-只读服务默认是对所有Secondary节点轮询。对于只读服务端口，可选的策略有以下X种：
+只读服务默认是对所有Secondary节点轮询。对于只读服务端口，可选的策略有以下3种：
 - first-available，只连第一个可用节点
 - round-robin，在所有可用Secondary节点间轮询，如果所有Secondary节点都不可用时，只读服务则不可用，不会连接到Primary节点
 - round-robin-with-fallback（默认），在所有Secondary节点间轮询。如果所有Secondary节点都不可用时，会再连接到Primary节点
