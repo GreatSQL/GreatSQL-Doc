@@ -127,6 +127,8 @@ $ systemctl status mysqld
 
 # 专栏文章
 - [深入浅出MGR专栏文章](https://gitee.com/GreatSQL/GreatSQL-Doc/blob/master/deep-dive-mgr)，深入浅出MGR相关知识点、运维管理实操，配合「实战MGR」视频内容食用更佳。
+- [GreatSQL文档](https://gitee.com/GreatSQL/GreatSQL-Doc/tree/master/user-manual)，GreatSQL开源分支文档。
+
 
 # 相关资源
 - [GreatSQL-Docker](https://gitee.com/GreatSQL/GreatSQL-Docker)，在Docker中运行GreatSQL。
