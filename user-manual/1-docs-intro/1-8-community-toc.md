@@ -1,4 +1,4 @@
-！[](../../community-toc.jpg)
+！[](https://gitee.com/rushchongchong/GreatSQL-Doc/raw/master/community-toc.jpg)
 
 社区技术观察委员会（TOC）
 项目管理委员会（PMC）
