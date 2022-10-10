@@ -16,7 +16,7 @@ MGR的选主工作是自动的，每个节点都会参与。选主时会检查�
 2. 版本号相同的各节点则根据各节点的权重值排序，权重越高优先级也越高。节点的权重值可通过设置 `group_replication_member_weight` 选项来调整。这个选项是MySQL 8.0版本引入的，如果是5.7版本则不支持。
 3. 当版本号和节点权重值都一样时，再根据 `server_uuid`（或者说是 `MEMBER_ID`）排序（注意，不是 `server_id`），排在前面的优先级越高。MySQL Server在启动时，会生成一个随机的UUID值，其值记录在文件 *datadir/auto.cnf* 文件中，实际上可以在实例启动前，通过修改这个UUID值来改变 `server_uuid` 的值，只要符合UUID数据格式即可。因此，相当于是可以认为调整 `server_uuid` 以调整选主时节点的排序优先级。
 
-从上面可知，当有MySQL 8.0和5.7的节点混搭运行MGR集群时，运行5.7版本的节点会优先被选中，其次再根据 `group_replication_member_weight` 选择权重搞的节点，最后再根据 `server_uuid` 排序。
+从上面可知，当有MySQL 8.0和5.7的节点混搭运行MGR集群时，运行5.7版本的节点会优先被选中，其次再根据 `group_replication_member_weight` 选择权重高的节点，最后再根据 `server_uuid` 排序。
 
 因此，运行MGR集群时最好各节点版本号相同，选主规则就简单多了。
 
