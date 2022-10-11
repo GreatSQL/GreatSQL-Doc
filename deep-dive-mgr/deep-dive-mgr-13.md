@@ -11,7 +11,7 @@
 
 全局恢复则是在应用完本地relay log的事务后，再经过 group_replication_recover 通道从 donor节点获取增量事务进行恢复，此外还要恢复上面第一步提到的xcom cache里缓存的事务，然后根据 group_replication_recovery_complete_at 选项设置（TRANSACTIONS_CERTIFIED 或 TRANSACTIONS_APPLIED，默认是 TRANSACTIONS_APPLIED）决定该节点是否可以正式宣告为online状态。
 
-在这个过程中，准备加入的节点，称之为 joiner（加入者），而向joiner提供复制数据的节点称为 doner（捐献者）。
+在这个过程中，准备加入的节点，称之为 joiner（加入者），而向joiner提供复制数据的节点称为 donor（捐献者）。
 
 数据恢复时，MGR会随机选择某个节点作为donor角色，如果无法从当前的donor获取数据，则会尝试下一个donor节点，直到重试次数达到 group_replication_recovery_retry_count 阈值（默认为5）。
 
