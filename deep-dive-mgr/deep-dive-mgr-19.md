@@ -105,7 +105,7 @@ GreatSQL中增加一个新的工作模式：**单主快速模式**，在这个�
 
 使用限制：
 - 暂不支持子查询，可想办法改造成JOIN。
-- 暂时只支持ARM架构平台，X86架构平台优化也会尽快完成。
+
 ![输入图片说明](https://images.gitee.com/uploads/images/2021/0819/094317_1c0fb43a_8779455.jpeg "16292668686865.jpg")
 
 | System Variable Name    | force_parallel_execute |
