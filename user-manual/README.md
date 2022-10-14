@@ -10,6 +10,7 @@ GreatSQL文档
 ## [已知问题](./1-docs-intro/1-4-issues-known.md)
 ## [参与贡献](./1-docs-intro/1-5-contribute-to-greatsql.md)
 ## [社区行为守则](./1-docs-intro/1-6-community-rules.md)
+## [社区治理](./1-docs-intro/1-8-community-toc.md)
 ## [致谢](./1-docs-intro/1-7-thanks.md)
 
 # [关于GreatSQL](./2-about-greatsql/2-about-greatsql.md)
