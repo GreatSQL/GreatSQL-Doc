@@ -14,7 +14,7 @@ GreatSQL的Docker镜像仓库主页：[https://hub.docker.com/repository/docker/
 ## 安装步骤
 1. 启动Docker服务
 ```
-$ systemcl start docker
+$ systemctl start docker
 ```
 
 2. 搜索、拉取GreatSQL镜像
