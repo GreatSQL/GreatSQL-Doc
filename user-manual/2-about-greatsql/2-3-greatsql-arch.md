@@ -43,7 +43,7 @@ GreatSQL和MySQL一样，是个单机系统。同样地，GreatSQL也是三层�
 
 **架构说明**
 
-和上面的传统主从异步复制架构相比，能看到半同步复制的主要区别在于：一个事务要在Replica节点上被apply了，才能向Source节点返回ACK信息，然后Source节点上才能完成commit。选项 `rpl_semi_sync_master_enabled` 用于设置Source节点什么时候提交事务，可选值有 AFTER_SYNC(默认)、AFTER_COMMIT，**建议采用默认的AFTER_SYNC**。该选项的详细解读见：[#sysvar_rpl_semi_sync_master_wait_point](https://dev.mysql.com/doc/refman/8.0/en/replication-options-source.html#sysvar_rpl_semi_sync_master_wait_point)。
+和上面的传统主从异步复制架构相比，能看到半同步复制的主要区别在于：一个事务要在Replica节点上被apply了，才能向Source节点返回ACK信息，然后Source节点上才能完成commit。选项 `rpl_semi_sync_master_wait_point` 用于设置Source节点什么时候提交事务，可选值有 AFTER_SYNC(默认)、AFTER_COMMIT，**建议采用默认的AFTER_SYNC**。该选项的详细解读见：[#sysvar_rpl_semi_sync_master_wait_point](https://dev.mysql.com/doc/refman/8.0/en/replication-options-source.html#sysvar_rpl_semi_sync_master_wait_point)。
 
 事实上，如果业务系统要求数据一致性等级较高的话，强烈建议选择组复制架构。
 
