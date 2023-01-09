@@ -122,7 +122,7 @@ MGR 5.7集群滚动升级至8.0可以参考这篇文章：[**MySQL MGR从5.7滚�
 2. 一比一下线一个MySQL 5.7的Secondary节点。
 3. 如此往复，直到剩下最后一个MySQL 5.7的Primary节点。
 4. 再次上线一个MySQL 8.0的Secondary节点。
-5. 停止最后一个MySQL 5.7的Primary节点，这是会切换主节点，并且选择其中一个MySQL 8.0节点作为新的Primary节点，这就完成升级了。
+5. 停止最后一个MySQL 5.7的Primary节点，这时会切换主节点，并且选择其中一个MySQL 8.0节点作为新的Primary节点，这就完成升级了。
 
 在这里实操演示大概的过程。
 
