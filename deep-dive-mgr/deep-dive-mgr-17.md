@@ -26,7 +26,7 @@
 在GreatSQL中，还可以设置选项 `group_replication_single_primary_fast_mode = 1`（要求所有节点都这么设置），启用快速单主模式，提升MGR事务应用效率。
 
 ### 2.2 不恰当的流控
-在 [14.流量控制（流控）](xx) 这节内容中我们讲过，MySQL的流控机制有明显的缺陷，实际流控效果很有限，并且还可能会起到反作用，因此不建议启用MySQL的流控机制。即设置选项 `group_replication_flow_control_mode = DISABLED`。
+在 [14.流量控制（流控）](https://gitee.com/GreatSQL/GreatSQL-Doc/blob/master/deep-dive-mgr/deep-dive-mgr-14.md) 这节内容中我们讲过，MySQL的流控机制有明显的缺陷，实际流控效果很有限，并且还可能会起到反作用，因此不建议启用MySQL的流控机制。即设置选项 `group_replication_flow_control_mode = DISABLED`。
 
 在GreatSQL中，除了关闭流控外，只需设置选项 `group_replication_flow_control_replay_lag_behind = 600`，控制MGR主从节点复制延迟阈值，当MGR主从节点因为大事务等原因延迟超过阈值时，就会触发优化后的新的流控机制。
 
