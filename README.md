@@ -138,6 +138,9 @@ $ systemctl status mysqld
 ---
 - [问题反馈 gitee](https://gitee.com/GreatSQL/GreatSQL-Doc/issues)
 
+# 提示
+---
+[如果您使用了GreatSQL，请告诉我们。](https://wj.qq.com/s2/11543483/9e09/)
 
 # 联系我们
 ---
