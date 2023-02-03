@@ -140,7 +140,7 @@ $ systemctl status mysqld
 
 # 提示
 ---
-[如果您使用了GreatSQL，请告诉我们。](https://wj.qq.com/s2/11543483/9e09/)
+[如果您使用了GreatSQL，请告诉我们。有机会获得精美礼品一份和免费技术支持](https://wj.qq.com/s2/11543483/9e09/)
 
 # 联系我们
 ---
