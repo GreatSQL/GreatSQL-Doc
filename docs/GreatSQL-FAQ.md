@@ -602,7 +602,7 @@ scheme of mysql_innodb_cluster_r[10_numbers].
 
 综上，在MGR中，即便本地节点选择的事RR级别，依然无法跨节点实现gap lock加锁，因此也就无法跨节点保证RR级别。但**如果写入事务都在同一个节点的话，则设置RR是有意义的**。
 
-### 8. GreatSQL性能表现如何
+### 9. GreatSQL性能表现如何
 
 GreatSQL相对于MySQL官方社区版本有非常大的性能提升，尤其是引入了InnoDB并行查询特性，在TPC-H测试中，平均提升15倍以上，最高提升43倍，表现非常优异。
 
