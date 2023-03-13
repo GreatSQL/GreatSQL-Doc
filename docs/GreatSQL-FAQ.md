@@ -33,7 +33,10 @@ GreatSQL社区官网：[https://greatsql.cn](https://greatsql.cn)
 
 无论是更可靠的MGR还是性能更好的InnoDB，都值得将当前的MySQL或Percona Server升级到GreatSQL。
 
+目前GreatSQL最新版本是8.0.25-17，[可点击这里下载最新版本](https://gitee.com/GreatSQL/GreatSQL/releases/tag/GreatSQL-8.0.25-17)。
+
 关于GreatSQL的优势可阅读下面几篇文章：
+- [GreatSQL 8.0.25-17](https://gitee.com/GreatSQL/GreatSQL-Doc/blob/master/relnotes/changes-greatsql-8-0-25-17-20230313.md)
 - [GreatSQL 8.0.25-16](https://gitee.com/GreatSQL/GreatSQL-Doc/blob/master/relnotes/changes-greatsql-8-0-25-16-20220516.md)
 - [GreatSQL 8.0.25-15](https://gitee.com/GreatSQL/GreatSQL-Doc/blob/master/relnotes/changes-greatsql-8-0-25-20210820.md)
 - [GreatSQL 5.7.36-39](https://gitee.com/GreatSQL/GreatSQL-Doc/blob/master/relnotes/changes-greatsql-5-7-36-20220407.md)
@@ -92,6 +95,7 @@ $ docker pull docker.io/greatsql/greatsql:8.0.25-aarch64
 一、文档
 目前GreatSQL相关文档全部发布在gitee上（[https://gitee.com/GreatSQL/GreatSQL-Doc/](https://gitee.com/GreatSQL/GreatSQL-Doc/)），主要有以下几部分
 1. GreatSQL历史版本说明
+- [https://gitee.com/GreatSQL/GreatSQL-Doc/blob/master/relnotes/changes-greatsql-8-0-25-17-20230313.md](https://gitee.com/GreatSQL/GreatSQL-Doc/blob/master/relnotes/changes-greatsql-8-0-25-17-20230313.md)
 - [https://gitee.com/GreatSQL/GreatSQL-Doc/blob/master/relnotes/changes-greatsql-8-0-25-16-20220516.md](https://gitee.com/GreatSQL/GreatSQL-Doc/blob/master/relnotes/changes-greatsql-8-0-25-16-20220516.md)
 - [https://gitee.com/GreatSQL/GreatSQL-Doc/blob/master/relnotes/changes-greatsql-8-0-25-20210820.md](https://gitee.com/GreatSQL/GreatSQL-Doc/blob/master/relnotes/changes-greatsql-8-0-25-20210820.md)
 - [https://gitee.com/GreatSQL/GreatSQL-Doc/blob/master/relnotes/changes-greatsql-5-7-36-20220407.md](https://gitee.com/GreatSQL/GreatSQL-Doc/blob/master/relnotes/changes-greatsql-5-7-36-20220407.md)
@@ -126,6 +130,7 @@ GreatSQL不计划每个小版本都跟随，暂定奇数版本跟随方式，即
 目前已有的版本：<br/>
 
 **GreatSQL 8.0**
+- [GreatSQL 8.0.25-17](https://gitee.com/GreatSQL/GreatSQL-Doc/blob/master/relnotes/changes-greatsql-8-0-25-17-20230313.md)
 - [GreatSQL 8.0.25-16](https://gitee.com/GreatSQL/GreatSQL-Doc/blob/master/relnotes/changes-greatsql-8-0-25-16-20220516.md)
 - [GreatSQL 8.0.25-15](https://gitee.com/GreatSQL/GreatSQL-Doc/blob/master/relnotes/changes-greatsql-8-0-25-20210820.md)
 
