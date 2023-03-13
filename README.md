@@ -63,7 +63,7 @@ jemalloc下载地址：https://centos.pkgs.org/8/epel-x86_64/jemalloc-5.2.1-2.el
 
 # 安装GreatSQL
 推荐安装GreatSQL RPM包。
-[戳此链接下载GreatSQL RPM包](https://gitee.com/GreatSQL/GreatSQL/releases/GreatSQL-8.0.25-16)。
+[戳此链接下载GreatSQL RPM包](https://gitee.com/GreatSQL/GreatSQL/releases/GreatSQL-8.0.25-17)。
 
 执行下面的命令安装GreatSQL：
 ```
@@ -73,7 +73,7 @@ $ yum search greatsql
 No matches found.
 
 #然后安装
-$ rpm -ivh greatsql-client-8.0.25-16.1.el8.x86_64.rpm greatsql-devel-8.0.25-16.1.el8.x86_64.rpm greatsql-mysql-router-8.0.25-16.1.el8.x86_64.rpm greatsql-server-8.0.25-16.1.el8.x86_64.rpm greatsql-shared-8.0.25-16.1.el8.x86_64.rpm
+$ rpm -ivh greatsql-client-8.0.25-17.1.el8.x86_64.rpm greatsql-devel-8.0.25-17.1.el8.x86_64.rpm greatsql-mysql-router-8.0.25-17.1.el8.x86_64.rpm greatsql-server-8.0.25-17.1.el8.x86_64.rpm greatsql-shared-8.0.25-17.1.el8.x86_64.rpm
 ```
 
 安装完成后，GreatSQL会自行完成初始化，可以再检查是否已加入系统服务或已启动：
@@ -96,7 +96,7 @@ $ systemctl status mysqld
 
 # my.cnf参考
 
-- [my.cnf for GreatSQL 8.0.25-1s7](https://gitee.com/GreatSQL/GreatSQL-Doc/blob/master/docs/my.cnf-example-greatsql-8.0.25-17)
+- [my.cnf for GreatSQL 8.0.25-17](https://gitee.com/GreatSQL/GreatSQL-Doc/blob/master/docs/my.cnf-example-greatsql-8.0.25-17)
 - [my.cnf for GreatSQL 8.0.25-16](https://gitee.com/GreatSQL/GreatSQL-Doc/blob/master/docs/my.cnf-example-greatsql-8.0.25-16)
 - [my.cnf for GreatSQL 8.0.25-15](https://gitee.com/GreatSQL/GreatSQL-Doc/blob/master/docs/my.cnf-example-greatsql-8.0.25-15)
 - [my.cnf for GreatSQL 5.7.36](https://gitee.com/GreatSQL/GreatSQL-Doc/blob/master/docs/my.cnf-example-greatsql-5.7.36)
