@@ -206,4 +206,5 @@ In GreatSQL, the new option `group_replication_primary_election_mode` is used to
 | PROCESSLIST Enhancement | ⭐️⭐️⭐️⭐️⭐️ | / |
 
 ## 6. GreatSQL Release Notes
-- [Changes in MySQL 8.0.25-15 (2022-8-26)](https://github.com/GreatSQL/GreatSQL-Doc/blob/main/relnotes/changes-greatsql-8-0-25-20210826.md)
+- [Changes in GreatSQL 8.0.25-15 (2022-8-26)](https://github.com/GreatSQL/GreatSQL-Doc/blob/main/relnotes/changes-greatsql-8-0-25-20210826.md)
+- [Changes in GreatSQL 5.7.36-39 (2022-4-7)](https://gitee.com/GreatSQL/GreatSQL-Doc/blob/master/relnotes/changes-greatsql-5-7-36-20220407.md)
