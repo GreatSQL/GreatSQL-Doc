@@ -48,6 +48,35 @@ GreatSQL 8.0相对于5.7有着众多优秀新特性，包括且不仅限以下�
 2. 利用mysqldump/xtrabackup等备份工具，执行一个全量备份。
 3. 利用主从复制或MGR，在其中一个节点执行备份，或者令某个节点临时下线/退出，作为备用节点。
 
+需要特别注意的事，您原先运行中的GreatSQL/MySQL 5.7版本，可能也是从其他旧版本中升级而来的，此时有可能MySQL系统库下的部分元数据表还是旧格式。这种情况下，需要先在原来的环境下执行 `mysql_upgrade` 进行升级修复旧格式。例如：
+```
+# 切换到当前运行的数据库实例datadir下
+$ cd /data/GreatSQL
+
+# 执行mysql_upgrade程序
+# 参数 -s 表示只升级MySQL系统库表文件，不升级其他用户数据文件，一般建议去掉，对所有数据都进行升级
+# 参数 -f 表示强制升级，如果升级过程中遇到报错，也会继续升级后面的库表文件，而不会直接退出
+# 假定socket文件路径是 /data/GreatSQL/mysql.sock，用参数 -S 指向
+$ /usr/local/GreatSQL-5.7.36-39-Linux-glibc2.28-x86_64/bin/mysql_upgrade -s -f -S/data/GreatSQL/mysql.sock
+
+/usr/local/GreatSQL-5.7.36-39-Linux-glibc2.28-x86_64/bin/mysql_upgrade -s -S./mysql.sock
+The --upgrade-system-tables option was used, databases won't be touched.
+Checking if update is needed.
+Checking server version.
+Running queries to upgrade MySQL server.
+
+...
+
+mysql.time_zone_transition_type                    OK
+mysql.user                                         OK
+The sys schema is already up to date (version 1.5.2).
+Checking databases.
+sys.sys_config                                     OK
+test.sbtest1                                       OK
+Upgrade process completed successfully.
+Checking if update is needed.
+``` 
+
 ## 3. 升级过程
 
 从GreatSQL/MySQL 5.7升级到8.0需要注意以下几点变化：
@@ -67,7 +96,7 @@ GreatSQL 8.0相对于5.7有着众多优秀新特性，包括且不仅限以下�
 
 如果数据库能停机维护，则采用原地升级（in-place upgrade）方法最为简单。
 
-备份完成后，关闭数据库实例。
+备份完成后，关闭数据库实例，在关闭数据库实例前，务必确保设置选项 `innodb_fast_shutdown=0`，以确保得到的是个干净的、正常关闭的数据库文件集。
 
 首先修改 `my.cnf`，增加一行
 ```
