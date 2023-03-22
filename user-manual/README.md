@@ -45,7 +45,7 @@ GreatSQL文档
 
 # [迁移升级](./6-migrate-and-upgrade/6-migrate-and-upgrade.md)
 ## [GreatSQL 5.7升级到8.0](./6-migrate-and-upgrade/6-1-upgrade-to-greatsql8.md)
-## [从MySQL迁移到GreatSQL](./6-migrate-and-upgrade/6-2-migrate-from-mysql-tograetsql.md)
+## [从MySQL迁移到GreatSQL](./6-migrate-and-upgrade/6-2-migrate-from-mysql-togreatsql.md)
 ## [从Percona Server迁移到GreatSQL](./6-migrate-and-upgrade/6-3-migrate-from-percona-to-greatsql.md)
 
 # [高可用架构](./7-ha/7-ha.md)
