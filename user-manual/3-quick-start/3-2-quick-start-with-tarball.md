@@ -82,7 +82,7 @@ TasksAccounting=false
 
 User=mysql
 Group=mysql
-Type=notify
+Type=simple
 TimeoutSec=0
 PermissionsStartOnly=true
 ExecStartPre=/usr/local/GreatSQL-8.0.25-16-Linux-glibc2.28-x86_64-minimal/bin/mysqld_pre_systemd
