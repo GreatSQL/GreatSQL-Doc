@@ -3,7 +3,7 @@
 
 本次介绍如何利用Docker来编译GreatSQL源码。
 
-## 1. 下载GeratSQL源码及Docker压缩包
+## 1. 下载GreatSQL源码及Docker压缩包
 
 ### 1.1 下载Docker编译环境压缩包
 
@@ -131,6 +131,10 @@ cmake  include  LICENSE  LICENSE-test    mysqlrouter-log-rotate  README.md   REA
 ```
 至此，GreatSQL二进制安装包就编译成功了，接下来可以参考文档[二进制包安装并构建MGR集群](./4-3-install-with-tarball.md)继续进行数据库的初始化，以及MGR集群构建等工作，这里不赘述。
 
+**延伸阅读**
+- [在Linux下源码编译安装GreatSQL](https://gitee.com/GreatSQL/GreatSQL-Doc/blob/master/docs/build-greatsql-with-source.md)
+- [麒麟OS+龙芯环境编译GreatSQL](https://gitee.com/GreatSQL/GreatSQL-Doc/blob/master/docs/build-greatsql-with-source-under-kylin-and-loongson.md)
+- [openEuler、龙蜥Anolis、统信UOS系统下编译GreatSQL二进制包](https://gitee.com/GreatSQL/GreatSQL-Doc/blob/master/docs/build-greatsql-with-source-under-kylin-and-loongson.md)
 
 **问题反馈**
 ---
