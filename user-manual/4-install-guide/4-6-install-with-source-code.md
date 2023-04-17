@@ -134,7 +134,7 @@ cmake  include  LICENSE  LICENSE-test    mysqlrouter-log-rotate  README.md   REA
 **延伸阅读**
 - [在Linux下源码编译安装GreatSQL](https://gitee.com/GreatSQL/GreatSQL-Doc/blob/master/docs/build-greatsql-with-source.md)
 - [麒麟OS+龙芯环境编译GreatSQL](https://gitee.com/GreatSQL/GreatSQL-Doc/blob/master/docs/build-greatsql-with-source-under-kylin-and-loongson.md)
-- [openEuler、龙蜥Anolis、统信UOS系统下编译GreatSQL二进制包](https://gitee.com/GreatSQL/GreatSQL-Doc/blob/master/docs/build-greatsql-with-source-under-kylin-and-loongson.md)
+- [openEuler、龙蜥Anolis、统信UOS系统下编译GreatSQL二进制包](https://gitee.com/GreatSQL/GreatSQL-Doc/blob/179250e38fadf9fd74d089b90dace1e850d979d3/docs/build-greatsql-under-openeuler-anolis-uos.md)
 
 **问题反馈**
 ---
