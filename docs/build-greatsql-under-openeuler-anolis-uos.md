@@ -194,9 +194,9 @@ $ cd /opt && tar zxvf patchelf-0.14.tar.gz && cd patchelf-0.14 && ./bootstrap.sh
 $ cd /opt && tar zxvf rpcsvc-proto-1.4.tar.gz && cd rpcsvc-proto-1.4/ && ./configure && make && make install
 ```
 
-编译安装rpcsvc-proto：
+解压boost依赖包：
 ```
-[root@ky10 ~]# cd /opt && tar zxvf rpcsvc-proto-1.4.tar.gz && cd rpcsvc-proto-1.4/ && ./configure && make && make install
+$ cd /opt && tar zxvf boost_1_73_0.tar.gz
 ```
 
 确认glibc版本：
@@ -211,6 +211,12 @@ Written by Roland McGrath and Ulrich Drepper.
 ```
 
 在本次编译过程中，openEuler 2203的glibc版本是2.34。
+
+确认gcc版本：
+```
+$ gcc --version
+```
+建议gcc版本在8.3以上，否则可能安装失败。
 
 ## 4. 编译GreatSQL
 接下来编译GreatSQL二进制包
