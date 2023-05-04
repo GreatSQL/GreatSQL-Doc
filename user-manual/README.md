@@ -58,6 +58,7 @@ GreatSQL文档
 ## [硬件、系统优化](./8-optimze/8-1-hardware-and-os-optimze.md)
 ## [GreatSQL优化](./8-optimze/8-2-greatsql-optimze.md)
 ## [性能测试](./8-optimze/8-3-performance-benchmark.md)
+## [InnoDB并行查询使用说明](./8-optimze/8-4-innodb-parallel-execute.md)
 
 # [常见问题/FAQ](https://gitee.com/GreatSQL/GreatSQL-Doc/blob/master/docs/GreatSQL-FAQ.md)
 
