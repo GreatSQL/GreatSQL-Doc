@@ -136,6 +136,8 @@ GreatSQL支持在利用CLONE备份时同步进行加密操作，提升备份文�
 ## 2.稳定性提升
 ## 3.其他调整
 ## 4.bug修复
+- 修复InnoDB并行查询可能导致查询hang住，甚至crash的问题。
+
 ## 5. GreatSQL VS MySQL
 
 | 特性 | GreatSQL 8.0.32-24 | MySQL 8.0.32 |
