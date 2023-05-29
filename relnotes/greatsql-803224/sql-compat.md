@@ -33,12 +33,14 @@ Create Table: CREATE TABLE `t1` (
 ```
 
 ## 2. SQL语法
-- DATETIME 加减运算
-- ROWNUM语法
-- 子查询无别名
+- [DATETIME 运算](https://gitee.com/GreatSQL/GreatSQL-Doc/blob/master/relnotes/greatsql-803224/sql-compat-syntax-datetime-arithmetic.md)
+- [ROWNUM](https://gitee.com/GreatSQL/GreatSQL-Doc/blob/master/relnotes/greatsql-803224/sql-compat-syntax-rownum.md)
+- [子查询无别名](https://gitee.com/GreatSQL/GreatSQL-Doc/blob/master/relnotes/greatsql-803224/sql-compat-syntax-subquery-without-alias.md)
+- [EXPLAIN PLAN FOR](https://gitee.com/GreatSQL/GreatSQL-Doc/blob/master/relnotes/greatsql-803224/sql-compat-syntax-explain-plan-for.md)
 
 ## 3. 函数
 - [ADD_MONTHS()](https://gitee.com/GreatSQL/GreatSQL-Doc/blob/master/relnotes/greatsql-803224/sql-compat-func-addmonths.md)
+- [CAST()](https://gitee.com/GreatSQL/GreatSQL-Doc/blob/master/relnotes/greatsql-803224/sql-compat-func-cast.md)
 - [DECODE()](https://gitee.com/GreatSQL/GreatSQL-Doc/blob/master/relnotes/greatsql-803224/sql-compat-func-decode.md)
 - [INSTR()](https://gitee.com/GreatSQL/GreatSQL-Doc/blob/master/relnotes/greatsql-803224/sql-compat-func-instr.md)
 - [LENGTH()](https://gitee.com/GreatSQL/GreatSQL-Doc/blob/master/relnotes/greatsql-803224/sql-compat-func-length.md)
