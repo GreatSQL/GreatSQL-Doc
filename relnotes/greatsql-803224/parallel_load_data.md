@@ -16,9 +16,9 @@ MySQL原生的load data采用单线程读取本地文件（或收取client传来
 
 | 变量名| 含义| 取值范围及单位 | 默认值 |
 | --- | --- | ---- | --- |
-| greatsql_parallel_load| 是否开启并行导入(session only) |ON/OFF|OFF|
-|greatsql_parallel_load_chunk_size | 并行导入时，文件切割的大小|64k-128M，字节|1M|
-| greatsql_parallel_load_workers| 并行导入最大worker线程数       | 1-32| 8|
+| greatedb_parallel_load| 是否开启并行导入(session only) |ON/OFF|OFF|
+|greatedb_parallel_load_chunk_size | 并行导入时，文件切割的大小|64k-128M，字节|1M|
+| greatedb_parallel_load_workers| 并行导入最大worker线程数       | 1-32| 8|
 
 ## 4. 启用并行load data
 
@@ -26,9 +26,9 @@ MySQL原生的load data采用单线程读取本地文件（或收取client传来
 
 1. **设置session级变量启用**
 
-连接数据库，执行 `SET SESSION greatsql_parallel_load=ON`。
+连接数据库，执行 `SET SESSION greatedb_parallel_load=ON`。
 
-如需调整文件块大小或线程数，执行 `SET SESSION greatsql_parallel_load_chunk_size=65536` 或 `SET SESSION greatsql_parallel_load_workers=16`。
+如需调整文件块大小或线程数，执行 `SET SESSION greatedb_parallel_load_chunk_size=65536` 或 `SET SESSION greatedb_parallel_load_workers=16`。
 
 然后执行load data语句导入文件。
 ```
@@ -39,7 +39,7 @@ LOAD DATA INFILE '/tmp/load.txt' INTO TABLE t1;
 
 ```sql
 
-LOAD /*+ SET_VAR(greatsql_parallel_load=ON) SET_VAR(greatsql_parallel_load_chunk_size=65536) SET_VAR(greatsql_parallel_load_workers=16) */
+LOAD /*+ SET_VAR(greatedb_parallel_load=ON) SET_VAR(greatedb_parallel_load_chunk_size=65536) SET_VAR(greatedb_parallel_load_workers=16) */
 DATA INFILE '/tmp/load.txt' INTO TABLE t1;
 ```
 
@@ -67,77 +67,3 @@ LOAD /*parallel load worker(chunk_no:xxx)*/ DATA INFILE 'session_id:worker_no' I
 ## 7. 并行导入提升测试
 
 受限于master session的文件分割速度，并行导入速度可能区别较大。经过测试，在磁盘IO和CPU核心资源都充足的前提下启动32个worker，最大的加速比大概为20倍。
-
-=======以下测试结果无需发布到外部=====
-
-下面是我用普通测试机运行测试的结果：
-- 表数据量：2165600行（Avg_row_length: 141）。
-- 加载文件大小：206657411字节。
-- 生成的binlog大小：190M（开启并行与否，binlog文件总大小都差不多）。
-- **导入效率提升：113.39%**（开启并行导入后，耗时只有原来的46.86%，不到一半）。
-- **表空间大小膨胀率：17.46%**。
-
-相关几个指标数据如下：
-
-| 指标 | 未开启并行 | 开启并行 | 
-| --- | --- | --- | 
-| binlog文件大小 | 198243540 | 198376947 |
-| 事务数 | 1 | 200 |
-| 耗时（秒）| 11.62 | 5.45 |
-|表空间大小(字节)|264241152|310378496|
-
-
-
-
-load data infile '/tmp/tt.csv' into table tt;
-Query OK, 2165600 rows affected (11.68 sec)
-Query OK, 2165600 rows affected (11.48 sec)
-Query OK, 2165600 rows affected (11.71 sec)
-
-vs并行
-case1:
-| gdb_parallel_load_chunk_size | 1048576 |
-| gdb_parallel_load_workers    | 8       |
-Query OK, 2165600 rows affected (6.10 sec)
-Query OK, 2165600 rows affected (5.74 sec)
-Query OK, 2165600 rows affected (5.96 sec)
-Query OK, 2165600 rows affected (5.84 sec)
-
-case2:
-| gdb_parallel_load_chunk_size | 1048576 |
-| gdb_parallel_load_workers    | 14      |
-Query OK, 2165600 rows affected (5.60 sec)
-Query OK, 2165600 rows affected (5.51 sec)
-Query OK, 2165600 rows affected (5.32 sec)
-Query OK, 2165600 rows affected (5.36 sec)
-
-case3:
-| gdb_parallel_load_chunk_size | 4194304 |
-| gdb_parallel_load_workers    | 8       |
-Query OK, 2165600 rows affected (6.38 sec)
-Query OK, 2165600 rows affected (5.69 sec)
-Query OK, 2165600 rows affected (6.34 sec)
-Query OK, 2165600 rows affected (6.11 sec)
-
-case4:
-| gdb_parallel_load_chunk_size | 524288 |
-| gdb_parallel_load_workers    | 14     |
-Query OK, 2165600 rows affected (5.57 sec)
-Query OK, 2165600 rows affected (5.39 sec)
-Query OK, 2165600 rows affected (5.56 sec)
-Query OK, 2165600 rows affected (5.17 sec)
-
-case5:
-| gdb_parallel_load_chunk_size | 524288 |
-| gdb_parallel_load_workers    | 32     |
-Query OK, 2165600 rows affected (7.92 sec)
-Query OK, 2165600 rows affected (6.87 sec)
-
-case6:
-| gdb_parallel_load_chunk_size | 2097152 |
-| gdb_parallel_load_workers    | 14      |
-Query OK, 2165600 rows affected (5.81 sec)
-Query OK, 2165600 rows affected (6.59 sec)
-Query OK, 2165600 rows affected (5.68 sec)
-Query OK, 2165600 rows affected (5.41 sec)
-Query OK, 2165600 rows affected (5.36 sec)
