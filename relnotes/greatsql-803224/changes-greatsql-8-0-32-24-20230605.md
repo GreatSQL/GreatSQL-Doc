@@ -52,14 +52,14 @@
 
 这时候有效的办法就是让applier queue落地时采用批量的方式，提高落盘效率。默认地，applier queue里的event是逐个落盘的，这种方式效率很低。当applier queue超过 `group_replication_applier_batch_size_threshold` 设定的阈值时，就会触发批量落盘模式，每100个event批量落盘，就能大大提高落盘效率。
 
-在生产环境中，选项 `group_replication_applier_batch_size_threshold` 值不要设置太小，建议不低于10000。默认值 5000000，最小值10（仅用于开发、测试环境），最大值100000000（基本上等于禁用）。一个大事务会包含很多个event，当该选项设置太低时，可能会导致一个事务中的event没办法及时落盘，会造成relay log不完整，节点crash时，就需要从Primary节点重新读取binlog进行恢复。
+在生产环境中，选项 `group_replication_applier_batch_size_threshold` 值不要设置太小，建议不低于10000。默认值 100000，最小值10（仅用于开发、测试环境），最大值100000000（基本上等于禁用）。一个大事务会包含很多个event，当该选项设置太低时，可能会导致一个事务中的event没办法及时落盘，会造成relay log不完整，节点crash时，就需要从Primary节点重新读取binlog进行恢复。
 
 | System Variable Name    | group_replication_applier_batch_size_threshold |
 | --- | --- | 
 | Variable Scope    | Global |
 | Dynamic Variable    | YES |
 | Permitted Values |    [10 ~ 100000000] |
-| Default    | 5000000 |
+| Default    | 100000 |
 | Description    |当applier queue超过 `group_replication_applier_batch_size_threshold` 设定的阈值时，就会触发批量落盘模式，每100个event批量落盘，提高落盘效率。|
 
 #### 1.2.3 Xcom cache分配静态化
