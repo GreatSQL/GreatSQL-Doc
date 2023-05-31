@@ -2,14 +2,12 @@
 [![](https://img.shields.io/badge/GreatSQL-论坛-brightgreen.svg)](https://greatsql.cn/forum.php)
 [![](https://img.shields.io/badge/GreatSQL-博客-brightgreen.svg)](https://greatsql.cn/home.php?mod=space&uid=10&do=blog&view=me&from=space)
 [![](https://img.shields.io/badge/License-GPL_v2.0-blue.svg)](https://gitee.com/GreatSQL/GreatSQL/blob/master/LICENSE)
-[![](https://img.shields.io/badge/release-8.0.25_17-blue.svg)](https://gitee.com/GreatSQL/GreatSQL/releases/tag/GreatSQL-8.0.25-17)
+[![](https://img.shields.io/badge/release-8.0.32_24-blue.svg)](https://gitee.com/GreatSQL/GreatSQL/releases/tag/GreatSQL-8.0.32-24)
 
 # 关于 GreatSQL
 --- 
 
-GreatSQL开源数据库是适用于金融级应用的国内自主MySQL版本，专注于提升MGR可靠性及性能，支持InnoDB并行查询等特性，可以作为MySQL或Percona Server的可选替换，用于线上生产环境，且完全免费并兼容MySQL或Percona Server。
-
-GreatSQL除了提升MGR性能及可靠性，还引入InnoDB事务锁优化及并行查询优化等特性，以及众多BUG修复。
+GreatSQL是适用于金融级应用的国内自主开源数据库，具备高性能、高可靠、高易用性、高安全等多个核心特性，可以作为MySQL或Percona Server的可选替换，用于线上生产环境，且完全免费并兼容MySQL或Percona Server。
 
 ![GreatSQL LOGO](/GreatSQL-logo-01.png "GreatSQL LOGO")
 
@@ -17,6 +15,7 @@ GreatSQL除了提升MGR性能及可靠性，还引入InnoDB事务锁优化及并
 ---
 
 ## GreatSQL 8.0
+- [GreatSQL 8.0.32-24](https://gitee.com/GreatSQL/GreatSQL/releases/GreatSQL-8.0.32-24)
 - [GreatSQL 8.0.25-17](https://gitee.com/GreatSQL/GreatSQL/releases/GreatSQL-8.0.25-17)
 - [GreatSQL 8.0.25-16](https://gitee.com/GreatSQL/GreatSQL/releases/GreatSQL-8.0.25-16)
 - [GreatSQL 8.0.25-15](https://gitee.com/GreatSQL/GreatSQL/releases/GreatSQL-8.0.25-15)
@@ -25,20 +24,40 @@ GreatSQL除了提升MGR性能及可靠性，还引入InnoDB事务锁优化及并
 - [GreatSQL 5.7.36](https://gitee.com/GreatSQL/GreatSQL/releases/GreatSQL-5.7.36-39)
 
 
-# 版本特性
+# GreatSQL核心特性
 ---
-GreatSQL除了提升MGR性能及可靠性，还引入InnoDB事务锁优化及并行查询优化等特性，以及众多BUG修复。
-选用GreatSQL主要有以下几点优势：
+GreatSQL具备高性能、高可靠、高易用性、高安全等多个核心特性。
 
-- 专注于提升MGR可靠性及性能，支持InnoDB并行查询特性
-- 是适用于金融级应用的MySQL分支版本
-- 地理标签，提升多机房架构数据可靠性
-- 仲裁节点，用更低的服务器成本实现更高可用
-- 单主模式下更快，选主机制更完善
-- InnoDB表也支持并行查询，让CPU资源不再浪费
-- 全新流控机制，让MGR运行更流畅不频繁抖动
-- 相对官方社区版，MGR运行更稳定、可靠
-- 其他...
+**1. 高性能**
+- 支持InnoDB并行查询，适用于轻量级OLAP应用场景，在TPC-H测试中平均提升15倍，最高提升40+倍。
+- 优化InnoDB事务系统，实现了大锁拆分及无锁化等多种优化方案，OLTP场景整体性能提升约20%。
+- 支持并行load data，适用于频繁导入大批量数据的应用场景，性能可提升约20+倍。
+- 支持线程池（thread pool），降低了线程创建和销毁的代价，保证高并发下，性能稳定不会明显衰退。
+
+
+**2. 高可靠**
+GreatSQL针对MGR进行了大量改进和提升工作，进一步提升MGR的高可靠等级。
+- 地理标签，提升多机房架构数据可靠性。
+- 读写节点动态VIP，高可用切换更便捷。
+- 仲裁节点，用更低的服务器成本实现更高可用。
+- 快速单主模式，在单主模式下更快，性能更高。
+- 智能选主，高可用切换选主机制更合理。
+- 全新流控算法，使得事务更平稳，避免剧烈抖动。
+- 优化了节点加入、退出时可能导致性能剧烈抖动的问题。
+- 解决磁盘空间爆满时导致MGR集群阻塞的问题。
+- 解决了长事务造成无法选主的问题。
+- 优化事务认证队列清理算法，规避每60s抖动问题。
+- 修复了recover过程中长时间等待的问题。
+
+**3. 高易用性**
+支持多个SQL兼容特性，包括CLOB、VARCHAR2数据类型，DATETIME运算、ROWNUM、子查询无别名、EXPLAIN PLAN FOR等语法，以及ADD_MONTHS()、CAST()、DECODE()等17个函数。
+
+更多信息详见文档：[GreatSQL中的SQL兼容性](https://gitee.com/GreatSQL/GreatSQL-Doc/blob/master/relnotes/greatsql-803224/sql-compat.md)。
+
+**4. 高安全性**
+支持逻辑备份加密、CLONE备份加密、审计日志入表、表空间国密加密等多个安全提升特性，进一步保障业务数据安全，更适用于金融级应用场景。
+
+更多信息详见文档：[GreatSQL中的安全性提升](https://gitee.com/GreatSQL/GreatSQL-Doc/blob/master/relnotes/greatsql-803224/changes-greatsql-8-0-32-24-20230605.md#14-%E5%AE%89%E5%85%A8)
 
 # 注意事项
 ---
@@ -63,7 +82,7 @@ jemalloc下载地址：https://centos.pkgs.org/8/epel-x86_64/jemalloc-5.2.1-2.el
 
 # 安装GreatSQL
 推荐安装GreatSQL RPM包。
-[戳此链接下载GreatSQL RPM包](https://gitee.com/GreatSQL/GreatSQL/releases/GreatSQL-8.0.25-17)。
+[戳此链接下载GreatSQL RPM包](https://gitee.com/GreatSQL/GreatSQL/releases/GreatSQL-8.0.32-24)。
 
 执行下面的命令安装GreatSQL：
 ```
@@ -73,7 +92,7 @@ $ yum search greatsql
 No matches found.
 
 #然后安装
-$ rpm -ivh greatsql-client-8.0.25-17.1.el8.x86_64.rpm greatsql-devel-8.0.25-17.1.el8.x86_64.rpm greatsql-mysql-router-8.0.25-17.1.el8.x86_64.rpm greatsql-server-8.0.25-17.1.el8.x86_64.rpm greatsql-shared-8.0.25-17.1.el8.x86_64.rpm
+$ rpm -ivh greatsql-client-8.0.32-24.1.el8.x86_64.rpm greatsql-devel-8.0.32-24.1.el8.x86_64.rpm greatsql-mysql-router-8.0.32-24.1.el8.x86_64.rpm greatsql-server-8.0.32-24.1.el8.x86_64.rpm greatsql-shared-8.0.32-24.1.el8.x86_64.rpm
 ```
 
 安装完成后，GreatSQL会自行完成初始化，可以再检查是否已加入系统服务或已启动：
@@ -96,6 +115,7 @@ $ systemctl status mysqld
 
 # my.cnf参考
 
+- [my.cnf for GreatSQL 8.0.32-24](https://gitee.com/GreatSQL/GreatSQL-Doc/blob/master/docs/my.cnf-example-greatsql-8.0.32-24)
 - [my.cnf for GreatSQL 8.0.25-17](https://gitee.com/GreatSQL/GreatSQL-Doc/blob/master/docs/my.cnf-example-greatsql-8.0.25-17)
 - [my.cnf for GreatSQL 8.0.25-16](https://gitee.com/GreatSQL/GreatSQL-Doc/blob/master/docs/my.cnf-example-greatsql-8.0.25-16)
 - [my.cnf for GreatSQL 8.0.25-15](https://gitee.com/GreatSQL/GreatSQL-Doc/blob/master/docs/my.cnf-example-greatsql-8.0.25-15)
@@ -107,6 +127,7 @@ $ systemctl status mysqld
 # 版本历史
 ---
 ## GreatSQL 8.0
+- [GreatSQL 更新说明 8.0.32-24(2023-6-5)](https://gitee.com/GreatSQL/GreatSQL-Doc/blob/master/relnotes/greatsql-803224/changes-greatsql-8-0-32-24-20230605.md)
 - [GreatSQL 更新说明 8.0.25-17(2023-3-13)](https://gitee.com/GreatSQL/GreatSQL-Doc/blob/master/relnotes/changes-greatsql-8-0-25-17-20230313.md)
 - [GreatSQL 更新说明 8.0.25-16(2022-5-16)](https://gitee.com/GreatSQL/GreatSQL-Doc/blob/master/relnotes/changes-greatsql-8-0-25-16-20220516.md)
 - [GreatSQL 更新说明 8.0.25-15(2021-8-26)](https://gitee.com/GreatSQL/GreatSQL-Doc/blob/master/relnotes/changes-greatsql-8-0-25-20210820.md)
