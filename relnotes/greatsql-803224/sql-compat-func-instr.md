@@ -26,7 +26,7 @@ INSTR( string1, string2 [, start_position [, nth_appearance ] ] )
 
 **注意**：由于在MySQL中已有原生 `INSTR()` 函数，如果想使用GreatSQL扩展后的 `INSTR()` 函数，需要先执行 `set sql_mode = oracle` 激活SQL兼容模式。
 
-GreatSQL中 `INSTR()` 函数与Oracle不同之处有：当参数 `nth_appearance` 值为小数时，结果与Oacle不一致（Oacle会做特殊转换处理），详见下方示例。
+GreatSQL中 `INSTR()` 函数与Oracle不同之处有：当参数 `nth_appearance` 值为小数时，结果与Oracle不一致（Oracle会做特殊转换处理），详见下方示例。
 
 ## 4. 示例
 

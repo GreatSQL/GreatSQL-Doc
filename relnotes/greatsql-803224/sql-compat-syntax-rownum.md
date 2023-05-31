@@ -1,11 +1,11 @@
-# SQL兼容性 - ROWMUM语法
+# SQL兼容性 - ROWNUM语法
 ---
 
 [toc]
 
 ## 1.语法
 
-`ROWMUM`是一个伪列，主要用来实现分布功能，类似于`LIMIT` 用法。使用方式如下：
+`ROWNUM`是一个伪列，主要用来实现分布功能，类似于`LIMIT` 用法。使用方式如下：
 
 ```sql
 greatsql> SELECT * FROM employees WHERE ROWNUM < 11;
