@@ -32,8 +32,8 @@ jemalloc jemalloc-devel libicu-devel re2-devel redhat-lsb-core rpm* tar libssh \
 cyrus-sasl-devel cyrus-sasl-scram
 
 #RUN dnf install -y dnf
-RUN dnf install -y gcc-toolset-10 && source /opt/rh/gcc-toolset-10/enable
-RUN echo 'source /opt/rh/gcc-toolset-10/enable' >> /root/.bash_profile
+RUN dnf install -y gcc-toolset-11 gcc-toolset-11-annobin-plugin-gcc && source /opt/rh/gcc-toolset-11/enable
+RUN echo 'source /opt/rh/gcc-toolset-11/enable' >> /root/.bash_profile
 
 # update patchelf 0.12
 COPY patchelf-0.12.tar.gz /tmp/
@@ -45,6 +45,6 @@ RUN tar zxvf /tmp/rpcsvc-proto-1.4.tar.gz -C /tmp && cd /tmp/rpcsvc-proto-1.4/ &
 RUN rm -fr /tmp/*
 
 #download boost-1.77 from https://boostorg.jfrog.io/artifactory/main/release/1.77.0/source/boost_1_77_0.tar.bz2
-COPY boost_1_77_0.tar.gz /opt/
+COPY boost_1_77_0.tar.xz /opt/
 
 CMD ["/usr/sbin/init"]
