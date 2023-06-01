@@ -112,6 +112,9 @@ $ systemctl status mysqld
            └─1137732 /usr/sbin/mysqld
 ...
 ```
+# 编译GreatSQL二进制包
+
+推荐利用Docker环境快速编译GreatSQL二进制包，可参考方法：[编译源码安装GreatSQL](https://gitee.com/GreatSQL/GreatSQL-Doc/blob/master/user-manual/4-install-guide/4-6-install-with-source-code.md)。
 
 # my.cnf参考
 
