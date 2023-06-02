@@ -1,6 +1,6 @@
 GreatSQL文档
 
-最后更新: 2022-08-04 (revision: 00105)
+最后更新: 2023-06-02 (revision: 00146)
 
 ---
 # [发行说明](./1-docs-intro/1-docs-intro.md)
