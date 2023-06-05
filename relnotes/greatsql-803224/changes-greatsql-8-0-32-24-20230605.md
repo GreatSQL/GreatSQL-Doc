@@ -137,6 +137,19 @@ GreatSQL支持在利用CLONE备份时同步进行加密操作，提升备份文�
 ## 3.其他调整
 ## 4.bug修复
 - 修复InnoDB并行查询可能导致查询hang住，甚至crash的问题。
+- 修复MGR recovering节点被中途停止导致的数据异常问题。
+- 修复MGR多主多写模式中，个别情况下可能丢数据的问题。
+- 修复在某些特殊场景下，多个MGR节点同时启动一直处于recovering的状态。
+- 修复MGR节点rejoin过程中，member_stats相关查询导致崩溃的问题。
+- 修复MGR中stop group_replication时可能长时间等待的问题。
+- 修复主从环境下的binlog导入MGR可能引起死循环问题。
+- 修复MGR中协程调度不合理的问题，该问题可能会造成在大事务时系统错误判断为网络错误。
+- 修复MGR中新加入节点在追Paxos数据时，由于写数据超时导致连接提前关闭的问题。
+- 修复MGR中高并发情况下由于创建线程失败导致的死循环问题。
+- 修复MGR中某个Secondary节点hang住导致整个MGR被拖垮的问题。
+- 修复MGR中5个及以上节点数量同时重启导致的视图问题（某一个节点会一直处于recovering状态）。
+- 修复MGR中在某些场景下同时添加节点失败的问题。
+- 修复MGR在BEFORE模式下，可能导致assert失败的问题。
 
 ## 5. GreatSQL VS MySQL
 
