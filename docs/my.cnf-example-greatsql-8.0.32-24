@@ -92,7 +92,7 @@ loose-parallel_max_threads = 64
 loose-parallel_memory_limit = 12G
 
 #parallel load data
-greatedb_parallel_load = 1
+loose-greatedb_parallel_load = 1
 
 #mgr settings
 loose-plugin_load_add = 'mysql_clone.so'
