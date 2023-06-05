@@ -16,9 +16,9 @@ MySQL原生的load data采用单线程读取本地文件（或收取client传来
 
 | 变量名| 含义| 取值范围及单位 | 默认值 |
 | --- | --- | ---- | --- |
-| greatedb_parallel_load| 是否开启并行导入(session only) |ON/OFF|OFF|
-|greatedb_parallel_load_chunk_size | 并行导入时，文件切割的大小|64k-128M，字节|1M|
-| greatedb_parallel_load_workers| 并行导入最大worker线程数       | 1-32| 8|
+| gdb_parallel_load| 是否开启并行导入(session only) |ON/OFF|OFF|
+|gdb_parallel_load_chunk_size | 并行导入时，文件切割的大小|64k-128M，字节|1M|
+| gdb_parallel_load_workers| 并行导入最大worker线程数       | 1-32| 8|
 
 ## 4. 启用并行load data
 
@@ -26,9 +26,9 @@ MySQL原生的load data采用单线程读取本地文件（或收取client传来
 
 1. **设置session级变量启用**
 
-连接数据库，执行 `SET SESSION greatedb_parallel_load=ON`。
+连接数据库，执行 `SET SESSION gdb_parallel_load=ON`。
 
-如需调整文件块大小或线程数，执行 `SET SESSION greatedb_parallel_load_chunk_size=65536` 或 `SET SESSION greatedb_parallel_load_workers=16`。
+如需调整文件块大小或线程数，执行 `SET SESSION gdb_parallel_load_chunk_size=65536` 或 `SET SESSION gdb_parallel_load_workers=16`。
 
 然后执行load data语句导入文件。
 ```
@@ -39,7 +39,7 @@ LOAD DATA INFILE '/tmp/load.txt' INTO TABLE t1;
 
 ```sql
 
-LOAD /*+ SET_VAR(greatedb_parallel_load=ON) SET_VAR(greatedb_parallel_load_chunk_size=65536) SET_VAR(greatedb_parallel_load_workers=16) */
+LOAD /*+ SET_VAR(gdb_parallel_load=ON) SET_VAR(gdb_parallel_load_chunk_size=65536) SET_VAR(gdb_parallel_load_workers=16) */
 DATA INFILE '/tmp/load.txt' INTO TABLE t1;
 ```
 
