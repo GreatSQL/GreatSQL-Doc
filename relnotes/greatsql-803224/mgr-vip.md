@@ -57,14 +57,59 @@ loose-group_replication_enforce_update_everywhere_checks=0
 当MGR Primary节点上绑定的vip被手动删除或者出现异常配置导致vip绑定行为不对时，可以通过在MGR Primary节点上执行 `set global greatdb_ha_force_change_mgr_vip = on` 命令去重新获取MGR拓扑结构，从而重新绑定vip，该命令执行之后，参数  `greatdb_ha_force_change_mgr_vip` 值仍然为off，这个是符合预期的行为。
 
 ## 启动说明
-配置VIP需要相关内核权限，获取相关权限有两种方式，以下二选一即可（推荐采用方法二）：
+配置VIP需要相关内核权限，获取相关权限有两种方式，以下三选一即可（推荐采用方法一）：
 
-1. 给mysqld进程的启动用户，例如是mysql用户，设置root权限。
-2. 【推荐方法】通过setcap命令为mysqld二进制文件添加 `CAP_NET_ADMIN` 和 `CAP_NET_RAW` 的capability。具体命令如下：
+1. 【推荐方法】修改systemd服务文件，增加AmbientCapabilities参数，例如：
+```
+[Unit]
+Description=GreatSQL Server
+Documentation=man:mysqld(8)
+Documentation=http://dev.mysql.com/doc/refman/en/using-systemd.html
+After=network.target
+After=syslog.target
+[Install]
+WantedBy=multi-user.target
+[Service]
+User=mysql
+Group=mysql
+Type=notify
+TimeoutSec=0
+PermissionsStartOnly=true
+ExecStartPre=/usr/local/GreatSQL-8.0.32-24-Linux-glibc2.28-x86_64/bin/mysqld_pre_systemd
+ExecStart=/usr/local/GreatSQL-8.0.32-24-Linux-glibc2.28-x86_64/bin/mysqld $MYSQLD_OPTS
+EnvironmentFile=-/etc/sysconfig/mysql
+LimitNOFILE = 10000
+Restart=on-failure
+RestartPreventExitStatus=1
+Environment=MYSQLD_PARENT_PID=1
+PrivateTmp=false
+#增加这行以保证MGR VIP功能可用
+AmbientCapabilities=CAP_NET_ADMIN CAP_NET_RAW
+```
+然后执行 `systemctl daemon-reload` 重新加载systemd服务，启动GreatSQL就可以。
+
+2. 通过setcap命令为mysqld二进制文件添加 `CAP_NET_ADMIN` 和 `CAP_NET_RAW` 的capability。具体命令如下：
 ```shell
 #执行该命令需要sudo权限或root
-$ setcap CAP_NET_ADMIN,CAP_NET_RAW+ep path_to_greatsql/bin/mysqld
+$ setcap CAP_NET_ADMIN,CAP_NET_RAW+ep /usr/local/GreatSQL-8.0.32-24-Linux-glibc2.28-x86_64/bin/mysqld
 ```
+
+然后将GreatSQL二进制包的`lib/private`子目录加载到`LD_LIBRARY_PATH`中：
+```
+$ cat /etc/ld.so.conf.d/greatsql.conf
+/usr/local/GreatSQL-8.0.32-24-Linux-glibc2.28-x86_64/lib/private
+```
+
+执行 `ldconfig && ldconfig -p | grep -i libpro` 确认配置无误：
+```
+$ ldconfig && ldconfig -p | grep -i 'libprotobuf.so'
+	libprotobuf.so.3.19.4 (libc6,x86-64) => /usr/local/GreatSQL-8.0.32-24-Linux-glibc2.28-x86_64/lib/private/libprotobuf.so.3.19.4
+```
+
+之后启动GreatSQL即可。
+
+3. 给mysqld进程的启动用户，例如是mysql用户，设置root权限。
+
 **注意**
 - 建议采用 `systemd` 方式管理GreatSQL服务，或者对启动用户用户（如 mysql）开启sudo权限，利用sudo调用 `systemd` 再启动GreatSQL服务，这样能确保mysqld进程可获得内核权限，成功绑定VIP。
 - 当 `setcap` 命令为mysqld二进制文件添加capability以后，需要保证登录系统的用户和启动mysqld的用户保持一致，才能确保mysqld进程可获得内核权限。例如：用root用户登录系统，然后再以普通用户（mysql）启动mysqld进程，setcap无法生效，绑定vip时会失败报错。
