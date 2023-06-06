@@ -88,6 +88,8 @@ AmbientCapabilities=CAP_NET_ADMIN CAP_NET_RAW
 ```
 然后执行 `systemctl daemon-reload` 重新加载systemd服务，启动GreatSQL就可以。
 
+**备注**：感谢社区用户 **芬达** 提供的建议方法。
+
 2. 通过setcap命令为mysqld二进制文件添加 `CAP_NET_ADMIN` 和 `CAP_NET_RAW` 的capability。具体命令如下：
 ```shell
 #执行该命令需要sudo权限或root
