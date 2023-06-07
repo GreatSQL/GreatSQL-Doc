@@ -111,3 +111,4 @@ innodb_lock_wait_timeout = 10
 innodb_rollback_on_timeout = 1
 innodb_print_all_deadlocks = 1
 innodb_status_file = 1
+innodb_adaptive_hash_index = 0
