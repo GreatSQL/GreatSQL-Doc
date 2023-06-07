@@ -53,7 +53,7 @@ slow_query_log_file = /data/GreatSQL/slow.log
 long_query_time = 0.01
 log_queries_not_using_indexes = 1
 log_throttle_queries_not_using_indexes = 60
-min_examined_row_limit = 0
+min_examined_row_limit = 100
 log_slow_admin_statements = 1
 log_slow_slave_statements = 1
 log_slow_verbosity = FULL
@@ -83,7 +83,7 @@ slave_preserve_commit_order = 1
 slave_checkpoint_period = 2
 
 #启用InnoDB并行查询优化功能
-loose-force_parallel_execute = ON
+loose-force_parallel_execute = OFF
 #设置每个SQL语句的并行查询最大并发度
 loose-parallel_default_dop = 8
 #设置系统中总的并行查询线程数，可以和最大逻辑CPU数量一样
@@ -142,6 +142,7 @@ innodb_status_file = 1
 innodb_status_output = 0
 innodb_status_output_locks = 1
 innodb_sort_buffer_size = 64M
+innodb_adaptive_hash_index = 0
 
 #innodb monitor settings
 innodb_monitor_enable = "module_innodb"

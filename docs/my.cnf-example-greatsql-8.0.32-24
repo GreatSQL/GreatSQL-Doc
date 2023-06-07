@@ -83,13 +83,16 @@ slave_preserve_commit_order = 1
 slave_checkpoint_period = 2
 
 #启用InnoDB并行查询优化功能
-loose-force_parallel_execute = OFF
+loose-force_parallel_execute = ON
 #设置每个SQL语句的并行查询最大并发度
 loose-parallel_default_dop = 8
 #设置系统中总的并行查询线程数，可以和最大逻辑CPU数量一样
 loose-parallel_max_threads = 64
 #并行执行时leader线程和worker线程使用的总内存大小上限，可以设置物理内存的5-10%左右
 loose-parallel_memory_limit = 12G
+
+#parallel load data
+loose-gdb_parallel_load = 1
 
 #mgr settings
 loose-plugin_load_add = 'mysql_clone.so'
@@ -115,6 +118,10 @@ loose-group_replication_member_expel_timeout = 5
 loose-group_replication_autorejoin_tries = 288
 report_host = "172.16.16.10"
 
+#mgr vip
+loose-plugin_load_add = 'greatdb_ha.so'
+loose-greatdb_ha_enable_mgr_vip = 1
+
 #innodb settings
 innodb_buffer_pool_size = 16G
 innodb_buffer_pool_instances = 8
@@ -131,7 +138,7 @@ innodb_max_undo_log_size = 4G
 innodb_io_capacity = 4000
 innodb_io_capacity_max = 8000
 innodb_open_files = 65534
-innodb_flush_method = O_DIRECT
+#innodb_flush_method = O_DIRECT
 innodb_lru_scan_depth = 4000
 innodb_lock_wait_timeout = 10
 innodb_rollback_on_timeout = 1
