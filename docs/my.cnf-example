@@ -42,6 +42,8 @@ interactive_timeout = 600
 wait_timeout = 600
 tmp_table_size = 96M
 max_heap_table_size = 96M
+#GIPK
+loose-sql_generate_invisible_primary_key = ON
 
 #log settings
 log_timestamps = SYSTEM
