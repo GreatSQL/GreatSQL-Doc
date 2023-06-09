@@ -6,7 +6,7 @@ RELEASE=24
 REVISION=3714067bc8c
 GLIBC=`ldd --version | head -n 1 | awk '{print $NF}'`
 ARCH=`uname -p`
-OS=`grep '^ID=' /etc/os-release | sed 's/.*"\{.*\)".*/\1/ig'`
+OS=`grep '^ID=' /etc/os-release | sed 's/.*"\(.*\)".*/\1/ig'`
 #OS=Linux
 PKG_NAME=GreatSQL-${MAJOR_VERSION}.${MINOR_VERSION}.${PATCH_VERSION}-${RELEASE}-${OS}-glibc${GLIBC}-${ARCH}
 BASE_DIR=/usr/local/${PKG_NAME}
