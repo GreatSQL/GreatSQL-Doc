@@ -3,11 +3,11 @@
 %global greatsql_vendor GreatDB Software Co., Ltd.
 %global mysqldatadir /var/lib/mysql
 
-%global mysql_version 8.0.25
-%global greatsql_version 16
-%global revision 8bb0e5af297
+%global mysql_version 8.0.32
+%global greatsql_version 24
+%global revision 3714067bc8c
 %global tokudb_backup_version %{mysql_version}-%{greatsql_version}
-%global rpm_release 1
+%global rpm_release 7
 
 %global release %{greatsql_version}.%{rpm_release}%{?dist}
 
@@ -28,7 +28,9 @@
 # Regression tests may take a long time, override the default to skip them
 %{!?runselftest:%global runselftest 0}
 
-%global systemd 1
+%{!?with_systemd:                %global systemd 0}
+%{?el7:                          %global systemd 1}
+%{?el8:                          %global systemd 1}
 %{!?with_debuginfo:              %global nodebuginfo 0}
 %{!?product_suffix:              %global product_suffix -80}
 %{!?feature_set:                 %global feature_set community}
@@ -49,12 +51,10 @@
 
 # Setup cmake flags for RocksDB
 %if 0%{?rocksdb}
-  %global ROCKSDB_FLAGS -DWITH_ROCKSDB=1
+  %global ROCKSDB_FLAGS -DWITH_ROCKSDB=0
 %else
   %global ROCKSDB_FLAGS -DWITH_ROCKSDB=0
 %endif
-
-# On rhel 5/6 we still have renamed library to libperconaserverclient
 
 %global shared_lib_pri_name mysqlclient
 %global shared_lib_sec_name perconaserverclient
@@ -71,29 +71,40 @@
 %global __os_install_post     /usr/lib/rpm/brp-compress %{nil}
 %endif
 
-%global license_files_server  %{src_dir}/README
+%global license_files_server  %{src_dir}/README.md
 %global license_type          GPLv2
 
 Name:           greatsql
-Summary:        GreatSQL: Open source database that can be used to replace MySQL or Percona Server, and focuses on improving MGR and InnoDB parallel query.
+Summary:        GreatSQL: a high performance, highly reliable, easy to use, and high security database
 Group:          Applications/Databases
 Version:        %{mysql_version}
 Release:        %{release}
 License:        Copyright (c) 2000, 2018, %{mysql_vendor}. All rights reserved. Under %{?license_type} license as shown in the Description field..
-SOURCE0:        greatsql-8.0.25-16.tar.gz
-URL:            https://gitee.com/GreatSQL/GreatSQL
+SOURCE0:        greatsql-8.0.32-24.tar.xz
+SOURCE101:      greatsql-8.0.32-24.tar.xz.aa
+SOURCE102:      greatsql-8.0.32-24.tar.xz.ab
+SOURCE103:      greatsql-8.0.32-24.tar.xz.ac
+SOURCE104:      greatsql-8.0.32-24.tar.xz.ad
+SOURCE105:      greatsql-8.0.32-24.tar.xz.ae
+SOURCE106:      greatsql-8.0.32-24.tar.xz.af
+SOURCE107:      greatsql-8.0.32-24.tar.xz.ag
+SOURCE108:      greatsql-8.0.32-24.tar.xz.ah
+URL:            https://greatsql.cn
 SOURCE5:        mysql_config.sh
-SOURCE10:       boost_1_73_0.tar.gz
+SOURCE10:       boost_1_77_0.tar.xz
+SOURCE201:      boost_1_77_0.tar.xz.aa
+SOURCE202:      boost_1_77_0.tar.xz.ab
 SOURCE90:       filter-provides.sh
 SOURCE91:       filter-requires.sh
+SOURCE11:       mysqld.cnf
 Patch0:         mysql-5.7-sharedlib-rename.patch
 BuildRequires:  cmake >= 2.8.2
 BuildRequires:  make
 BuildRequires:  gcc
 BuildRequires:  gcc-c++
 BuildRequires:  perl
-BuildRequires:  perl(Time::HiRes)
-BuildRequires:  perl(Env)
+%{?el7:BuildRequires: perl(Time::HiRes)}
+%{?el7:BuildRequires: perl(Env)}
 BuildRequires:  perl(Carp)
 BuildRequires:  perl(Config)
 BuildRequires:  perl(Cwd)
@@ -128,7 +139,9 @@ BuildRequires:  ncurses-devel
 BuildRequires:  pam-devel
 BuildRequires:  readline-devel
 BuildRequires:  numactl-devel
-BuildRequires:  openssl-devel
+#BuildRequires:  compat-openssl11-devel
+Requires:       opnessl
+Requires:       opnessl-devel
 BuildRequires:  zlib-devel
 BuildRequires:  bison
 BuildRequires:  openldap-devel
@@ -150,13 +163,16 @@ BuildRoot:      %(mktemp -ud %{_tmppath}/%{name}-%{version}-%{release}-XXXXXX)
 
 # For rpm => 4.9 only: https://fedoraproject.org/wiki/Packaging:AutoProvidesAndRequiresFiltering
 %global __requires_exclude ^perl\\((GD|hostnames|lib::mtr|lib::v1|mtr_|My::)
-%global __provides_exclude_from ^(/usr/share/(mysql|mysql-test)/.*|%{_libdir}/mysql/plugin/.*\\.so)$
+%global __provides_exclude_from ^(/usr/share/(mysql|mysql-test)/.*|%{_libdir}/mysql/plugin/.*\\.so|/usr/include/mysql/.*|/usr/share/man/man.*/mysql.*|/etc/my.cnf|/usr/bin/mysql.*|/usr/sbin/mysqld.*|*libprotobuf*|*libmysqlclient.so*|*libmysqlharness*|*libmysqlrouter*|*mysqlclient*|*libdaemon*|*libfnv*|*libmemcached*|*libmurmur*|*libtest*)$
 
+%global _privatelibs lib(protobuf|mysqlclient|mysqlharness|mysqlrouter|mysqlclient|daemon|fnv|memcached|murmur|test)*\\.so*
+%global __provides_exclude %{_privatelibs}
+%global __requires_exclude %{_privatelibs}
 
 %description
 GreatSQL focuses on improving the reliability and performance of MGR, supports InnoDB parallel query and other features, and is a domestic MySQL version suitable for financial applications. It can be used as an optional replacement of MySQL or Percona Server. It is completely free and compatible with MySQL or Percona server.
 
-For a description of GreatSQL see https://gitee.com/GreatSQL/GreatSQL
+For a description of GreatSQL see https://greatsql.cn
 
 %package -n greatsql-server
 Summary:        GreatSQL: Open source database that can be used to replace MySQL or Percona Server.
@@ -169,10 +185,10 @@ Requires:       shadow-utils
 Requires:       net-tools
 Requires(pre):  greatsql-shared
 Requires:       greatsql-client
-Requires:       openssl
-Provides:       MySQL-server%{?_isa} = %{version}-%{release}
-Provides:       mysql-server = %{version}-%{release}
-Provides:       mysql-server%{?_isa} = %{version}-%{release}
+Requires:       greatsql-icu-data-files
+#Requires:       compat-openssl11-devel
+Requires:       opnessl
+Requires:       opnessl-devel
 Conflicts:      Percona-SQL-server-50 Percona-Server-server-51 Percona-Server-server-55 Percona-Server-server-56 Percona-Server-server-57
 
 %if 0%{?systemd}
@@ -185,22 +201,23 @@ Requires(preun):  /sbin/chkconfig
 Requires(preun):  /sbin/service
 %endif
 
+%if 0%{?rhel} == 8
 Obsoletes:      mariadb-connector-c-config
+%endif
 
 %description -n greatsql-server
-GreatSQL focuses on improving the reliability and performance of MGR, supports InnoDB parallel query and other features, and is a domestic MySQL version suitable for financial applications. It can be used as an optional replacement of MySQL or Percona Server. It is completely free and compatible with MySQL or Percona server.
+GreatSQL: a high performance, highly reliable, easy to use, and high security database that can be used to replace MySQL or Percona Server.
 
 %package -n greatsql-client
 Summary:        GreatSQL - Client
 Group:          Applications/Databases
 Requires:       greatsql-shared
-Provides:       mysql-client MySQL-client mysql MySQL
 Conflicts:      Percona-SQL-client-50 Percona-Server-client-51 Percona-Server-client-55 Percona-Server-client-56 Percona-Server-client-57
 
 %description -n greatsql-client
 This package contains the standard GreatSQL client and administration tools.
 
-For a description of GreatSQL see https://gitee.com/GreatSQL/GreatSQL
+For a description of GreatSQL see https://greatsql.cn
 
 %package -n greatsql-test
 Summary:        Test suite for the GreatSQL
@@ -234,24 +251,19 @@ Requires:       perl(Sys::Hostname)
 Requires:       perl(Time::HiRes)
 Requires:       perl(Time::localtime)
 Requires(pre):  greatsql-shared greatsql-client greatsql-server
-Provides:       MySQL-test%{?_isa} = %{version}-%{release}
 Obsoletes:      MySQL-test < %{version}-%{release}
 Obsoletes:      mysql-test < %{version}-%{release}
 Obsoletes:      mariadb-test
-Provides:       mysql-test = %{version}-%{release}
-Provides:       mysql-test%{?_isa} = %{version}-%{release}
 Conflicts:      Percona-SQL-test-50 Percona-Server-test-51 Percona-Server-test-55 Percona-Server-test-56 Percona-Server-test-57
 
 %description -n greatsql-test
 This package contains the GreatSQL regression test suite.
 
-For a description of GreatSQL see https://gitee.com/GreatSQL/GreatSQL
+For a description of GreatSQL see https://greatsql.cn
 
 %package -n greatsql-devel
 Summary:        GreatSQL - Development header files and libraries
 Group:          Applications/Databases
-Provides:       mysql-devel = %{version}-%{release}
-Provides:       mysql-devel%{?_isa} = %{version}-%{release}
 Conflicts:      Percona-SQL-devel-50 Percona-Server-devel-51 Percona-Server-devel-55 Percona-Server-devel-56 Percona-Server-devel-57
 Obsoletes:      mariadb-connector-c-devel
 Obsoletes:      mariadb-devel
@@ -260,43 +272,18 @@ Obsoletes:      mariadb-devel
 This package contains the development header files and libraries necessary
 to develop GreatSQL client applications.
 
-For a description of GreatSQL see https://gitee.com/GreatSQL/GreatSQL
+For a description of GreatSQL see https://greatsql.cn
 
 %package -n greatsql-shared
 Summary:        GreatSQL - Shared libraries
 Group:          Applications/Databases
-Provides:       mysql-libs = %{version}-%{release}
-Provides:       mysql-libs%{?_isa} = %{version}-%{release}
 Obsoletes:      mysql-libs < %{version}-%{release}
-Provides:       mysql-shared
 
 %description -n greatsql-shared
 This package contains the shared libraries (*.so*) which certain languages
 and applications need to dynamically load and use GreatSQL.
 
-For a description of GreatSQL see https://gitee.com/GreatSQL/GreatSQL
-
-%if 0%{?compatlib}
-%package -n greatsql-shared-compat
-Summary:        Shared compat libraries for GreatSQL %{compatver}-%{percona_compatver} database client applications
-Group:          Applications/Databases
-
-Provides:       mysql-libs-compat = %{version}-%{release}
-Provides:       mysql-libs-compat%{?_isa} = %{version}-%{release}
-Provides:       MySQL-shared-compat%{?_isa} = %{version}-%{release}
-
-Obsoletes:      mysql-libs
-
-Conflicts:      Percona-Server-shared-51
-Conflicts:      Percona-Server-shared-55
-Conflicts:      Percona-Server-shared-55
-Conflicts:      Percona-Server-shared-56
-Conflicts:      Percona-Server-shared-57
-
-%description -n greatsql-shared-compat
-This package contains the shared compat libraries for GreatSQL %{compatver}-%{percona_compatver} client
-applications.
-%endif
+For a description of GreatSQL see https://greatsql.cn
 
 %if 0%{?tokudb}
 %package -n greatsql-tokudb
@@ -306,7 +293,6 @@ Requires:       greatsql-server = %{version}-%{release}
 Requires:       greatsql-shared = %{version}-%{release}
 Requires:       greatsql-client = %{version}-%{release}
 Requires:       jemalloc >= 3.3.0
-Provides:       tokudb-plugin = %{version}-%{release}
 
 %description -n greatsql-tokudb
 This package contains the TokuDB plugin for GreatSQL %{version}-%{release}
@@ -329,13 +315,12 @@ Summary:       GreatSQL MySQL Router
 Group:         Applications/Databases
 Provides:      greatsql-mysql-router = %{version}-%{release}
 Obsoletes:     greatsql-mysql-router < %{version}-%{release}
-Provides:      mysql-router
 
 %description -n greatsql-mysql-router
 The GreatSQL MySQL Router software delivers a fast, multi-threaded way of
 routing connections from GreatSQL Clients to GreatSQL Servers.
 
-For a description of GreatSQL see https://gitee.com/GreatSQL/GreatSQL
+For a description of GreatSQL see https://greatsql.cn
 
 %package   -n   greatsql-mysql-router-devel
 Summary:        Development header files and libraries for GreatSQL MySQL Router
@@ -347,12 +332,30 @@ Obsoletes:      mysql-router-devel
 This package contains the development header files and libraries
 necessary to develop GreatSQL MySQL Router applications.
 
-For a description of GreatSQL see https://gitee.com/GreatSQL/GreatSQL
+For a description of GreatSQL see https://greatsql.cn
+
+%package   -n   greatsql-mysql-config
+Summary:        GreatSQL config
+Provides:       greatsql-mysql-config = %{version}-%{release}
+Conflicts:      mysql-config
+
+%description -n greatsql-mysql-config
+For a description of GreatSQL see https://greatsql.cn
+
+%package   -n   greatsql-icu-data-files
+Summary:        GreatSQL packaging of ICU data files
+
+%description -n greatsql-icu-data-files
+This package contains ICU data files needer by GreatSQL regular expressions.
+
 
 %prep
+cat %{SOURCE201} %{SOURCE202} > %{SOURCE10}
+cat %{SOURCE101} %{SOURCE102} %{SOURCE103} %{SOURCE104} %{SOURCE105} %{SOURCE106} %{SOURCE107} %{SOURCE108} > %{SOURCE0}
 %setup -q -T -a 0 -a 10 -c -n %{src_dir}
 pushd %{src_dir}
 %patch0 -p0
+cp %{SOURCE11} scripts
 
 %build
 # Fail quickly and obviously if user tries to build as root
@@ -371,6 +374,7 @@ mkdir debug
   cd debug
   # Attempt to remove any optimisation flags from the debug build
   optflags=$(echo "%{optflags}" | sed -e 's/-O2 / /' -e 's/-Wp,-D_FORTIFY_SOURCE=2/ -Wno-missing-field-initializers -Wno-error /')
+	optflags=$(echo $optflags | sed -e 's/-specs=\/usr\/lib\/rpm\/redhat\/redhat-hardened-cc1 -specs=\/usr\/lib\/rpm\/redhat\/redhat-annobin-cc1/ /')
   cmake ../%{src_dir} \
            -DBUILD_CONFIG=mysql_release \
            -DINSTALL_LAYOUT=RPM \
@@ -388,15 +392,19 @@ mkdir debug
            -DINSTALL_MYSQLSHAREDIR=share/greatsql \
            -DINSTALL_SUPPORTFILESDIR=share/greatsql \
            -DFEATURE_SET="%{feature_set}" \
+           -DWITH_AUTHENTICATION_LDAP=OFF \
            -DWITH_PAM=1 \
-           -DWITH_ROCKSDB=1 \
-           -DROCKSDB_DISABLE_AVX2=1 \
-           -DROCKSDB_DISABLE_MARCH_NATIVE=1 \
+           -DWITH_ROCKSDB=0 \
+           -DALLOW_NO_SSE42=ON \
+           -DROCKSDB_DISABLE_AVX2=0 \
+           -DROCKSDB_DISABLE_MARCH_NATIVE=0 \
+           -DGROUP_REPLICATION_WITH_ROCKSDB=OFF \
+           -DWITH_TOKUDB=0 \
+           -DWITH_INNODB_MEMCACHED=1 \
            -DMYSQL_MAINTAINER_MODE=OFF \
            -DFORCE_INSOURCE_BUILD=1 \
            -DWITH_NUMA=ON \
            -DWITH_LDAP=system \
-           -DWITH_PACKAGE_FLAGS=OFF \
            -DWITH_SYSTEM_LIBS=ON \
            -DWITH_PROTOBUF=bundled \
            -DWITH_RAPIDJSON=bundled \
@@ -407,6 +415,7 @@ mkdir debug
            -DWITH_READLINE=system \
            -DWITH_LIBEVENT=bundled \
            -DWITH_KEYRING_VAULT=ON \
+           -DWITH_FIDO=bundled \
            %{?ssl_option} \
            %{?mecab_option} \
            -DCOMPILATION_COMMENT="%{compilation_comment_debug}" %{TOKUDB_FLAGS} %{TOKUDB_DEBUG_OFF} %{ROCKSDB_FLAGS}
@@ -434,15 +443,19 @@ mkdir release
            -DINSTALL_MYSQLSHAREDIR=share/greatsql \
            -DINSTALL_SUPPORTFILESDIR=share/greatsql \
            -DFEATURE_SET="%{feature_set}" \
+           -DWITH_AUTHENTICATION_LDAP=OFF \
            -DWITH_PAM=1 \
-           -DWITH_ROCKSDB=1 \
-           -DROCKSDB_DISABLE_AVX2=1 \
-           -DROCKSDB_DISABLE_MARCH_NATIVE=1 \
+           -DWITH_ROCKSDB=0 \
+           -DROCKSDB_DISABLE_AVX2=0 \
+           -DROCKSDB_DISABLE_MARCH_NATIVE=0 \
+           -DWITH_TOKUDB=0 \
+           -DGROUP_REPLICATION_WITH_ROCKSDB=OFF \
+           -DALLOW_NO_SSE42=ON \
+           -DWITH_INNODB_MEMCACHED=1 \
            -DMYSQL_MAINTAINER_MODE=OFF \
            -DFORCE_INSOURCE_BUILD=1 \
            -DWITH_NUMA=ON \
            -DWITH_LDAP=system \
-           -DWITH_PACKAGE_FLAGS=OFF \
            -DWITH_SYSTEM_LIBS=ON \
            -DWITH_LZ4=bundled \
            -DWITH_ZLIB=bundled \
@@ -453,6 +466,7 @@ mkdir release
            -DWITH_LIBEVENT=bundled \
            -DWITH_ZSTD=bundled \
            -DWITH_KEYRING_VAULT=ON \
+           -DWITH_FIDO=bundled \
            %{?ssl_option} \
            %{?mecab_option} \
            -DCOMPILATION_COMMENT="%{compilation_comment_release}" %{TOKUDB_FLAGS} %{TOKUDB_DEBUG_OFF} %{ROCKSDB_FLAGS}
@@ -461,6 +475,7 @@ mkdir release
 )
 
 %install
+%define _unpackaged_files_terminate_build 0
 MBD=$RPM_BUILD_DIR/%{src_dir}
 
 # Ensure that needed directories exists
@@ -482,7 +497,14 @@ make DESTDIR=%{buildroot} install
 #investigate this logrotate
 install -D -m 0644 $MBD/release/support-files/mysql-log-rotate %{buildroot}%{_sysconfdir}/logrotate.d/mysql
 install -D -m 0644 $MBD/%{src_dir}/build-ps/rpm/mysqld.cnf %{buildroot}%{_sysconfdir}/my.cnf
+install -D -p -m 0644 %{_builddir}/greatsql-%{version}-%{greatsql_version}/greatsql-%{version}-%{greatsql_version}/scripts/mysqld.cnf %{buildroot}%{_sysconfdir}/my.cnf
 install -d %{buildroot}%{_sysconfdir}/my.cnf.d
+
+#%if 0%{?systemd}
+#%else
+%if 0%{?rhel} < 7
+  install -D -m 0755 $MBD/%{src_dir}/build-ps/rpm/mysql.init %{buildroot}%{_sysconfdir}/init.d/mysql
+%endif
 
 
 # Add libdir to linker
@@ -496,19 +518,30 @@ echo "%{_libdir}/mysql" > %{buildroot}%{_sysconfdir}/ld.so.conf.d/mysql-%{_arch}
 %endif
 
 %if 0%{?systemd}
+install -D -p -m 0644 scripts/mysqlrouter.service %{buildroot}%{_unitdir}/mysqlrouter.service
+#install -D -p -m 0644 packaging/rpm-common/mysqlrouter.conf %{buildroot}%{_tmpfilesdir}/mysqlrouter.conf
+#install -D -p -m 0644 packaging/rpm-common/mysqlrouter.tmpfiles.d %{buildroot}%{_tmpfilesdir}/mysqlrouter.conf
 %else
 install -D -p -m 0755 packaging/rpm-common/mysqlrouter.init %{buildroot}%{_sysconfdir}/init.d/mysqlrouter
 %endif
 install -D -p -m 0644 packaging/rpm-common/mysqlrouter.conf %{buildroot}%{_sysconfdir}/mysqlrouter/mysqlrouter.conf
+
+# set rpath for plugin to use private/libfido2.so
+#patchelf --debug --set-rpath '$ORIGIN/../private' %{buildroot}/%{_libdir}/mysql/plugin/authentication_fido.so
 
 # Remove files pages we explicitly do not want to package
 rm -rf %{buildroot}%{_infodir}/mysql.info*
 rm -rf %{buildroot}%{_datadir}/greatsql/mysql.server
 rm -rf %{buildroot}%{_datadir}/greatsql/mysqld_multi.server
 rm -f %{buildroot}%{_datadir}/greatsql/win_install_firewall.sql
+rm -f %{buildroot}%{_datadir}/greatsql/audit_log_filter_win_install.sql
 rm -rf %{buildroot}%{_bindir}/mysql_embedded
 rm -rf %{buildroot}/usr/cmake/coredumper-relwithdebinfo.cmake
 rm -rf %{buildroot}/usr/cmake/coredumper.cmake
+rm -rf %{buildroot}/usr/include/kmip.h
+rm -rf %{buildroot}/usr/include/kmippp.h
+rm -rf %{buildroot}/usr/lib/libkmip.a
+rm -rf %{buildroot}/usr/lib/libkmippp.a
 %if 0%{?tokudb}
   rm -f %{buildroot}%{_prefix}/README.md
   rm -f %{buildroot}%{_prefix}/COPYING.AGPLv3
@@ -584,6 +617,10 @@ if [ -d /etc/greatsql.conf.d ]; then
         echo "!includedir /etc/greatsql.conf.d/" >> /etc/my.cnf
     fi
 fi
+echo "datadir=/var/lib/mysql" >> /etc/my.cnf
+echo "socket=/var/lib/mysql/mysql.sock" >> /etc/my.cnf
+echo "log-error=/var/log/mysqld.log" >> /etc/my.cnf
+echo "pid-file=/var/run/mysqld/mysqld.pid" >> /etc/my.cnf
 echo "slow_query_log = ON" >> /etc/my.cnf
 echo "long_query_time = 1" >> /etc/my.cnf
 echo "log_slow_verbosity = FULL" >> /etc/my.cnf
@@ -703,6 +740,8 @@ fi
 %attr(644, root, root) %{_mandir}/man1/myisampack.1*
 %attr(644, root, root) %{_mandir}/man8/mysqld.8*
 %if 0%{?systemd}
+%exclude %{_mandir}/man1/mysqld_multi.1*
+%exclude %{_mandir}/man1/mysqld_safe.1*
 %else
 %attr(644, root, root) %{_mandir}/man1/mysqld_multi.1*
 %attr(644, root, root) %{_mandir}/man1/mysqld_safe.1*
@@ -711,12 +750,12 @@ fi
 %attr(644, root, root) %{_mandir}/man1/mysql_secure_installation.1*
 %attr(644, root, root) %{_mandir}/man1/mysql_upgrade.1*
 %attr(644, root, root) %{_mandir}/man1/mysqlman.1*
+#%attr(644, root, root) %{_mandir}/man1/mysql.server.1*
 %attr(644, root, root) %{_mandir}/man1/mysql_tzinfo_to_sql.1*
 %attr(644, root, root) %{_mandir}/man1/perror.1*
 %attr(644, root, root) %{_mandir}/man1/mysql_ssl_rsa_setup.1*
 %attr(644, root, root) %{_mandir}/man1/lz4_decompress.1*
 %attr(644, root, root) %{_mandir}/man1/zlib_decompress.1*
-
 
 %config(noreplace) %{_sysconfdir}/my.cnf
 %dir %{_sysconfdir}/my.cnf.d
@@ -753,6 +792,11 @@ fi
 %attr(755, root, root) %{_libdir}/mysql/private/libprotobuf.so.*
 
 %dir %{_libdir}/mysql/plugin
+%attr(755, root, root) %{_libdir}/mysql/plugin/component_keyring_file.so
+%attr(755, root, root) %{_libdir}/mysql/plugin/procfs.so
+%attr(755, root, root) %{_libdir}/mysql/plugin/binlog_utils_udf.so
+%attr(755, root, root) %{_libdir}/mysql/plugin/component_query_attributes.so
+%attr(755, root, root) %{_libdir}/mysql/plugin/component_reference_cache.so
 %attr(755, root, root) %{_libdir}/mysql/plugin/adt_null.so
 %attr(755, root, root) %{_libdir}/mysql/plugin/auth_socket.so
 %attr(755, root, root) %{_libdir}/mysql/plugin/authentication_ldap_sasl_client.so
@@ -763,7 +807,6 @@ fi
 %attr(755, root, root) %{_libdir}/mysql/plugin/component_mysqlbackup.so
 %attr(755, root, root) %{_libdir}/mysql/plugin/component_validate_password.so
 %attr(755, root, root) %{_libdir}/mysql/plugin/component_audit_api_message_emit.so
-%attr(755, root, root) %{_libdir}/mysql/plugin/component_query_attributes.so
 %attr(755, root, root) %{_libdir}/mysql/plugin/connection_control.so
 %attr(755, root, root) %{_libdir}/mysql/plugin/ddl_rewriter.so
 %attr(755, root, root) %{_libdir}/mysql/plugin/ha_example.so
@@ -790,11 +833,28 @@ fi
 %attr(755, root, root) %{_libdir}/mysql/plugin/component_test_udf_services.so
 %attr(755, root, root) %{_libdir}/mysql/plugin/authentication_ldap_simple.so
 %attr(755, root, root) %{_libdir}/mysql/plugin/component_test_component_deinit.so
-%attr(755, root, root) %{_libdir}/mysql/plugin/binlog_utils_udf.so
+%attr(755, root, root) %{_libdir}/mysql/plugin/greatdb_ha.so
+%attr(755, root, root) %{_libdir}/mysql/plugin/semisync_replica.so
+%attr(755, root, root) %{_libdir}/mysql/plugin/semisync_source.so
 %attr(755, root, root) %{_libdir}/mysql/plugin/test_udf_wrappers.so
 %attr(755, root, root) %{_libdir}/mysql/plugin/component_reference_cache.so
-
+%attr(755, root, root) %{_libdir}/mysql/plugin/test_services_command_services.so
+#%attr(755, root, root) %{_libdir}/mysql/plugin/tokudb_backup.so
+%attr(755, root, root) %{_libdir}/mysql/plugin/authentication_kerberos_client.so
+%attr(755, root, root) %{_libdir}/mysql/plugin/authentication_ldap_sasl.so
+%attr(755, root, root) %{_libdir}/mysql/plugin/authentication_oci_client.so
+%attr(755, root, root) %{_libdir}/mysql/plugin/component_encryption_udf.so
+%attr(755, root, root) %{_libdir}/mysql/plugin/component_keyring_kmip.so
+%attr(755, root, root) %{_libdir}/mysql/plugin/component_keyring_kms.so
+%attr(755, root, root) %{_libdir}/mysql/plugin/component_test_mysql_command_services.so
+%attr(755, root, root) %{_libdir}/mysql/plugin/component_test_mysql_system_variable_set.so
+%attr(755, root, root) %{_libdir}/mysql/plugin/component_test_sensitive_system_variables.so
+%attr(755, root, root) %{_libdir}/mysql/plugin/component_test_status_var_reader.so
+%attr(755, root, root) %{_libdir}/mysql/plugin/component_test_table_access.so
+%attr(755, root, root) %{_libdir}/mysql/plugin/conflicting_variables.so
 %dir %{_libdir}/mysql/plugin/debug
+%attr(755, root, root) %{_libdir}/mysql/plugin/debug/component_keyring_file.so
+%attr(755, root, root) %{_libdir}/mysql/plugin/debug/procfs.so
 %attr(755, root, root) %{_libdir}/mysql/plugin/debug/data_masking.so
 %attr(755, root, root) %{_libdir}/mysql/plugin/debug/adt_null.so
 %attr(755, root, root) %{_libdir}/mysql/plugin/debug/auth_socket.so
@@ -833,13 +893,35 @@ fi
 %attr(755, root, root) %{_libdir}/mysql/plugin/debug/component_test_udf_services.so
 %attr(755, root, root) %{_libdir}/mysql/plugin/debug/component_test_component_deinit.so
 %attr(755, root, root) %{_libdir}/mysql/plugin/debug/binlog_utils_udf.so
+%attr(755, root, root) %{_libdir}/mysql/plugin/debug/component_reference_cache.so
+%attr(755, root, root) %{_libdir}/mysql/plugin/debug/libtest_sql_sleep_is_connected.so
 %attr(755, root, root) %{_libdir}/mysql/plugin/debug/test_udf_wrappers.so
 %attr(755, root, root) %{_libdir}/mysql/plugin/debug/component_reference_cache.so
+%attr(755, root, root) %{_libdir}/mysql/plugin/debug/authentication_kerberos_client.so
+%attr(755, root, root) %{_libdir}/mysql/plugin/debug/authentication_ldap_sasl.so
+%attr(755, root, root) %{_libdir}/mysql/plugin/debug/authentication_oci_client.so
+%attr(755, root, root) %{_libdir}/mysql/plugin/debug/component_encryption_udf.so
+%attr(755, root, root) %{_libdir}/mysql/plugin/debug/component_keyring_kmip.so
+%attr(755, root, root) %{_libdir}/mysql/plugin/debug/component_keyring_kms.so
+%attr(755, root, root) %{_libdir}/mysql/plugin/debug/component_test_mysql_command_services.so
+%attr(755, root, root) %{_libdir}/mysql/plugin/debug/component_test_mysql_system_variable_set.so
+%attr(755, root, root) %{_libdir}/mysql/plugin/debug/component_test_sensitive_system_variables.so
+%attr(755, root, root) %{_libdir}/mysql/plugin/debug/component_test_status_var_reader.so
+%attr(755, root, root) %{_libdir}/mysql/plugin/debug/component_test_table_access.so
+%attr(755, root, root) %{_libdir}/mysql/plugin/debug/conflicting_variables.so
+%attr(755, root, root) %{_libdir}/mysql/plugin/debug/greatdb_ha.so
+%attr(755, root, root) %{_libdir}/mysql/plugin/debug/semisync_replica.so
+%attr(755, root, root) %{_libdir}/mysql/plugin/debug/semisync_source.so
+%attr(755, root, root) %{_libdir}/mysql/plugin/debug/test_services_command_services.so
+#%attr(755, root, root) %{_libdir}/mysql/plugin/debug/tokudb_backup.so
 %if 0%{?mecab}
 %{_libdir}/mysql/mecab
 %attr(755, root, root) %{_libdir}/mysql/plugin/libpluginmecab.so
 %attr(755, root, root) %{_libdir}/mysql/plugin/debug/libpluginmecab.so
 %endif
+#coredumper
+%attr(755, root, root) %{_includedir}/coredumper/coredumper.h
+%attr(755, root, root) /usr/lib/libcoredumper.a
 # Percona plugins
 %attr(755, root, root) %{_libdir}/mysql/plugin/audit_log.so
 #%attr(644, root, root) %{_datadir}/mysql-*/audit_log_filter_linux_install.sql
@@ -938,12 +1020,14 @@ fi
 %attr(755, root, root) %{_bindir}/mysqlbinlog
 %attr(755, root, root) %{_bindir}/mysqlcheck
 %attr(755, root, root) %{_bindir}/mysqldump
+%attr(755, root, root) %{_bindir}/mysqldecrypt
 %attr(755, root, root) %{_bindir}/mysqlimport
 %attr(755, root, root) %{_bindir}/mysqlpump
 %attr(755, root, root) %{_bindir}/mysqlshow
 %attr(755, root, root) %{_bindir}/mysqlslap
 %attr(755, root, root) %{_bindir}/mysql_config_editor
 %attr(755, root, root) %{_bindir}/mysql_migrate_keyring
+%attr(755, root, root) %{_bindir}/mysql_keyring_encryption_test
 
 %attr(644, root, root) %{_mandir}/man1/mysql.1*
 %attr(644, root, root) %{_mandir}/man1/mysqladmin.1*
@@ -990,6 +1074,8 @@ fi
 %attr(755, root, root) %{_bindir}/mysqlxtest
 %attr(755, root, root) %{_bindir}/mysql_keyring_encryption_test
 
+%attr(755, root, root) %{_libdir}/mysql/plugin/libtest_sql_sleep_is_connected.so
+%attr(755, root, root) %{_libdir}/mysql/plugin/test_udf_wrappers.so
 %attr(755, root, root) %{_libdir}/mysql/plugin/auth.so
 %attr(755, root, root) %{_libdir}/mysql/plugin/auth_test_plugin.so
 %attr(755, root, root) %{_libdir}/mysql/plugin/component_example_component1.so
@@ -1046,7 +1132,6 @@ fi
 %attr(755, root, root) %{_libdir}/mysql/plugin/libtest_sql_processlist.so
 %attr(755, root, root) %{_libdir}/mysql/plugin/libtest_sql_replication.so
 %attr(755, root, root) %{_libdir}/mysql/plugin/libtest_sql_shutdown.so
-%attr(755, root, root) %{_libdir}/mysql/plugin/libtest_sql_sleep_is_connected.so
 %attr(755, root, root) %{_libdir}/mysql/plugin/libtest_sql_stmt.so
 %attr(755, root, root) %{_libdir}/mysql/plugin/libtest_sql_sqlmode.so
 %attr(755, root, root) %{_libdir}/mysql/plugin/libtest_sql_stored_procedures_functions.so
@@ -1135,6 +1220,10 @@ fi
 %attr(755, root, root) %{_libdir}/mysql/plugin/debug/test_udf_services.so
 %attr(755, root, root) %{_libdir}/mysql/plugin/debug/udf_example.so
 %attr(755, root, root) %{_libdir}/mysql/plugin/debug/component_mysqlx_global_reset.so
+%attr(755, root, root) %{_libdir}/mysql/plugin/debug/binlog_utils_udf.so
+%attr(755, root, root) %{_libdir}/mysql/plugin/debug/component_query_attributes.so
+%attr(755, root, root) %{_libdir}/mysql/plugin/debug/component_reference_cache.so
+%attr(755, root, root) %{_libdir}/mysql/plugin/debug/test_udf_wrappers.so
 
 %if 0%{?tokudb}
 %files -n greatsql-tokudb
@@ -1192,7 +1281,42 @@ fi
 %{_libdir}/mysqlrouter/*.so
 %dir %attr(755, mysqlrouter, mysqlrouter) /var/log/mysqlrouter
 %dir %attr(755, mysqlrouter, mysqlrouter) /var/run/mysqlrouter
+%attr(644, root, root) %config(noreplace,missingok) %{_sysconfdir}/logrotate.d/mysqlrouter
+
+%files -n greatsql-mysql-config
+%config(noreplace) %{_sysconfdir}/my.cnf
+%dir %{_sysconfdir}/my.cnf.d
+
+%files -n greatsql-icu-data-files
+%defattr(-, root, root, -)
+%doc %{?license_files_server}
+%dir %attr(755, root, root) %{_libdir}/mysql/private/icudt69l
+%{_libdir}/mysql/private/icudt69l/unames.icu
+%{_libdir}/mysql/private/icudt69l/brkitr
+
 
 %changelog
-* Wed Jun 10 2022 GreatSQL <greatsql@greatdb.com>
-- Release GreatSQL-8.0.25-16.1
+* Wed Jun  7 2023 GreatSQL <greatsql@greatdb.com> - 8.0.32-24.7
+- Release GreatSQL-8.0.32-24.7 for openEuler
+
+* Mon Feb  6 2023 GreatSQL <greatsql@greatdb.com> - 8.0.25-16.6
+- compat-openssl11-devel
+
+* Tue Sep 13 2022 bzhaoop <bzhaojyathousandy@gmail.com> - 8.0.25-16.5
+- refactor the mysqld.cnf into the rpm package
+- Add the self-dependency towards greatsql-server and greatsql-mysql-config.
+
+* Tue Aug 16 2022 GreatSQL <greatsql@greatdb.com> - 8.0.25-16.4
+- new package greatsql-mysql-config
+
+* Fri Aug 12 2022 bzhaoop <bzhaojyathousandy@gmail.com> - 8.0.25-16.3
+- Hide the conflict libs and files from provides and requires.
+
+* Tue Aug 9 2022 bzhaoop <bzhaojyathousandy@gmail.com> - 8.0.25-16.2
+- Hide the conflict libs and files.
+
+* Wed Jun  6 2022 GreatSQL <greatsql@greatdb.com> - 8.0.25-16.1
+- Release GreatSQL-8.0.25-16.1 for openEuler
+
+* Mon Apr 25 2022 GreatSQL <greatsql@greatdb.com> - 8.0.25-15.1
+- Release GreatSQL-8.0.25-15.1 for openEuler
