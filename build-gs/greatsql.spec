@@ -80,19 +80,9 @@ Version:        %{mysql_version}
 Release:        %{release}
 License:        Copyright (c) 2000, 2018, %{mysql_vendor}. All rights reserved. Under %{?license_type} license as shown in the Description field..
 SOURCE0:        greatsql-8.0.32-24.tar.xz
-SOURCE101:      greatsql-8.0.32-24.tar.xz.aa
-SOURCE102:      greatsql-8.0.32-24.tar.xz.ab
-SOURCE103:      greatsql-8.0.32-24.tar.xz.ac
-SOURCE104:      greatsql-8.0.32-24.tar.xz.ad
-SOURCE105:      greatsql-8.0.32-24.tar.xz.ae
-SOURCE106:      greatsql-8.0.32-24.tar.xz.af
-SOURCE107:      greatsql-8.0.32-24.tar.xz.ag
-SOURCE108:      greatsql-8.0.32-24.tar.xz.ah
 URL:            https://greatsql.cn
 SOURCE5:        mysql_config.sh
 SOURCE10:       boost_1_77_0.tar.xz
-SOURCE201:      boost_1_77_0.tar.xz.aa
-SOURCE202:      boost_1_77_0.tar.xz.ab
 SOURCE90:       filter-provides.sh
 SOURCE91:       filter-requires.sh
 SOURCE11:       mysqld.cnf
@@ -371,8 +361,6 @@ This package contains ICU data files needer by GreatSQL regular expressions.
 For a description of GreatSQL see https://greatsql.cn
 
 %prep
-cat %{SOURCE201} %{SOURCE202} > %{SOURCE10}
-cat %{SOURCE101} %{SOURCE102} %{SOURCE103} %{SOURCE104} %{SOURCE105} %{SOURCE106} %{SOURCE107} %{SOURCE108} > %{SOURCE0}
 %setup -q -T -a 0 -a 10 -c -n %{src_dir}
 pushd %{src_dir}
 %patch0 -p0
