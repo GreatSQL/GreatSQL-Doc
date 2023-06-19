@@ -93,9 +93,6 @@ loose-parallel_max_threads = 64
 #并行执行时leader线程和worker线程使用的总内存大小上限，可以设置物理内存的5-10%左右
 loose-parallel_memory_limit = 12G
 
-#parallel load data
-loose-gdb_parallel_load = 1
-
 #mgr settings
 loose-plugin_load_add = 'mysql_clone.so'
 loose-plugin_load_add = 'group_replication.so'
