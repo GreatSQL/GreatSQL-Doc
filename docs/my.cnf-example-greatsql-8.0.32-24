@@ -93,9 +93,6 @@ loose-parallel_max_threads = 64
 #并行执行时leader线程和worker线程使用的总内存大小上限，可以设置物理内存的5-10%左右
 loose-parallel_memory_limit = 12G
 
-#parallel load data
-loose-gdb_parallel_load = 1
-
 #mgr settings
 loose-plugin_load_add = 'mysql_clone.so'
 loose-plugin_load_add = 'group_replication.so'
@@ -132,6 +129,7 @@ innodb_flush_log_at_trx_commit = 1
 innodb_log_buffer_size = 32M
 innodb_log_file_size = 2G
 innodb_log_files_in_group = 3
+innodb_redo_log_capacity = 6G
 innodb_doublewrite_files = 2
 innodb_max_undo_log_size = 4G
 # 根据您的服务器IOPS能力适当调整
