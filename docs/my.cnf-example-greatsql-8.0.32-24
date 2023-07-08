@@ -8,7 +8,7 @@
 socket    = /data/GreatSQL/mysql.sock
 [mysql]
 loose-skip-binary-as-hex
-prompt="(\\D)[\\u@GreatSQL][\\d]>"
+prompt = "(\\D)[\\u@GreatSQL][\\d]>"
 no-auto-rehash
 [mysqld]
 user    = mysql
@@ -92,6 +92,9 @@ loose-parallel_default_dop = 8
 loose-parallel_max_threads = 64
 #并行执行时leader线程和worker线程使用的总内存大小上限，可以设置物理内存的5-10%左右
 loose-parallel_memory_limit = 12G
+
+#parallel load data
+loose-gdb_parallel_load_chunk_size = 4M
 
 #mgr settings
 loose-plugin_load_add = 'mysql_clone.so'
