@@ -1,0 +1,35 @@
+diff --git a/mysqlshdk/libs/mysql/group_replication.cc b/mysqlshdk/libs/mysql/group_replication.cc
+index 436a62b15..8f8958ce7 100644
+--- a/mysqlshdk/libs/mysql/group_replication.cc
++++ b/mysqlshdk/libs/mysql/group_replication.cc
+@@ -107,6 +107,8 @@ std::string to_string(const Member_role role) {
+       return "PRIMARY";
+     case Member_role::SECONDARY:
+       return "SECONDARY";
++    case Member_role::ARBITRATOR:
++      return "ARBITRATOR";
+     case Member_role::NONE:
+       return "NONE";
+   }
+@@ -118,6 +120,8 @@ Member_role to_member_role(const std::string &role) {
+     return Member_role::PRIMARY;
+   } else if (shcore::str_caseeq("SECONDARY", role)) {
+     return Member_role::SECONDARY;
++  } else if (shcore::str_caseeq("ARBITRATOR", role)) {
++    return Member_role::ARBITRATOR;
+   } else if (role.empty()) {
+     return Member_role::NONE;
+   } else {
+diff --git a/mysqlshdk/libs/mysql/group_replication.h b/mysqlshdk/libs/mysql/group_replication.h
+index 05dfa54bf..23ccf6a76 100644
+--- a/mysqlshdk/libs/mysql/group_replication.h
++++ b/mysqlshdk/libs/mysql/group_replication.h
+@@ -73,7 +73,7 @@ enum class Member_state {
+   MISSING
+ };
+ 
+-enum class Member_role { PRIMARY, SECONDARY, NONE };
++enum class Member_role { PRIMARY, SECONDARY, ARBITRATOR, NONE };
+ 
+ enum class Topology_mode { SINGLE_PRIMARY, MULTI_PRIMARY, NONE };
+ 
