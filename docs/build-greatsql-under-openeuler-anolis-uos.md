@@ -158,7 +158,7 @@ perl-Time-HiRes pkg-config psmisc re2-devel readline-devel \
 snappy-devel tar time unzip vim wget zlib-devel
 ```
 
-openEuler下就可以安装文档（https://gitee.com/GreatSQL/GreatSQL-Doc/blob/master/docs/build-greatsql-with-source-under-kylin-and-loongson.md)中列出的所有包，包括 jemalloc 包。
+openEuler下就可以安装文档 [https://gitee.com/GreatSQL/GreatSQL-Doc/blob/master/docs/build-greatsql-with-source-under-kylin-and-loongson.md](http://) 中列出的所有包，包括 jemalloc 包。
 
 下载安装jemalloc rpm包（rpm包依赖glibc版本，可能无法直接使用，可以自行下载源码包编译）
 - https://fedora.pkgs.org/36/fedora-aarch64/jemalloc-5.2.1-7.fc36.aarch64.rpm.html
