@@ -338,20 +338,7 @@ innodb_status_output_locks = 1
 innodb_sort_buffer_size = 67108864
 
 #innodb monitor settings
-innodb_monitor_enable = "module_innodb"
-innodb_monitor_enable = "module_server"
-innodb_monitor_enable = "module_dml"
-innodb_monitor_enable = "module_ddl"
-innodb_monitor_enable = "module_trx"
-innodb_monitor_enable = "module_os"
-innodb_monitor_enable = "module_purge"
-innodb_monitor_enable = "module_log"
-innodb_monitor_enable = "module_lock"
-innodb_monitor_enable = "module_buffer"
-innodb_monitor_enable = "module_index"
-innodb_monitor_enable = "module_ibuf_system"
-innodb_monitor_enable = "module_buffer_page"
-innodb_monitor_enable = "module_adaptive_hash"
+#innodb_monitor_enable = "module_innodb,module_server,module_dml,module_ddl,module_trx,module_os,module_purge,module_log,module_lock,module_buffer,module_index,module_ibuf_system,module_buffer_page,module_adaptive_hash"
 
 #innodb parallel query
 force_parallel_execute = ON
