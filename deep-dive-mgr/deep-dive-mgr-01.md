@@ -28,7 +28,7 @@ MGR具备以下几个特点：
 MGR可以选择单主（Single-Primary）模式
 ![MGR单主模式](single-primary-election.png)
 
-如上图所示，一开始S1节点是Primary角色，提供读写服务。当它发生故障时，剩下的S2-S5节点会再投票选举出S2作为新的Primary角色提供读写服务，而S1节点再达到一定超时阈值后，就会被踢出。
+如上图所示，一开始S1节点是Primary角色，提供读写服务。当它发生故障时，剩下的S2-S5节点会再投票选举出S2作为新的Primary角色提供读写服务，而S1节点在达到一定超时阈值后，就会被踢出。
 
 亦可选择多主（Multi-Primary）模式（再次**强烈建议选用单主模式**）
 ![MGR多主模式](multi-primary.png)
