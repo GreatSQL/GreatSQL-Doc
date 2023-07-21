@@ -154,7 +154,7 @@ mysql> SELECT MEMBER_ID AS id, COUNT_TRANSACTIONS_IN_QUEUE AS trx_tobe_certified
 
 还可以通过关注上述两个数值的变化，看看两个队列是在逐步加大还是缩小，据此判断Primary节点是否"跑得太快"了，或者Secondary节点是否"跑得太慢"。
 
-如果某个节点上的 `relaylog_tobe_applied` 值特别大，则要引起关注，检查该节点上的业务压力是否过大，后者服务器配置是否有问题。
+如果某个节点上的 `relaylog_tobe_applied` 值特别大，则要引起关注，检查该节点上的业务压力是否过大，或者服务器配置是否有问题。
 
 关于MGR监控，更多详情参考文档：[MGR状态监控](https://gitee.com/GreatSQL/GreatSQL-Doc/blob/master/deep-dive-mgr/deep-dive-mgr-06.md)。
 
