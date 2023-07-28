@@ -39,4 +39,4 @@ cmake .. -DBOOST_INCLUDE_DIR=/opt/boost_${BOOST_VERSION} \
 -DWITH_NDB=OFF -DWITH_NDBCLUSTER_STORAGE_ENGINE=OFF -DWITH_NDBCLUSTER=OFF \
 -DWITH_UNIT_TESTS=OFF -DWITH_SSL=system -DWITH_SYSTEMD=ON \
 -DWITH_AUTHENTICATION_LDAP=OFF \
-&& make -j${JOBS} VERBOSE=1 && make -j${JOBS} install
+>> /tmp/greatsql-automake.log 2>&1 && make -j${JOBS} >> /tmp/greatsql-automake.log 2>&1 && make -j${JOBS} install >> /tmp/greatsql-automake.log 2>&1
