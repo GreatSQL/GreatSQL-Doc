@@ -140,6 +140,7 @@ innodb_status_file = 1
 innodb_status_output = 0
 innodb_status_output_locks = 1
 innodb_sort_buffer_size = 64M
+innodb_numa_interleave = ON
 
 #innodb monitor settings
 #innodb_monitor_enable = "module_innodb,module_server,module_dml,module_ddl,module_trx,module_os,module_purge,module_log,module_lock,module_buffer,module_index,module_ibuf_system,module_buffer_page,module_adaptive_hash"
