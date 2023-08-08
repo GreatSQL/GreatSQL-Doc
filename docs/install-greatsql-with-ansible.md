@@ -42,11 +42,14 @@ greatsql_mgr_secondary
 172.16.16.11
 172.16.16.12
 ```
-**提醒**
-- 请填内网IP地址，因为MGR初始化时，默认使用用内网IP地址
-- 所以，如果同时还要安装到本机，也请填写内网IP地址
 
-上面这个主机列表，分为两个组，一个是选择作为MGR PRIMARY节点的组 **greatsql_mgr_primary**，只有一个主机。另一组选择作为SECONDARY节点 **greatsql_mgr_secondary**，有两个主机。两个组也可以合并一起，成为一个新的组 **greatsql_dbs**。
+上面这个主机列表，分为两个组，一个是选择作为MGR PRIMARY节点（或在多主模式中第一个需要初始化引导的节点）的组 **greatsql_mgr_primary**，只有一个主机。另一组选择作为SECONDARY节点 **greatsql_mgr_secondary**，有两个主机。两个组也可以合并一起，成为一个新的组 **greatsql_dbs**。
+
+**提醒**
+1. 请填内网IP地址，因为MGR初始化时，默认使用用内网IP地址。
+2. 如果同时还要安装到本机，也请填写内网IP地址。
+3. 如果是要采用多主模式，在上面的配置中，把第一个需要初始化引导的节点放在 **greatsql_mgr_primary** 组里，其他节点照常放在 **greatsql_mgr_secondary** 组里。
+
 
 ## 3. 建立ssh信任
 为了简单起见，直接建立ssh信任，方便ansible一键安装。
@@ -93,27 +96,28 @@ greatsql_mgr_secondary
 
 打开GreatSQL-Ansible项目主页：[https://gitee.com/GreatSQL/GreatSQL-Ansible](https://gitee.com/GreatSQL/GreatSQL-Ansible)
 
-找到页面右侧“发行版”，进入，选择 " GreatSQL-8.0.25-15-Linux-glibc2.17-x86_64-minimal-centos7-ansible.tar.xz" 这个二进制包下载到服务器上：
+找到页面右侧“发行版”，进入，选择 " **GreatSQL-8.0.32-24-Linux-glibc2.17-x86_64-minimal-ansible.tar.xz** " 这个二进制包下载到服务器上：
 
 ```
-[root@greatsql ~]# cd /opt/greatsql/; wget -c "https://gitee.com/xxx/GreatSQL-8.0.25-15-Linux-glibc2.17-x86_64-minimal-centos7-ansible.tar.xz"
+[root@greatsql ~]# cd /opt/greatsql/; wget -c "https://gitee.com/xxx/GreatSQL-8.0.32-24-Linux-glibc2.17-x86_64-minimal-ansible.tar.xz"
 
-[root@greatsql ~]# tar zxf GreatSQL-8.0.25-15-Linux-glibc2.17-x86_64-minimal-centos7-ansible.tar.xz
+[root@greatsql ~]# tar zxf GreatSQL-8.0.32-24-Linux-glibc2.17-x86_64-minimal-ansible.tar.xz
 ```
 
-解压缩后，能看到除了 *GreatSQL-8.0.25-15-Linux-glibc2.17-x86_64-minimal-centos7-ansible.tar.xz* 安装包之外，还有GreatSQL-ansible一键安装相关文件：
+解压缩后，能看到除了 *GreatSQL-8.0.32-24-Linux-glibc2.17-x86_64-minimal.tar.xz* 安装包之外，还有GreatSQL-ansible一键安装相关文件：
 ```
-[root@greatsql ~]# cd /opt/greatsql/GreatSQL-8.0.25-15-Linux-glibc2.17-x86_64-minimal-centos7-ansible
+[root@greatsql ~]# cd /opt/greatsql/GreatSQL-8.0.32-24-Linux-glibc2.17-x86_64-minimal-ansible
 [root@greatsql ~]# ls -la
--rw------- 1 root  root       333 Aug 11 15:22 check_mysql.yml
--rw------- 1 root  root  41817748 Aug 24 22:05 GreatSQL-8.0.25-15-Linux-glibc2.17-x86_64-minimal.tar.xz
--rw------- 1 root  root        91 Aug 25 10:43 GreatSQL-8.0.25-15-Linux-glibc2.17-x86_64-minimal.tar.xz.md5
--rw------- 1 root  root      5348 Aug 11 16:14 greatsql.yml
-drwxr-xr-x 3 root  root      4096 Aug 25 10:43 mysql-support-files
--rw------- 1 root  root       394 Aug 25 11:03 vars.yml
+-rw-r--r-- 1 root root      333 Aug  8 11:04 check_mysql.yml
+-rw-r--r-- 1 root root 46324036 Aug  8 11:09 GreatSQL-8.0.32-24-Linux-glibc2.17-x86_64-minimal.tar.xz
+-rw-r--r-- 1 root root     8920 Aug  8 12:41 greatsql.yml
+drwxr-xr-x 3 root root      103 Aug  8 11:07 mysql-support-files
+-rw-r--r-- 1 root root      869 Aug  8 11:04 README.en.md
+-rw-r--r-- 1 root root      795 Aug  8 11:04 README.md
+-rw-r--r-- 1 root root      413 Aug  8 14:03 vars.yml
 ```
 几个文件作用分别介绍下：
-- GreatSQL-8.0.25-15-Linux-glibc2.17-x86_64-minimal-centos7-ansible.tar.xz，GreatSQL二进制安装包。
+- GreatSQL-8.0.32-24-Linux-glibc2.17-x86_64-minimal.tar.xz，GreatSQL二进制minimal安装包。
 - greatsql.yml，ansible一键安装脚本。
 - check_mysql.yml，MySQL进程、端口预检查脚本。
 - vars.yml，定义一些变量的脚本，里面的变量名有些需要修改以适应各自不同的安装环境。
@@ -122,17 +126,18 @@ drwxr-xr-x 3 root  root      4096 Aug 25 10:43 mysql-support-files
 
 开始执行前，需要确认 *vars.yml* 文件中下面这些相关参数是否要调整：
 ```
-work_dir: /opt/greatsql/GreatSQL-8.0.25-15-Linux-glibc2.17-x86_64-minimal-centos7-ansible
+work_dir: /opt/greatsql/GreatSQL-8.0.32-24-Linux-glibc2.17-x86_64-minimal-ansible
 extract_dir: /usr/local
 data_dir: /data/GreatSQL
-file_name: GreatSQL-8.0.25-15-Linux-glibc2.17-x86_64-minimal.tar.xz
-base_dir: /usr/local/GreatSQL-8.0.25-15-Linux-glibc2.17-x86_64-minimal
+file_name: GreatSQL-8.0.32-24-Linux-glibc2.17-x86_64-minimal.tar.xz
+base_dir: /usr/local/GreatSQL-8.0.32-24-Linux-glibc2.17-x86_64-minimal
 my_cnf: /etc/my.cnf
 mysql_user: mysql
 mysql_port: 3306
 mgr_user: repl
 mgr_user_pwd: repl4MGR
 mgr_seeds: '172.16.16.7:33061,172.16.16.10:33061,172.16.16.16:33061'
+mgr_single_mode: 1
 wait_for_start: 60
 ```
 下面是关于这些参数的解释
@@ -142,17 +147,20 @@ wait_for_start: 60
 |work_dir|/opt/greatsql|工作目录，将下载的安装包放在本目录，可根据需要自行调整|
 |extract_dir|/usr/local|GreatSQL二进制包解压缩后放在 /usr/local下，【不建议调整】|
 |data_dir|/data/GreatSQL|GreatSQL运行时的datadir，【不建议调整】|
-|file_name|GreatSQL-8.0.25-15-Linux-glibc2.17-x86_64-minimal.tar.xz|GreatSQL二进制包文件名，【不建议调整】|
-|base_dir|/usr/local/GreatSQL-8.0.25-15-Linux-glibc2.17-x86_64-minimal|GreatSQL的basedir，【不建议调整】|
+|file_name|GreatSQL-8.0.32-24-Linux-glibc2.17-x86_64-minimal.tar.xz|GreatSQL二进制包文件名，【不建议调整】|
+|base_dir|/usr/local/GreatSQL-8.0.32-24-Linux-glibc2.17-x86_64-minimal|GreatSQL的basedir，【不建议调整】|
 |my_cnf|/etc/my.cnf|my.cnf配置文件路径，【不建议调整】|
 |mysql_user|mysql|运行GreatSQL对应的user、group，【不建议调整】|
 |mysql_port|3306|GreatSQL运行时的监听端口，【不建议调整】|
 |mgr_user|repl|MGR账户|
 |mgr_user_pwd|repl4MGR|MGR账户密码|
 |mgr_seeds|172.16.16.10:33061,172.16.16.11:33061,172.16.16.12:33061|定义MGR运行时各节点的IP+端口列表，【需要自行调整】|
+|mgr_single_mode|是否采用单主模式；0表示否，也就是采用多主模式；1表示是，也就是采用单主模式；默认值：1（即默认采用单主模式）|
 |wait_for_start|60|初次启动时，要先进行一系列数据文件初始化等工作，后面的MGR初始化工作要等待前面的先完成，如果第一安装失败，可以将这个时间加长|
 
-**提醒：**除了修改work_dir和mgr_seeds参数外，其他的都请不要修改，否则可能会提示找不到文件目录等错误。
+**提醒：**
+1. 除了修改work_dir和mgr_seeds参数外，其他的都请谨慎修改，否则可能会提示找不到文件目录等错误。
+2. 如果是要采用多主模式，在`/etc/ansible/hosts` 文件中，把第一个需要初始化引导的节点放在 **greatsql_mgr_primary** 组里，其他节点照常放在 **greatsql_mgr_secondary** 组里。
 
 执行下面的命令一键完成GreatSQL的安装、初始化，加入systemd服务、以及MGR初始化等所有工作：
 ```
@@ -212,14 +220,14 @@ PLAY RECAP *********************************************************************
 [root@greatsql ~]# systemctl status greatsql
 ● greatsql.service - GreatSQL Server
    Loaded: loaded (/usr/lib/systemd/system/greatsql.service; disabled; vendor preset: disabled)
-   Active: active (running) since Tue 2021-07-06 20:55:33 CST; 45s ago
+   Active: active (running) since Tue 2023-08-08 12:26:08 CST; 1h 58min ago
      Docs: man:mysqld(8)
            http://dev.mysql.com/doc/refman/en/using-systemd.html
-  Process: 31320 ExecStartPre=/usr/local/GreatSQL-8.0.25-15-Linux-glibc2.17-x86_64-minimal/bin/mysqld_pre_systemd (code=exited, status=0/SUCCESS)
- Main PID: 31348 (mysqld)
+  Process: 19129 ExecStartPre=/usr/local/GreatSQL-8.0.32-24-Linux-glibc2.17-x86_64-minimal/bin/mysqld_pre_systemd (code=exited, status=0/SUCCESS)
+ Main PID: 19258 (mysqld)
    Status: "Server is operational"
    CGroup: /system.slice/greatsql.service
-           └─31348 /usr/local/GreatSQL-8.0.25-15-Linux-glibc2.17-x86_64-minimal/bin/mysqld
+           └─19258 /usr/local/GreatSQL-8.0.32-24-Linux-glibc2.17-x86_64-minimal/bin/mysqld
 
 Jul 06 20:55:31 greatsql systemd[1]: Starting GreatSQL Server...
 Jul 06 20:55:33 greatsql systemd[1]: Started GreatSQL Server.
@@ -231,14 +239,17 @@ Jul 06 20:55:33 greatsql systemd[1]: Started GreatSQL Server.
 +---------------------------+--------------------------------------+-------------+-------------+--------------+-------------+----------------+
 | CHANNEL_NAME              | MEMBER_ID                            | MEMBER_HOST | MEMBER_PORT | MEMBER_STATE | MEMBER_ROLE | MEMBER_VERSION |
 +---------------------------+--------------------------------------+-------------+-------------+--------------+-------------+----------------+
-| group_replication_applier | ac24eab8-def4-11eb-a5e8-525400e802e2 |      mgr3   |        3306 | ONLINE       | SECONDARY   | 8.0.25         |
-| group_replication_applier | ac275d97-def4-11eb-9e49-525400fb993a |      mgr2   |        3306 | ONLINE       | SECONDARY   | 8.0.25         |
-| group_replication_applier | ac383458-def4-11eb-bf1a-5254002eb6d6 |      mgr1   |        3306 | ONLINE       | PRIMARY     | 8.0.25         |
+| group_replication_applier | ac24eab8-def4-11eb-a5e8-525400e802e2 |      mgr3   |        3306 | ONLINE       | SECONDARY   | 8.0.32         |
+| group_replication_applier | ac275d97-def4-11eb-9e49-525400fb993a |      mgr2   |        3306 | ONLINE       | SECONDARY   | 8.0.32         |
+| group_replication_applier | ac383458-def4-11eb-bf1a-5254002eb6d6 |      mgr1   |        3306 | ONLINE       | PRIMARY     | 8.0.32         |
 +---------------------------+--------------------------------------+-------------+-------------+--------------+-------------+----------------+
 ```
 至此，安装完成。
 
 ## 写在后面
 本文描述的是利用ansible安装GreatSQL minimal版本。minimal版本是在完整版本的基础上，做了strip操作，所以文件尺寸较小，功能上没本质区别，仅是不支持gdb debug功能，可以放心使用。
-P.S，实际上，您也可以利用这份ansible脚本安装完整版本，只需要自己手动调整 vars.yml 配置文件中的 file_name, base_dir 等参数。
+
+您也可以利用这份ansible脚本安装完整版本，只需要自己手动调整 vars.yml 配置文件中的 file_name, base_dir 等参数。
+
 类似地，如果您想自定义安装路径，也请相应修改 extract_dir, data_dir 等参数，不过 mysql-support-files 目录下的几个文件中的目录也自行修改。
+
