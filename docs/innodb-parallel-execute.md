@@ -70,9 +70,9 @@ parallel_default_dop=4;
 | --- | --- | 
 | Variable Scope	| global, session |
 | Dynamic Variable	| YES |
-| Permitted Values |	[0, ULONG_MAX] |
-| Default	| 1073741824（1GB） |
-| Description	| 并行执行时leader线程和worker线程使用的总内存大小上限。<br/>在一个重TP，轻AP的场景里，innodb_buffer_pool_size可以设置为物理内存的50%左右，parallel_memory_limit可以设置为物理内存的20% ~ 30%左右。 |
+| Permitted Values |	0 - 4294967295 |
+| Default	| 104857600（100MB） |
+| Description	| 并行执行时leader线程和worker线程使用的总内存大小上限。<br/>在一个重TP，轻AP的场景里，innodb_buffer_pool_size可以设置为物理内存的50%左右，parallel_memory_limit可以设置为物理内存的20% ~ 30%左右。<br/>当并行执行使用的内存量超过该值时，新的SQL查询将不会进行并行执行。|
 
 <br/>
 
