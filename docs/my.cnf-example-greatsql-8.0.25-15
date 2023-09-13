@@ -105,6 +105,7 @@ loose-group_replication_exit_state_action = READ_ONLY
 loose-group_replication_flow_control_mode = "DISABLED"
 loose-group_replication_single_primary_mode = ON
 loose-group_replication_communication_max_message_size = 10M
+loose-group_replication_recovery_get_public_key = ON
 report_host = "172.16.16.10"
 
 #innodb settings
