@@ -14,6 +14,11 @@ BOOST_VERSION=1_77_0
 SOURCE_DIR=greatsql-${MAJOR_VERSION}.${MINOR_VERSION}.${PATCH_VERSION}-${RELEASE}
 CMAKE_EXE_LINKER_FLAGS=""
 JOBS=`lscpu | grep '^CPU(s)'|awk '{print $NF}'`
+if [ ${JOBS} -ge 16 ] ; then
+  JOBS=`expr ${JOBS} - 4`
+else
+  JOBS=`expr ${JOBS} - 1`
+fi
 
 if [ ${ARCH} = "x86_64" ] ; then
   CMAKE_EXE_LINKER_FLAGS=" -ljemalloc "

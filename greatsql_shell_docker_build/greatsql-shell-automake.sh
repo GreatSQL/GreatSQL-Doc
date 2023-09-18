@@ -13,6 +13,11 @@ MYSQL_SOURCE_DIR=mysql-${MAJOR_VERSION}.${MINOR_VERSION}.${PATCH_VERSION}
 SHELL_SOURCE_DIR=mysql-shell-8.0.32-src
 CMAKE_EXE_LINKER_FLAGS=""
 JOBS=`lscpu | grep '^CPU(s)'|awk '{print $NF}'`
+if [ ${JOBS} -ge 16 ] ; then
+  JOBS=`expr ${JOBS} - 4`
+else
+  JOBS=`expr ${JOBS} - 1`
+fi
 
 cd /opt/${MYSQL_SOURCE_DIR} && \
 rm -fr bld && \
