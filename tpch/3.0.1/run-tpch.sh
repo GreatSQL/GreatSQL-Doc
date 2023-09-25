@@ -16,6 +16,8 @@ do
  $MYSQL_CLI < ./queries/tpch_queries_$i.sql > /dev/null 2>&1
  echo "tpch_queries_$i.sql warmup ended"
 done
+sleep 30
+echo "sleeping for 30 seconds"
 
 # 正式测试，每个查询SQL执行3遍
 for i in $(seq 1 22)
