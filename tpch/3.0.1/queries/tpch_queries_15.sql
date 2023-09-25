@@ -4,7 +4,7 @@ select /*+ PQ(16) */
     l_suppkey AS supplier_no,
     sum(l_extendedprice * (1 - l_discount)) AS total_revenue
 FROM lineitem
-WHERE (l_shipdate >= toDate('1997-08-01')) AND (l_shipdate < (toDate('1997-08-01') + toIntervalMonth('3')))
+WHERE l_shipdate >= '1997-08-01' AND l_shipdate < date_add('1997-08-01', interval 3 month)
 GROUP BY l_suppkey;
 
 
