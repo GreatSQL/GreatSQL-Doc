@@ -26,14 +26,15 @@ do
  do
 
    time_1=`date +%s%N`
-         echo `date  '+[%Y-%m-%d %H:%M:%S]'` "BEGIN RUN TPC-H Q${i} ${j} times" >> ./log/run-tpch-queries.log 2>&1
+	 echo `date  '+[%Y-%m-%d %H:%M:%S]'` "BEGIN RUN TPC-H Q${i} ${j} times" >> ./log/run-tpch-queries.log 2>&1
 
-         $MYSQL_CLI < ./queries/tpch_queries_$i.sql >> ./log/tpch_queries_$i.res 2>&1
+	 echo "RUN TPC-H Q${i} ${j} times"
+	 $MYSQL_CLI < ./queries/tpch_queries_$i.sql >> ./log/tpch_queries_$i.res 2>&1
 
-         time_2=`date +%s%N`
-         durtime=`echo $time_2 $time_1 | awk '{printf "%0.2f\n", ($1 - $2) / 1000000000}'`
-         echo `date  '+[%Y-%m-%d %H:%M:%S]'` "TPC-H Q${i} END, COST: ${durtime}s" >> ./log/run-tpch-queries.log 2>&1
-         echo "" >> ./log/run-tpch-queries.log 2>&1
-         echo "" >> ./log/run-tpch-queries.log 2>&1
+	 time_2=`date +%s%N`
+	 durtime=`echo $time_2 $time_1 | awk '{printf "%0.2f\n", ($1 - $2) / 1000000000}'`
+	 echo `date  '+[%Y-%m-%d %H:%M:%S]'` "TPC-H Q${i} END, COST: ${durtime}s" >> ./log/run-tpch-queries.log 2>&1
+	 echo "" >> ./log/run-tpch-queries.log 2>&1
+	 echo "" >> ./log/run-tpch-queries.log 2>&1
  done
 done
