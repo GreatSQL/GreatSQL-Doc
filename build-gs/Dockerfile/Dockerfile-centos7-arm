@@ -35,7 +35,7 @@ RUN tar zxvf /tmp/rpcsvc-proto-1.4.tar.gz -C /tmp && cd /tmp/rpcsvc-proto-1.4/ &
 
 RUN rm -fr /tmp/*
 
-#boost, https://boostorg.jfrog.io/artifactory/main/release/1.73.0/source/boost_1_73_0.tar.gz
-COPY boost_1_73_0.tar.gz /opt/
+#boost, https://boostorg.jfrog.io/artifactory/main/release/1.77.0/source/boost_1_77_0.tar.gz
+COPY boost_1_77_0.tar.gz /opt/
 
 RUN ln -fs /usr/bin/cmake3 /usr/bin/cmake

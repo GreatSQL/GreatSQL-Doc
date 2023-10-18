@@ -30,7 +30,7 @@ RUN cd /tmp && tar -xzvf patchelf-0.12.tar.gz && cd patchelf-0.12 && ./bootstrap
 COPY rpcsvc-proto-1.4.tar.gz /tmp/rpcsvc-proto-1.4.tar.gz
 RUN tar zxvf /tmp/rpcsvc-proto-1.4.tar.gz -C /tmp && cd /tmp/rpcsvc-proto-1.4/ && ./configure && make && make install
 
-COPY boost_1_73_0.tar.gz /opt/
+COPY boost_1_77_0.tar.gz /opt/
 COPY greatsql-automake.sh /opt/
 
 RUN rm -fr /tmp/*
