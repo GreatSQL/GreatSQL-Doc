@@ -92,8 +92,8 @@ GreatSQL中增加一个新的工作模式：**单主快速模式**，在这个�
 
 选项 `group_replication_single_primary_fast_mode` 可选值有：0、1、2，不同值分别表示如下：
 - 0，表示不采取快速单主模式，这是默认值。
-- 1，表示采用快速单主模式，支持并并回放。**强烈建议设置为1，即启用快速单主模式。
-**- 2，表示采用快速单主模式，但不支持并行回放，加速relay log落盘，且让从库消耗更少的资源。
+- 1，表示采用快速单主模式，支持并发回放。**强烈建议设置为1，即启用快速单主模式**。
+- 2，表示采用快速单主模式，但不支持并行回放，加速relay log落盘，且让从库消耗更少的资源。
 
 | System Variable Name    | group_replication_single_primary_fast_mode |
 | --- | --- | 
@@ -102,6 +102,9 @@ GreatSQL中增加一个新的工作模式：**单主快速模式**，在这个�
 | Permitted Values |    0<br/>1<br/>2 |
 | Default    | 0 |
 | Description    | 设置是否启用快速单主模式，强烈建议启用（即设置为1）。|
+
+**提醒：** MySQL 8.0.27起新增**single leader**模式（对应 `paxos_single_leader` 选项），请勿启用该特性，因为启用该特性后可能会导致MGR集群整体崩溃风险。在GreatSQL针对MGR所做的优化工作已包含这方面的优化工作。 
+
 
 ### 1.3 新增MGR网络开销阈值
 新增相应选项 `group_replication_request_time_threshold`。
