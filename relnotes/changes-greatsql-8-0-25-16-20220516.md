@@ -103,7 +103,7 @@ GreatSQL中增加一个新的工作模式：**单主快速模式**，在这个�
 | Default    | 0 |
 | Description    | 设置是否启用快速单主模式，强烈建议启用（即设置为1）。|
 
-**提醒：** MySQL 8.0.27起新增**single leader**模式（对应 `paxos_single_leader` 选项），请勿启用该特性，因为启用该特性后可能会导致MGR集群整体崩溃风险。在GreatSQL针对MGR所做的优化工作已包含这方面的优化工作。 
+**提醒：** MySQL 8.0.27起新增**single leader**模式（对应 `group_replication_paxos_single_leader` 选项），请勿启用该特性，因为启用该特性后可能会导致MGR集群整体崩溃风险。在GreatSQL针对MGR所做的优化工作已包含这方面的优化工作。 
 
 
 ### 1.3 新增MGR网络开销阈值
