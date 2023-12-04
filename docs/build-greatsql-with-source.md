@@ -43,7 +43,7 @@ Linux greatsql 3.10.0-1160.11.1.el7.x86_64 #1 SMP Fri Dec 18 16:34:56 UTC 2020 x
 - patchelf, https://github.com/NixOS/patchelf/archive/refs/tags/0.12.tar.gz, 下载后重命名为 patchelf-0.12.tar.gz
 - rpcsvc-proto, https://github.com/thkukuk/rpcsvc-proto/releases/download/v1.4/rpcsvc-proto-1.4.tar.gz
 
-下载GreatSQL源码包：https://gitee.com/GreatSQL/GreatSQL/archive/greatsql-8.0.25-15.tar.gz
+下载GreatSQL源码包：https://product.greatdb.com/GreatSQL-8.0.25-15/greatsql-8.0.25-15.tar.xz
 
 ### 1.4、构建docker镜像
 用下面这份Dockerfile构建镜像，这里以CentOS 7为例：
