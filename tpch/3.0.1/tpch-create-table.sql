@@ -1,6 +1,6 @@
-DROP DATABASE IF EXISTS tpch;
-CREATE DATABASE IF NOT EXISTS tpch DEFAULT CHARACTER SET latin1;
-USE tpch;
+-- DROP DATABASE IF EXISTS tpch;
+-- CREATE DATABASE IF NOT EXISTS tpch DEFAULT CHARACTER SET latin1;
+-- USE tpch;
 
 create table nation  ( n_nationkey  integer not null,
 				n_name       char(25) not null,
