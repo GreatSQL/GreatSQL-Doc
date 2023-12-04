@@ -7,7 +7,7 @@ user="tpch"
 passwd="tpch"
 
 cd ${workdir}
-MYSQL_CLI="mysql -h$host -P$port -u$user -p'$passwd' -f ${tpchdb}"
+MYSQL_CLI="mysql -h$host -P$port -u$user -p"$passwd" -f ${tpchdb}"
 
 # 利用GreatSQL的parallel load data特性并行导入TPC-H测试数据
 # 需要先修改GreatSQL选项`secure_file_priv`设置，指向上述 workdir 所在目录，重启GreatSQL使之生效
