@@ -1,23 +1,20 @@
-select /*+ PQ(16) */
-	o_orderpriority,
-	count(*) as order_count
-from
-	orders
-where
-	o_orderdate >= date '1993-01-01'
-	and o_orderdate < date '1993-01-01' + interval '3' month
-	and exists (
-		select
-			*
-		from
-			lineitem
-		where
-			l_orderkey = o_orderkey
-			and l_commitdate < l_receiptdate
-	)
-group by
-	o_orderpriority
-order by
-	o_orderpriority limit 1;
-
-
+SELECT /*+ SET_VAR(use_secondary_engine=1) SET_VAR(secondary_engine_cost_threshold=0) */
+    o_orderpriority,
+    count(*) AS order_count
+FROM
+    orders
+WHERE
+    o_orderdate >= CAST('1993-07-01' AS date)
+    AND o_orderdate < CAST('1993-10-01' AS date)
+    AND EXISTS (
+        SELECT /*+ SET_VAR(use_secondary_engine=1) SET_VAR(secondary_engine_cost_threshold=0) */
+            *
+        FROM
+            lineitem
+        WHERE
+            l_orderkey = o_orderkey
+            AND l_commitdate < l_receiptdate)
+GROUP BY
+    o_orderpriority
+ORDER BY
+    o_orderpriority;

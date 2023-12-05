@@ -1,23 +1,19 @@
-select /*+ PQ(16) */
-	c_count,
-	count(*) as custdist
-from
-	(
-		select
-			c_custkey,
-			count(o_orderkey) as c_count
-		from
-			customer left outer join orders on
-				c_custkey = o_custkey
-				and o_comment not like '%unusual%accounts%'
-		group by
-			c_custkey
-	) as c_orders
-group by
-	c_count
-order by
-	custdist desc,
-	c_count desc limit 1;
-
-
-
+SELECT /*+ SET_VAR(use_secondary_engine=1) SET_VAR(secondary_engine_cost_threshold=0) */
+    c_count,
+    count(*) AS custdist
+FROM (
+    SELECT /*+ SET_VAR(use_secondary_engine=1) SET_VAR(secondary_engine_cost_threshold=0) */
+        c_custkey,
+        count(o_orderkey)
+    FROM
+        customer
+    LEFT OUTER JOIN orders ON c_custkey = o_custkey
+    AND o_comment NOT LIKE '%special%requests%'
+GROUP BY
+    c_custkey) AS c_orders (c_custkey,
+        c_count)
+GROUP BY
+    c_count
+ORDER BY
+    custdist DESC,
+    c_count DESC;

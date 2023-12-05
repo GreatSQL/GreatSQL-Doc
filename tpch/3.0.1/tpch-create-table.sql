@@ -2,18 +2,21 @@
 -- CREATE DATABASE IF NOT EXISTS tpch DEFAULT CHARACTER SET latin1;
 -- USE tpch;
 
+drop table if exists nation;
 create table nation  ( n_nationkey  integer not null,
 				n_name       char(25) not null,
 				n_regionkey  integer not null,
 				n_comment    varchar(152),
 				primary key(n_nationkey),
-				key nation_fk1 (n_regionkey) );
+				key nation_fk1 (n_regionkey) ) secondary_engine = rapid;
 
+drop table if exists region;
 create table region  ( r_regionkey  integer not null,
 				r_name       char(25) not null,
 				r_comment    varchar(152),
-				primary key(r_regionkey) );
+				primary key(r_regionkey) ) secondary_engine = rapid;
 
+drop table if exists part;
 create table part  ( p_partkey     integer not null,
 				p_name        varchar(55) not null,
 				p_mfgr        char(25) not null,
@@ -23,8 +26,9 @@ create table part  ( p_partkey     integer not null,
 				p_container   char(10) not null,
 				p_retailprice decimal(15,2) not null,
 				p_comment     varchar(23) not null,
-				primary key(p_partkey) );
+				primary key(p_partkey) ) secondary_engine = rapid;
 
+drop table if exists supplier;
 create table supplier ( s_suppkey     integer not null,
 				s_name        char(25) not null,
 				s_address     varchar(40) not null,
@@ -33,8 +37,9 @@ create table supplier ( s_suppkey     integer not null,
 				s_acctbal     decimal(15,2) not null,
 				s_comment     varchar(101) not null,
 				primary key(s_suppkey),
-				key supplier_fk1 (s_nationkey) );
+				key supplier_fk1 (s_nationkey) ) secondary_engine = rapid;
 
+drop table if exists partsupp;
 create table partsupp ( ps_partkey     integer not null,
 				ps_suppkey     integer not null,
 				ps_availqty    integer not null,
@@ -42,9 +47,10 @@ create table partsupp ( ps_partkey     integer not null,
 				ps_comment     varchar(199) not null,
 				primary key(ps_partkey,ps_suppkey),
 				key partsupp_fk1 (ps_suppkey),
-				key partsupp_fk2 (ps_partkey) );
+				key partsupp_fk2 (ps_partkey) ) secondary_engine = rapid;
 
 
+drop table if exists customer;
 create table customer ( c_custkey     integer not null,
 				c_name        varchar(25) not null,
 				c_address     varchar(40) not null,
@@ -54,8 +60,9 @@ create table customer ( c_custkey     integer not null,
 				c_mktsegment  char(10) not null,
 				c_comment     varchar(117) not null,
 				primary key(c_custkey),
-				key customer_fk1 (c_nationkey) );
+				key customer_fk1 (c_nationkey) ) secondary_engine = rapid;
 
+drop table if exists orders;
 create table orders  ( o_orderkey       integer not null,
 				o_custkey        integer not null,
 				o_orderstatus    char(1) not null,
@@ -66,8 +73,9 @@ create table orders  ( o_orderkey       integer not null,
 				o_shippriority   integer not null,
 				o_comment        varchar(79) not null,
 				primary key(o_orderkey),
-				key orders_fk1 (o_custkey) );
+				key orders_fk1 (o_custkey) ) secondary_engine = rapid;
 
+drop table if exists lineitem;
 create table lineitem ( l_orderkey    integer not null,
 				l_partkey     integer not null,
 				l_suppkey     integer not null,
@@ -86,4 +94,4 @@ create table lineitem ( l_orderkey    integer not null,
 				l_comment      varchar(44) not null,
 				primary key(l_orderkey,l_linenumber),
 				key lineitem_fk1 (l_orderkey) ,
-				key lineitem_fk2 (l_partkey,l_suppkey) );
+				key lineitem_fk2 (l_partkey,l_suppkey) ) secondary_engine = rapid;
