@@ -14,5 +14,5 @@ if [ $? -ne 0 ];then
 else 
   echo "Docker build success!you can run it:
 
-docker run -d -v $src_dir:/opt/greatsql-8.0.32-24 greatsql_build_env"
+docker run -itd --hostname greatsql_docker_build --name greatsql_docker_build -v $src_dir:/opt/greatsql-8.0.32-24 greatsql_build_env bash"
 fi
