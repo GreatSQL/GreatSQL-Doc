@@ -2,7 +2,7 @@
 MAJOR_VERSION=8
 MINOR_VERSION=0
 PATCH_VERSION=32
-RELEASE=24
+RELEASE=25
 REVISION=3714067bc8c
 GLIBC=`ldd --version | head -n 1 | awk '{print $NF}'`
 ARCH=`uname -p`
@@ -11,13 +11,14 @@ OS=`grep '^ID=' /etc/os-release | sed 's/.*"\(.*\)".*/\1/ig'`
 PKG_NAME=GreatSQL-${MAJOR_VERSION}.${MINOR_VERSION}.${PATCH_VERSION}-${RELEASE}-${OS}-glibc${GLIBC}-${ARCH}
 BASE_DIR=/usr/local/${PKG_NAME}
 BOOST_VERSION=1_77_0
+MAKELOG=/tmp/greatsql-automake.log
 SOURCE_DIR=greatsql-${MAJOR_VERSION}.${MINOR_VERSION}.${PATCH_VERSION}-${RELEASE}
 CMAKE_EXE_LINKER_FLAGS=""
 JOBS=`lscpu | grep '^CPU(s)'|awk '{print $NF}'`
 if [ ${JOBS} -ge 16 ] ; then
   JOBS=`expr ${JOBS} - 4`
 else
-  JOBS=`expr ${JOBS} - 1`
+  JOBS=`expr ${JOBS} - 2`
 fi
 
 if [ ${ARCH} = "x86_64" ] ; then
@@ -151,6 +152,7 @@ function link {
     done
 }
 
+rm -fr ${MAKELOG}
 
 cd /opt/${SOURCE_DIR} && \
 rm -fr bld && \
@@ -185,27 +187,29 @@ cmake .. -DBOOST_INCLUDE_DIR=/opt/boost_${BOOST_VERSION} \
 -DWITH_ZSTD=bundled \
 -DWITH_FIDO=bundled \
 -DWITH_KEYRING_VAULT=ON \
->> /tmp/greatsql-automake.log 2>&1 && make -j${JOBS} >> /tmp/greatsql-automake.log 2>&1 && make -j${JOBS} install >> /tmp/greatsql-automake.log 2>&1
+>> ${MAKELOG} 2>&1 && make -j${JOBS} >> ${MAKELOG} 2>&1 && make -j${JOBS} install >> ${MAKELOG} 2>&1
 
 rm -fr ${BASE_DIR}/mysql-test 2 > /dev/null
 
 # strip binaries to get minimal package
 minimal=true
-echo "minimal = ${minimal}" >> /tmp/greatsql-automake.log 2>&1
-echo "link ${BASE_DIR}-minimal" >> /tmp/greatsql-automake.log 2>&1
+echo "minimal = ${minimal}" >> ${MAKELOG} 2>&1
+echo "link ${BASE_DIR}-minimal" >> ${MAKELOG} 2>&1
 (
   cp -rp ${BASE_DIR} ${BASE_DIR}-minimal
   cd ${BASE_DIR}-minimal
   find . -type f -exec file '{}' \; | grep ': ELF ' | cut -d':' -f1 | xargs strip --strip-unneeded
-  link >> /tmp/greatsql-automake.log 2>&1
+  link >> ${MAKELOG} 2>&1
 )
+#如果要打包压缩，就把下面两行注释去掉
 #tar -cf ${BASE_DIR}-minimal.tar ${BASE_DIR}-minimal
 #xz -9 -f -T${JOBS} ${BASE_DIR}-minimal.tar ${BASE_DIR}-minimal
 
 minimal=false
 (
   cd ${BASE_DIR}
-  link >> /tmp/greatsql-automake.log 2>&1
+  link >> ${MAKELOG} 2>&1
 )
+#如果要打包压缩，就把下面两行注释去掉
 #tar -cf ${BASE_DIR}.tar ${BASE_DIR}
 #xz -9 -f -T${JOBS} ${BASE_DIR}.tar.xz ${BASE_DIR}
