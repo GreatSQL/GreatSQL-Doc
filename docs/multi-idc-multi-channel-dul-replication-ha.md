@@ -193,3 +193,9 @@ $ ip a
 本方案的演练回切由传统的1小时减低到5分钟以内，极大提升了演练效率。同一时刻只有一个库可写，其他备选主库只读模式，避免多写导致数据冲突的风险。
 
 
+**延伸阅读**
+
+- [跨机房容灾场景，同时开启多源复制和主主复制，存在数据回路问题](https://gitee.com/GreatSQL/GreatSQL/issues/I8E8QB)
+- [基于MySQL多通道主主复制的机房容灾方案](https://mp.weixin.qq.com/s/1f8cTzQ_KZiBw9VeadO7KA)
+
+
