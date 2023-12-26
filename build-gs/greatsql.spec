@@ -1,3 +1,28 @@
+# Copyright (c) 2000, 2015, Oracle and/or its affiliates. All rights reserved.
+# Copyright (c) 2023, GreatDB Software Co., Ltd.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; version 2 of the License.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; see the file COPYING. If not, write to the
+# Free Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston
+# MA  02110-1301  USA.
+
+# Rebuild on OL5/RHEL5 needs following rpmbuild options:
+#  rpmbuild --define 'dist .el5' --define 'rhel 5' --define 'el5 1' mysql.spec
+
+# Install cmake28 from EPEL when building on OL5/RHEL5 and OL6/RHEL6.
+
+# NOTE: "vendor" is used in upgrade/downgrade check, so you can't
+# change these, has to be exactly as is.
+
 %undefine _missing_build_ids_terminate_build
 %global mysql_vendor Oracle and/or its affiliates
 %global greatsql_vendor GreatDB Software Co., Ltd.
@@ -151,7 +176,7 @@ BuildRequires:  m4
 BuildRoot:      %(mktemp -ud %{_tmppath}/%{name}-%{version}-%{release}-XXXXXX)
 
 # For rpm => 4.9 only: https://fedoraproject.org/wiki/Packaging:AutoProvidesAndRequiresFiltering
-%global __requires_exclude ^perl\\((GD|hostnames|lib::mtr|lib::v1|mtr_|My::)
+%global __requires_exclude ^perl\\((GD|hostnames|lib::mtr|lib::v1|mtr_|My::|Lmo|Lmo::Meta|Lmo::Object|Lmo::Types|Lmo::Utils|Percona::Toolkit|Quoter|Transformers)
 %global __provides_exclude_from ^(/usr/share/(mysql|mysql-test)/.*|%{_libdir}/mysql/plugin/.*\\.so|/usr/include/mysql/.*|/usr/share/man/man.*/mysql.*|/etc/my.cnf|/usr/bin/mysql.*|/usr/sbin/mysqld.*|*libprotobuf*|*libmysqlclient.so*|*libmysqlharness*|*libmysqlrouter*|*mysqlclient*|*libdaemon*|*libfnv*|*libmemcached*|*libmurmur*|*libtest*)$
 
 %global _privatelibs lib(protobuf|mysqlclient|mysqlharness|mysqlrouter|mysqlclient|daemon|fnv|memcached|murmur|test)*\\.so*
@@ -505,14 +530,14 @@ make DESTDIR=%{buildroot} install
 #install -D -m 0644 packaging/rpm-common/mysql.logrotate %{buildroot}%{_sysconfdir}/logrotate.d/mysql
 #investigate this logrotate
 install -D -m 0644 $MBD/release/support-files/mysql-log-rotate %{buildroot}%{_sysconfdir}/logrotate.d/mysql
-install -D -m 0644 $MBD/%{src_dir}/build-ps/rpm/mysqld.cnf %{buildroot}%{_sysconfdir}/my.cnf
+install -D -m 0644 $MBD/%{src_dir}/build-gs/rpm/mysqld.cnf %{buildroot}%{_sysconfdir}/my.cnf
 install -D -p -m 0644 %{_builddir}/greatsql-%{version}-%{greatsql_version}/greatsql-%{version}-%{greatsql_version}/scripts/mysqld.cnf %{buildroot}%{_sysconfdir}/my.cnf
 install -d %{buildroot}%{_sysconfdir}/my.cnf.d
 
 #%if 0%{?systemd}
 #%else
 #%if 0%{?rhel} < 7
-#  install -D -m 0755 $MBD/%{src_dir}/build-ps/rpm/mysql.init %{buildroot}%{_sysconfdir}/init.d/mysql
+#  install -D -m 0755 $MBD/%{src_dir}/build-gs/rpm/mysql.init %{buildroot}%{_sysconfdir}/init.d/mysql
 #%endif
 
 
