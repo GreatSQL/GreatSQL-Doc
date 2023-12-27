@@ -136,8 +136,8 @@ loose-greatdb_ha_mgr_vip_ip = '172.16.0.252'
 loose-greatdb_ha_mgr_vip_mask = '255.255.255.0'
 loose-greatdb_ha_mgr_vip_broad = '172.16.0.252'
 
-#MGR切主后断开旧Priamry节点上的所有应用连接
-loose-greatdb_ha_mgr_exit_primary_kill_connection_mode = 1
+#MGR切主后是否断开旧Priamry节点上的所有应用连接
+loose-greatdb_ha_mgr_exit_primary_kill_connection_mode = 0
 
 #innodb settings
 innodb_buffer_pool_size = 16G
