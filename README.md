@@ -12,8 +12,8 @@ GreatSQL相关文档、专栏内容、视频等资源汇总，主要包含以下
 - [GreatSQL新版本发布会](https://greatsql.cn/smx_course-lesson.html?op=video&ids=9)，历次GreatSQL新版本发布会视频内容
 
 ## GreatSQL编译构建相关
-- [利用Docker环境快速编译GreatSQL相关资源](./build-gs/greatsql_docker_build)
-- [利用Docker环境快速编译MySQL Shell for GreatSQL相关资源](./build-gs/greatsql_shell_docker_build)
+- [利用Docker环境快速编译GreatSQL相关资源](./greatsql_docker_build)
+- [利用Docker环境快速编译MySQL Shell for GreatSQL相关资源](./greatsql_shell_docker_build)
 - [用于编译GreatSQL RPM包的Spec文件](./build-gs/greatsql.spec)
 - [在CentOS环境下源码编译安装GreatSQL](./docs/build-greatsql-with-source.md)
 - [在麒麟OS+龙芯环境下源码编译安装GreatSQL](./docs/build-greatsql-with-source-under-kylin-and-loongson.md)
