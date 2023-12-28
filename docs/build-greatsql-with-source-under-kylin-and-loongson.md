@@ -1,4 +1,4 @@
-# 麒麟OS+龙芯环境编译GreatSQL
+# 在麒麟OS+龙芯环境下源码编译安装GreatSQL
 
 [toc]
 

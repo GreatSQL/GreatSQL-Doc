@@ -1,6 +1,6 @@
-[toc]
+# 一文掌握GreatSQL MGR集群的部署和运维
 
-> 一文快速掌握MGR集群的部署和运维。
+[toc]
 
 本文详细介绍如何在单机环境下，利用GreatSQL构建一个3节点的MGR集群，并用mysqld_multi进行管理（ 也建议采用systemd来管理GreatSQL多实例服务，参考：[利用systemd管理MySQL单机多实例](https://gitee.com/GreatSQL/GreatSQL-Doc/blob/master/docs/build-multi-instance-with-systemd.md) ）。
 

@@ -1,5 +1,7 @@
 # 利用Ansible安装GreatSQL并构建MGR集群
 
+[toc]
+
 本次介绍如何利用ansible一键安装GreatSQL并完成MGR部署。
 
 本文介绍的运行环境是CentOS 7.9：

@@ -1,4 +1,6 @@
-# 在Linux下源码编译安装GreatSQL
+# 在CentOS环境下源码编译安装GreatSQL
+
+[toc]
 
 本次介绍如何利用Docker来将GreatSQL源码编译成二进制文件，以及制作二进制包、RPM包等。
 
