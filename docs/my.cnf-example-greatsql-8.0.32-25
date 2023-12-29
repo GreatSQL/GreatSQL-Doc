@@ -22,6 +22,7 @@ character-set-server = UTF8MB4
 skip_name_resolve = 1
 #若你的MySQL数据库主要运行在境外，请务必根据实际情况调整本参数
 default_time_zone = "+8:00"
+bind_address = "0.0.0.0"
 
 #performance setttings
 lock_wait_timeout = 3600
@@ -116,6 +117,7 @@ loose-group_replication_bootstrap_group = OFF
 loose-group_replication_exit_state_action = READ_ONLY
 loose-group_replication_flow_control_mode = "DISABLED"
 loose-group_replication_single_primary_mode = ON
+loose-group_replication_enforce_update_everywhere_checks=0
 loose-group_replication_majority_after_mode = ON
 loose-group_replication_communication_max_message_size = 10M
 loose-group_replication_arbitrator = 0
@@ -126,7 +128,6 @@ loose-group_replication_unreachable_majority_timeout = 0
 loose-group_replication_member_expel_timeout = 5
 loose-group_replication_autorejoin_tries = 288
 loose-group_replication_recovery_get_public_key = ON
-report_host = "172.16.16.10"
 
 #mgr vip
 loose-plugin_load_add = 'greatdb_ha.so'
@@ -134,7 +135,13 @@ loose-greatdb_ha_enable_mgr_vip = 0
 loose-greatdb_ha_mgr_vip_nic = 'eth0'
 loose-greatdb_ha_mgr_vip_ip = '172.16.0.252'
 loose-greatdb_ha_mgr_vip_mask = '255.255.255.0'
-loose-greatdb_ha_mgr_vip_broad = '172.16.0.252'
+loose-greatdb_ha_port = 33062
+loose-greatdb_ha_mgr_read_vip_ips = "172.16.0.251"
+#loose-greatdb_ha_mgr_read_vip_ips = "172.16.0.251,172.16.0.252"
+loose-greatdb_ha_mgr_read_vip_floating_type = "TO_ANOTHER_SECONDARY"
+loose-greatdb_ha_send_arp_packge_times = 5
+report_host = 172.16.0.10
+report_port = 3306
 
 #MGR切主后是否断开旧Priamry节点上的所有应用连接
 loose-greatdb_ha_mgr_exit_primary_kill_connection_mode = 0
