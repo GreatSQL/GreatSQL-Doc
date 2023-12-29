@@ -85,6 +85,14 @@ SOURCE10:       boost_1_77_0.tar.gz
 [root@c8 rpmbuild]# rpmbuild --define "_topdir /root/rpmbuild/" -bb ./greatsql.spec
 ```
 
+在使用 `rpmbuild` 编译RPM包时，通常会选择加上 `-ba` 或 `-bb` 参数，下面是关于这两个参数的注释：
+```
+-ba    Build binary and source packages (after doing the %prep, %build, and %install stages).
+
+-bb    Build a binary package (after doing the %prep, %build, and %install stages).
+```
+简单说，`-ba` 会编译出RPM包和SRPM包，而 `-bb` 只会编译出RPM包。
+
 第一次运行时，大概率会提示N多依赖包缺失，先耐心地逐个安装上：
 ```
 [root@c8 rpmbuild]# rpmbuild --define "_topdir /root/rpmbuild/" -bb ./greatsql.spec
