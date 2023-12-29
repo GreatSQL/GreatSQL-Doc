@@ -29,8 +29,8 @@
 %global mysqldatadir /var/lib/mysql
 
 %global mysql_version 8.0.32
-%global greatsql_version 24
-%global revision 3714067bc8c
+%global greatsql_version 25
+%global revision db07cc5cb73
 %global tokudb_backup_version %{mysql_version}-%{greatsql_version}
 %global rpm_release 1
 
@@ -1310,6 +1310,9 @@ fi
 
 
 %changelog
+* Thu Dec 28 2023 GreatSQL <greatsql@greatdb.com> - 8.0.32-25.1
+- Release GreatSQL-8.0.32-25.1
+
 * Wed Jun  7 2023 GreatSQL <greatsql@greatdb.com> - 8.0.32-24.1
 - Release GreatSQL-8.0.32-24.1
 
