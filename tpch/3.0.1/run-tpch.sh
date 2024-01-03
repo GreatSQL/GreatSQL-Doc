@@ -6,6 +6,7 @@ port="3306"
 user="tpch"
 passwd="tpch"
 logdir="tpch-runlog-`date +%Y%m%d`"
+sleeptime=5
 
 cd ${workdir}
 mkdir -p ${logdir}
@@ -19,8 +20,6 @@ do
    if [ ${j} -le 2 ] ; then
      $MYSQL_CLI < ./queries/tpch_queries_$i.sql > /dev/null 2>&1
      echo "tpch_queries_$i.sql warmup ${j} times ended"
-     echo "sleeping for 5 seconds"
-     sleep 5
    else
      time_1=`date +%s%N`
      echo `date  '+[%Y-%m-%d %H:%M:%S]'` "BEGIN RUN TPC-H Q${i} ${j} times" >> ./${logdir}/run-tpch-queries.log 2>&1
@@ -34,5 +33,8 @@ do
      echo "" >> ./${logdir}/run-tpch-queries.log 2>&1
      echo "" >> ./${logdir}/run-tpch-queries.log 2>&1
    fi
+
+   echo "sleeping for ${sleeptime} seconds"
+   sleep ${sleeptime}
  done
 done
