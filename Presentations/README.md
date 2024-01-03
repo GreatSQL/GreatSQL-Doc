@@ -19,3 +19,6 @@
 - [20、GreatSQL国产开源新势力.pdf](./20、GreatSQL国产开源新势力.pdf)
 - [21、GreatSQL实战与高可用解决方案-For福富.pdf](./21、GreatSQL实战与高可用解决方案-For福富.pdf)
 - [21、GreatSQL实战与高可用解决方案.pdf](./21、GreatSQL实战与高可用解决方案.pdf)
+- [22、GreatSQL国产开源新势力-0916.pdf](./22、GreatSQL国产开源新势力-0916.pdf)
+- [23、GreatSQL vs MySQL-20231017.pdf](./23、GreatSQL%20vs%20MySQL-20231017.pdf)
+- [25、What Is New in GreatSQL 8.0.32-25.pdf](./25、What%20Is%20New%20in%20GreatSQL%208.0.32-25.pdf)
