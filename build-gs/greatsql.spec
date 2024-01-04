@@ -104,7 +104,7 @@ Group:          Applications/Databases
 Version:        %{mysql_version}
 Release:        %{release}
 License:        Copyright (c) 2000, 2018, %{mysql_vendor}. All rights reserved. Under %{?license_type} license as shown in the Description field..
-SOURCE0:        greatsql-8.0.32-24.tar.xz
+SOURCE0:        greatsql-8.0.32-25.tar.xz
 URL:            https://greatsql.cn
 SOURCE5:        mysql_config.sh
 SOURCE10:       boost_1_77_0.tar.xz
