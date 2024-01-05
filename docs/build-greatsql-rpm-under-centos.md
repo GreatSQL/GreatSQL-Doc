@@ -82,7 +82,7 @@ SOURCE10:       boost_1_77_0.tar.gz
 开始尝试编译RPM包
 ```
 [root@c8 rpm]#  cd /root/rpmbuild
-[root@c8 rpmbuild]# rpmbuild --define "_topdir /root/rpmbuild/" -bb ./greatsql.spec
+[root@c8 rpmbuild]# rpmbuild --define 'dist .el8' --define "_topdir /root/rpmbuild/" -bb ./greatsql.spec
 ```
 
 在使用 `rpmbuild` 编译RPM包时，通常会选择加上 `-ba` 或 `-bb` 参数，下面是关于这两个参数的注释：
@@ -95,7 +95,7 @@ SOURCE10:       boost_1_77_0.tar.gz
 
 第一次运行时，大概率会提示N多依赖包缺失，先耐心地逐个安装上：
 ```
-[root@c8 rpmbuild]# rpmbuild --define "_topdir /root/rpmbuild/" -bb ./greatsql.spec
+[root@c8 rpmbuild]# rpmbuild --define 'dist .el8' --define "_topdir /root/rpmbuild/" -bb ./greatsql.spec
 ...
 warning: Macro expanded in comment on line 787: %{_mandir}/man1/mysql.server.1*
 
@@ -146,7 +146,7 @@ make[1]: Leaving directory '/tmp/rpcsvc-proto-1.4'
 ```
 [root@c8 rpcsvc-proto-1.4]# cd /root/rpmbuild/
 # 将编译过程输出到日志文件中，更方便观察的排查错误
-[root@c8 rpmbuild]# rpmbuild --define "_topdir /root/rpmbuild/" -bb ./greatsql.spec > ./rpmbuild.log 2>&1
+[root@c8 rpmbuild]# rpmbuild --define 'dist .el8' --define "_topdir /root/rpmbuild/" -bb ./greatsql.spec > ./rpmbuild.log 2>&1
 warning: Macro expanded in comment on line 787: %{_mandir}/man1/mysql.server.1*
 
 warning: Macro expanded in comment on line 956: %{_datadir}/mysql-*/audit_log_filter_linux_install.sql
