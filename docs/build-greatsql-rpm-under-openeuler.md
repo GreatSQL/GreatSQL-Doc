@@ -58,7 +58,7 @@ readline-devel rpcgen rpm-build rpm-build snappy-devel tar time unzip vim wget z
 直接开始尝试编译RPM包
 ```
 [root@oe rpm]#  cd /root/rpmbuild
-[root@oe rpmbuild]# time rpmbuild --define 'dist .oe20' --define "_topdir /root/rpmbuild/" -bb ./greatsql.spec > rpmbuild.log 2>&1
+[root@oe rpmbuild]# time rpmbuild --nodebuginfo --define "_smp_mflags -j14" --define 'dist .oe20' --define "_topdir /root/rpmbuild/" -bb ./greatsql.spec > rpmbuild.log 2>&1
 ```
 
 在已经安装完上述必要的软件包、依赖包之后，正常应该能顺利完成RPM包编译了。
