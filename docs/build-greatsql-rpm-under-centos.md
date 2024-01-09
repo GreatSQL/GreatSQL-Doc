@@ -113,7 +113,7 @@ error: Failed build dependencies:
 
 这里贴一下我用上述干净docker环境中安装的一些依赖包：
 ```
-[root@c8 rpmbuild]# dnf install -y  bison cmake cyrus-sasl-devel gcc-c++ gcc-toolset-11 gcc-toolset-11-annobin-plugin-gcc libaio-devel libcurl-devel libtirpc-devel m4 make ncurses-devel numactl-devel openldap-devel openssl openssl-devel pam-devel perl perl-Carp perl-Data-Dumper perl-Errno perl-Exporter perl-File-Temp perl-Getopt-Long perl-JSON perl-Memoize perl-Time-HiRes readline-devel time zlib-devel
+[root@c8 rpmbuild]# dnf install -y  bison cmake cyrus-sasl-devel gcc-c++ gcc-toolset-11 gcc-toolset-11-annobin-plugin-gcc yum krb5-devel 1libaio-devel libcurl-devel libtirpc-devel m4 make ncurses-devel numactl-devel openldap-devel openssl openssl-devel pam-devel perl perl-Carp perl-Data-Dumper perl-Errno perl-Exporter perl-File-Temp perl-Getopt-Long perl-JSON perl-Memoize perl-Time-HiRes readline-devel time zlib-devel
 ```
 
 由于安装了 `gcc-toolset-11` 包，需要执行下面的命令才能切换到 gcc11 版本环境中，并确认gcc、cmake的版本是否符合要求：

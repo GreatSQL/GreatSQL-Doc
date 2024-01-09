@@ -21,7 +21,7 @@ $ docker exec -it oe bash
 安装 `rmp-build` 包，它会附带安装其他必要的相关依赖包，并同步安装其他必要的软件包，如cmake、gcc等：
 ```
 [root@oe /]# dnf install -y automake bison bison-devel bzip2 bzip2-devel clang cmake cmake3 diffutils expat-devel file flex \
-gcc gcc-c++ gcc-toolset-12-cpp gcc-toolset-12-gcc graphviz jemalloc jemalloc-devel libaio-devel \
+gcc gcc-c++ gcc-toolset-12-cpp gcc-toolset-12-gcc graphviz jemalloc jemalloc-devel krb5-devel libaio-devel \
 libarchive libcurl-devel libevent-devel libffi-devel libicu-devel libssh libtirpc libtirpc-devel \
 libtool libxml2-devel libzstd libzstd-devel lz4-devel lz4-static make ncurses-devel ncurses-libs \
 net-tools numactl numactl-devel numactl-libs openldap-clients openldap-devel openssl openssl-devel \
