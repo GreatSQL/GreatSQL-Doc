@@ -18,18 +18,24 @@ do
  for j in $(seq 1 5)
  do
    if [ ${j} -le 2 ] ; then
+     time_1=`date +%s%N`
+
      $MYSQL_CLI < ./queries/tpch_queries_$i.sql > /dev/null 2>&1
-     echo "tpch_queries_$i.sql warmup ${j} times ended"
+
+     time_2=`date +%s%N`
+     durtime=`echo $time_2 $time_1 | awk '{printf "%0.3f\n", ($1 - $2) / 1000000000}'`
+
+     echo "tpch_queries_$i.sql warmup ${j} times END, COST: ${durtime}s"
    else
      time_1=`date +%s%N`
      echo `date  '+[%Y-%m-%d %H:%M:%S]'` "BEGIN RUN TPC-H Q${i} ${j} times" >> ./${logdir}/run-tpch-queries.log 2>&1
 
-     echo "RUN TPC-H Q${i} ${j} times"
      $MYSQL_CLI < ./queries/tpch_queries_$i.sql >> ./${logdir}/tpch_queries_$i.res 2>&1
 
      time_2=`date +%s%N`
      durtime=`echo $time_2 $time_1 | awk '{printf "%0.3f\n", ($1 - $2) / 1000000000}'`
      echo `date  '+[%Y-%m-%d %H:%M:%S]'` "TPC-H Q${i} END, COST: ${durtime}s" >> ./${logdir}/run-tpch-queries.log 2>&1
+     echo "RUN TPC-H Q${i} ${j} times END, COST: ${durtime}s"
      echo "" >> ./${logdir}/run-tpch-queries.log 2>&1
      echo "" >> ./${logdir}/run-tpch-queries.log 2>&1
    fi
