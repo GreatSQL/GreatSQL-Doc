@@ -9,6 +9,7 @@
 - queries，该目录下包含了22个TPC-H测试的SQL脚本，已经都默认加上适用于GreatSQL AP引擎的HINT语法。
 - run-tpch.sh，实现自动化运行TPC-H测试SQL语句的脚本。
 - tpch-create-table.sql，适用于GreatSQL AP引擎的建表DDL脚本。
+- greatsql-ap-test.sql，适用于GreatSQL AP引擎的测试脚本，可以在完成GreatSQL初始化后运行，测试验证对AP引擎的支持结果。
 
 自动化测试脚本 `run-tpch.sh` 的工作方式大致如下：
 
