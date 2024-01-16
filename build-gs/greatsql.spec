@@ -171,6 +171,7 @@ BuildRequires:  cmake >= 3.6.1
 BuildRequires:  gcc
 BuildRequires:  gcc-c++
 BuildRequires:  libtirpc-devel
+#当在CentOS等系统中没有rpcgen包时，注释掉下面这行，自行手动编译安装rpcsvc-proto包'
 BuildRequires:  rpcgen
 BuildRequires:  m4
 BuildRoot:      %(mktemp -ud %{_tmppath}/%{name}-%{version}-%{release}-XXXXXX)
