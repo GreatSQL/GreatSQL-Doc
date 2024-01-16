@@ -122,7 +122,16 @@ Wrote: /root/rpmbuild/SRPMS/greatsql-8.0.32-25.1.el8.src.rpm
 再看下编译生成的RPM文件包：
 ```
 [root@c8 rpmbuild]# du -sch *
-
+[root@c8 rpmbuild]# du -sch *
+0       BUILD
+0       BUILDROOT
+64K     greatsql.spec
+37M     rpmbuild.log
+511M    RPMS
+12K     SOURCES
+0       SPECS
+472M    SRPMS
+1019M   total
 
 [root@c8 rpmbuild]# cd /root/rpmbuild/RPMS/x86_64
 [root@c8 x86_64]# ls -la
@@ -130,20 +139,13 @@ total 998740
 drwxr-xr-x 2 root root      4096 Dec 29 10:27 .
 drwxr-xr-x 3 root root        20 Dec 29 10:21 ..
 -rw-r--r-- 1 root root  19061972 Dec 29 10:22 greatsql-client-8.0.32-25.1.el8.x86_64.rpm
--rw-r--r-- 1 root root  36091240 Dec 29 10:27 greatsql-client-debuginfo-8.0.32-25.1.el8.x86_64.rpm
--rw-r--r-- 1 root root   4591912 Dec 29 10:25 greatsql-debuginfo-8.0.32-25.1.el8.x86_64.rpm
--rw-r--r-- 1 root root  26174384 Dec 29 10:25 greatsql-debugsource-8.0.32-25.1.el8.x86_64.rpm
 -rw-r--r-- 1 root root   2241908 Dec 29 10:24 greatsql-devel-8.0.32-25.1.el8.x86_64.rpm
 -rw-r--r-- 1 root root   2145368 Dec 29 10:24 greatsql-icu-data-files-8.0.32-25.1.el8.x86_64.rpm
 -rw-r--r-- 1 root root      8100 Dec 29 10:24 greatsql-mysql-config-8.0.32-25.1.el8.x86_64.rpm
 -rw-r--r-- 1 root root   5259796 Dec 29 10:24 greatsql-mysql-router-8.0.32-25.1.el8.x86_64.rpm
--rw-r--r-- 1 root root  37427440 Dec 29 10:28 greatsql-mysql-router-debuginfo-8.0.32-25.1.el8.x86_64.rpm
 -rw-r--r-- 1 root root  78317640 Dec 29 10:22 greatsql-server-8.0.32-25.1.el8.x86_64.rpm
--rw-r--r-- 1 root root 379119548 Dec 29 10:27 greatsql-server-debuginfo-8.0.32-25.1.el8.x86_64.rpm
 -rw-r--r-- 1 root root   1502984 Dec 29 10:24 greatsql-shared-8.0.32-25.1.el8.x86_64.rpm
--rw-r--r-- 1 root root   2805716 Dec 29 10:27 greatsql-shared-debuginfo-8.0.32-25.1.el8.x86_64.rpm
 -rw-r--r-- 1 root root 409911420 Dec 29 10:24 greatsql-test-8.0.32-25.1.el8.x86_64.rpm
--rw-r--r-- 1 root root  18017572 Dec 29 10:27 greatsql-test-debuginfo-8.0.32-25.1.el8.x86_64.rpm
 ```
 
 大功告成，其他内容略过，不再赘述。
