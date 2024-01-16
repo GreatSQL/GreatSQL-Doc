@@ -122,7 +122,6 @@ Wrote: /root/rpmbuild/SRPMS/greatsql-8.0.32-25.1.el8.src.rpm
 再看下编译生成的RPM文件包：
 ```
 [root@c8 rpmbuild]# du -sch *
-[root@c8 rpmbuild]# du -sch *
 0       BUILD
 0       BUILDROOT
 64K     greatsql.spec
