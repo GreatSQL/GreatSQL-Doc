@@ -172,6 +172,8 @@ BuildRequires:  gcc
 BuildRequires:  gcc-c++
 BuildRequires:  libtirpc-devel
 #当在CentOS等系统中没有rpcgen包时，注释掉下面这行，自行手动编译安装rpcsvc-proto包'
+#或者自行下载安装rpcgen RPM包也可以
+#一个可用地址是http://mirror.centos.org/centos/8-stream/PowerTools/x86_64/os/Packages/rpcgen-1.3.1-4.el8.x86_64.rpm
 BuildRequires:  rpcgen
 BuildRequires:  m4
 BuildRoot:      %(mktemp -ud %{_tmppath}/%{name}-%{version}-%{release}-XXXXXX)
