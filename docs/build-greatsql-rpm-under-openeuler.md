@@ -26,7 +26,7 @@ libarchive libcurl-devel libevent-devel libffi-devel libicu-devel libssh libtirp
 libtool libxml2-devel libzstd libzstd-devel lz4-devel lz4-static make ncurses-devel ncurses-libs \
 net-tools numactl numactl-devel numactl-libs openldap-clients openldap-devel openssl openssl-devel \
 pam pam-devel perl perl-Env perl-JSON perl-Memoize perl-Time-HiRes pkg-config psmisc re2-devel \
-readline-devel rpcgen rpm-build rpm-build snappy-devel tar time unzip vim wget zlib-devel
+readline-devel rpcgen rpm-build snappy-devel tar time unzip vim vim-common wget zlib-devel
 ```
 
 ### 1.3 创建构建RPM包所需的目录

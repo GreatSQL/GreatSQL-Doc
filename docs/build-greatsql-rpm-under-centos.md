@@ -50,6 +50,11 @@ yum clean all && yum makecache
 ### 1.7 下载rpcsvc-proto包并编译安装
 编译GreatSQL需要配套`rpcsvc-proto`包，戳此链接下载 [https://github.com/thkukuk/rpcsvc-proto/releases/download/v1.4/rpcsvc-proto-1.4.tar.gz](https://github.com/thkukuk/rpcsvc-proto/releases/download/v1.4/rpcsvc-proto-1.4.tar.gz)，放在 `/tmp/` 目录下。
 
+### 1.8 下载安装rpcgen RPM包
+执行命令一键安装rpcgen RPM包：
+```
+$ rpm -ivh http://mirror.centos.org/centos/8-stream/PowerTools/x86_64/os/Packages/rpcgen-1.3.1-4.el8.x86_64.rpm
+```
 
 ## 2、开始准备编译GreatSQL RPM包
 
@@ -113,7 +118,7 @@ error: Failed build dependencies:
 
 这里贴一下我用上述干净docker环境中安装的一些依赖包：
 ```
-[root@c8 rpmbuild]# dnf install -y  bison cmake cyrus-sasl-devel gcc-c++ gcc-toolset-11 gcc-toolset-11-annobin-plugin-gcc yum krb5-devel 1libaio-devel libcurl-devel libtirpc-devel m4 make ncurses-devel numactl-devel openldap-devel openssl openssl-devel pam-devel perl perl-Carp perl-Data-Dumper perl-Errno perl-Exporter perl-File-Temp perl-Getopt-Long perl-JSON perl-Memoize perl-Time-HiRes readline-devel time zlib-devel
+[root@c8 rpmbuild]# dnf install -y bison cmake cyrus-sasl-devel gcc-c++ gcc-toolset-11 gcc-toolset-11-annobin-plugin-gcc krb5-devel libaio-devel libcurl-devel libssh libtirpc-devel m4 make ncurses-devel numactl-devel openldap-devel openssl openssl-devel pam-devel perl perl-Carp perl-Data-Dumper perl-Errno perl-Exporter perl-File-Temp perl-Getopt-Long perl-JSON perl-Memoize perl-Time-HiRes readline-devel rpm-build time vim-common zlib-devel
 ```
 
 由于安装了 `gcc-toolset-11` 包，需要执行下面的命令才能切换到 gcc11 版本环境中，并确认gcc、cmake的版本是否符合要求：

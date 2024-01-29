@@ -28,7 +28,7 @@ yum clean all && yum makecache
 ### 1.2、安装编译所需要的软件包
 安装 rmp-build、cmake、gcc 等编译环境必要的软件包
 ```
-[root@c8 /]# dnf install -y  bison cmake cyrus-sasl-devel gcc-c++ gcc-toolset-11 gcc-toolset-11-annobin-plugin-gcc krb5-devel libaio-devel libcurl-devel libtirpc-devel m4 make ncurses-devel numactl-devel openldap-devel openssl openssl-devel pam-devel perl perl-Carp perl-Data-Dumper perl-Errno perl-Exporter perl-File-Temp perl-Getopt-Long perl-JSON perl-Memoize perl-Time-HiRes readline-devel rpm-build time zlib-devel
+[root@c8 /]# dnf install -y  bison cmake cyrus-sasl-devel gcc-c++ gcc-toolset-11 gcc-toolset-11-annobin-plugin-gcc krb5-devel libaio-devel libcurl-devel libssh libtirpc-devel m4 make ncurses-devel numactl-devel openldap-devel openssl openssl-devel pam-devel perl perl-Carp perl-Data-Dumper perl-Errno perl-Exporter perl-File-Temp perl-Getopt-Long perl-JSON perl-Memoize perl-Time-HiRes readline-devel rpm-build time vim-common zlib-devel
 ```
 
 ### 1.3 创建构建RPM包所需的目录
@@ -60,6 +60,12 @@ yum clean all && yum makecache
 rpcgen (rpcsvc-proto) 1.4
 ```
 确认编译安装好`rpcgen`即可。
+
+### 1.8 下载安装rpcgen RPM包
+执行命令一键安装rpcgen RPM包：
+```
+$ rpm -ivh http://mirror.centos.org/centos/8-stream/PowerTools/x86_64/os/Packages/rpcgen-1.3.1-4.el8.x86_64.rpm
+```
 
 ## 2、开始准备编译GreatSQL src.rpm包
 

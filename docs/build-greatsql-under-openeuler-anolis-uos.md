@@ -155,7 +155,7 @@ libtirpc libtirpc-devel libtool libxml2-devel libzstd libzstd-devel lz4-devel \
 lz4-static make ncurses-devel ncurses-libs net-tools numactl numactl-devel numactl-libs openldap-clients \
 openldap-devel openssl openssl-devel pam pam-devel perl perl-Env perl-JSON perl-Memoize \
 perl-Time-HiRes pkg-config psmisc re2-devel readline-devel \
-snappy-devel tar time unzip vim wget zlib-devel
+snappy-devel tar time unzip vim vim-common wget zlib-devel
 ```
 
 openEuler下就可以安装文档 [https://gitee.com/GreatSQL/GreatSQL-Doc/blob/master/docs/build-greatsql-with-source-under-kylin-and-loongson.md](https://gitee.com/GreatSQL/GreatSQL-Doc/blob/master/docs/build-greatsql-with-source-under-kylin-and-loongson.md) 中列出的所有包，包括 jemalloc 包。

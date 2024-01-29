@@ -58,9 +58,9 @@ curl -o /etc/yum.repos.d/CentOS-Base.repo http://mirrors.cloud.tencent.com/repo/
 yum clean all && \
 yum makecache
 RUN yum install -y yum-utils && \
-yum install -y wget diffutils net-tools vim git gcc gcc-c++ automake libtool cmake cmake3 \
+yum install -y wget diffutils net-tools vim vim-common git gcc gcc-c++ automake libtool cmake cmake3 \
 make psmisc openssl-devel zlib-devel readline-devel bzip2-devel expat-devel gflags-devel \
-bison bison-devel flex wget unzip libcurl-devel libevent-devel libffi-devel lz4-devel lz4-static \
+bison bison-devel flex wget unzip libcurl-devel libevent-devel libffi-devel libssh lz4-devel lz4-static \
 file clang bzip2 snappy-devel libxml2-devel libtirpc libtirpc-devel numactl-devel numactl-libs \
 numactl gtest-devel openldap-devel openldap-clients rpcgen pam-devel valgrind boost-devel rpm* tar \
 centos-release-scl libzstd libzstd-static libzstd-devel perl-Env perl-JSON time libaio-devel \
