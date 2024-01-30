@@ -104,6 +104,11 @@ loose-parallel_memory_limit = 12G
 #parallel load data
 loose-gdb_parallel_load_chunk_size = 4M
 
+#rapid engine
+loose-rapid_memory_limit = 12G
+loose-rapid_worker_threads = 32
+loose-secondary_engine_parallel_load_workers = 32
+
 #mgr settings
 loose-plugin_load_add = 'mysql_clone.so'
 loose-plugin_load_add = 'group_replication.so'
