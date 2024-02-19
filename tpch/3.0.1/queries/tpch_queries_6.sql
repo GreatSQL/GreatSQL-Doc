@@ -1,4 +1,4 @@
-SELECT /* Q6 */ /*+ SET_VAR(use_secondary_engine=1) SET_VAR(secondary_engine_cost_threshold=0) */
+SELECT /*+ SET_VAR(use_secondary_engine=1) SET_VAR(secondary_engine_cost_threshold=0) */ /*+ Q6 */
     sum(l_extendedprice * l_discount) AS revenue
 FROM
     lineitem

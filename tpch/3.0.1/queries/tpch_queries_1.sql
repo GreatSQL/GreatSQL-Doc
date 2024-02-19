@@ -1,4 +1,4 @@
-SELECT /* Q1 */ /*+ SET_VAR(use_secondary_engine=1) SET_VAR(secondary_engine_cost_threshold=0) */
+SELECT /*+ SET_VAR(use_secondary_engine=1) SET_VAR(secondary_engine_cost_threshold=0) */ /*+ Q1 */
     l_returnflag,
     l_linestatus,
     sum(l_quantity) AS sum_qty,

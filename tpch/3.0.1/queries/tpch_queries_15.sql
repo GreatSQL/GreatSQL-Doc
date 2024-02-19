@@ -1,4 +1,4 @@
-SELECT /* Q15 */ /*+ SET_VAR(use_secondary_engine=1) SET_VAR(secondary_engine_cost_threshold=0) */
+SELECT /*+ SET_VAR(use_secondary_engine=1) SET_VAR(secondary_engine_cost_threshold=0) */ /*+ Q15 */
     s_suppkey,
     s_name,
     s_address,

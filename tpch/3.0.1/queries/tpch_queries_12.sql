@@ -1,4 +1,4 @@
-SELECT /* Q12 */ /*+ SET_VAR(use_secondary_engine=1) SET_VAR(secondary_engine_cost_threshold=0) */
+SELECT /*+ SET_VAR(use_secondary_engine=1) SET_VAR(secondary_engine_cost_threshold=0) */ /*+ Q12 */
     l_shipmode,
     sum(
         CASE WHEN o_orderpriority = '1-URGENT'
