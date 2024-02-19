@@ -1,4 +1,4 @@
-SELECT /*+ SET_VAR(use_secondary_engine=1) SET_VAR(secondary_engine_cost_threshold=0) */
+SELECT /* Q18 */ /*+ SET_VAR(use_secondary_engine=1) SET_VAR(secondary_engine_cost_threshold=0) */
     c_name,
     c_custkey,
     o_orderkey,

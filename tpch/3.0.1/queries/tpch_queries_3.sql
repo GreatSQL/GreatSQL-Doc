@@ -1,4 +1,4 @@
-SELECT /*+ SET_VAR(use_secondary_engine=1) SET_VAR(secondary_engine_cost_threshold=0) */
+SELECT /* Q3 */ /*+ SET_VAR(use_secondary_engine=1) SET_VAR(secondary_engine_cost_threshold=0) */
     l_orderkey,
     sum(l_extendedprice * (1 - l_discount)) AS revenue,
     o_orderdate,
