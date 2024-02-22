@@ -3,7 +3,7 @@ SELECT /*+ SET_VAR(use_secondary_engine=1) SET_VAR(secondary_engine_cost_thresho
     count(*) AS numcust,
     sum(c_acctbal) AS totacctbal
 FROM (
-    SELECT /*+ SET_VAR(use_secondary_engine=1) SET_VAR(secondary_engine_cost_threshold=0) */
+    SELECT
         substring(c_phone FROM 1 FOR 2) AS cntrycode,
         c_acctbal
     FROM
@@ -11,7 +11,7 @@ FROM (
     WHERE
         substring(c_phone FROM 1 FOR 2) IN ('13', '31', '23', '29', '30', '18', '17')
         AND c_acctbal > (
-            SELECT /*+ SET_VAR(use_secondary_engine=1) SET_VAR(secondary_engine_cost_threshold=0) */
+            SELECT
                 avg(c_acctbal)
             FROM
                 customer
@@ -19,7 +19,7 @@ FROM (
                 c_acctbal > 0.00
                 AND substring(c_phone FROM 1 FOR 2) IN ('13', '31', '23', '29', '30', '18', '17'))
             AND NOT EXISTS (
-                SELECT /*+ SET_VAR(use_secondary_engine=1) SET_VAR(secondary_engine_cost_threshold=0) */
+                SELECT
                     *
                 FROM
                     orders

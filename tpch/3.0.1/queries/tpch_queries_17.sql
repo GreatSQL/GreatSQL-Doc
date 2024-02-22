@@ -8,7 +8,7 @@ WHERE
     AND p_brand = 'Brand#23'
     AND p_container = 'MED BOX'
     AND l_quantity < (
-        SELECT /*+ SET_VAR(use_secondary_engine=1) SET_VAR(secondary_engine_cost_threshold=0) */
+        SELECT
             0.2 * avg(l_quantity)
         FROM
             lineitem

@@ -11,7 +11,7 @@ FROM
     lineitem
 WHERE
     o_orderkey IN (
-        SELECT /*+ SET_VAR(use_secondary_engine=1) SET_VAR(secondary_engine_cost_threshold=0) */
+        SELECT
             l_orderkey
         FROM
             lineitem

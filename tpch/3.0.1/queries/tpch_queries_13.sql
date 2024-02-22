@@ -2,7 +2,7 @@ SELECT /*+ SET_VAR(use_secondary_engine=1) SET_VAR(secondary_engine_cost_thresho
     c_count,
     count(*) AS custdist
 FROM (
-    SELECT /*+ SET_VAR(use_secondary_engine=1) SET_VAR(secondary_engine_cost_threshold=0) */
+    SELECT
         c_custkey,
         count(o_orderkey)
     FROM

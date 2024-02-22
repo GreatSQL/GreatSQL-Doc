@@ -7,7 +7,7 @@ SELECT /*+ SET_VAR(use_secondary_engine=1) SET_VAR(secondary_engine_cost_thresho
 FROM
     supplier,
     (
-        SELECT /*+ SET_VAR(use_secondary_engine=1) SET_VAR(secondary_engine_cost_threshold=0) */
+        SELECT
             l_suppkey AS supplier_no,
             sum(l_extendedprice * (1 - l_discount)) AS total_revenue
         FROM
@@ -20,10 +20,10 @@ FROM
 WHERE
     s_suppkey = supplier_no
     AND total_revenue = (
-        SELECT /*+ SET_VAR(use_secondary_engine=1) SET_VAR(secondary_engine_cost_threshold=0) */
+        SELECT
             max(total_revenue)
         FROM (
-            SELECT /*+ SET_VAR(use_secondary_engine=1) SET_VAR(secondary_engine_cost_threshold=0) */
+            SELECT
                 l_suppkey AS supplier_no,
                 sum(l_extendedprice * (1 - l_discount)) AS total_revenue
             FROM

@@ -12,7 +12,7 @@ WHERE
     AND p_type NOT LIKE 'MEDIUM POLISHED%'
     AND p_size IN (49, 14, 23, 45, 19, 3, 36, 9)
     AND ps_suppkey NOT IN (
-        SELECT /*+ SET_VAR(use_secondary_engine=1) SET_VAR(secondary_engine_cost_threshold=0) */
+        SELECT
             s_suppkey
         FROM
             supplier

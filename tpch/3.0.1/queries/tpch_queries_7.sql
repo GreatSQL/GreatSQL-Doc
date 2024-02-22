@@ -4,7 +4,7 @@ SELECT /*+ SET_VAR(use_secondary_engine=1) SET_VAR(secondary_engine_cost_thresho
     l_year,
     sum(volume) AS revenue
 FROM (
-    SELECT /*+ SET_VAR(use_secondary_engine=1) SET_VAR(secondary_engine_cost_threshold=0) */
+    SELECT
         n1.n_name AS supp_nation,
         n2.n_name AS cust_nation,
         extract(year FROM l_shipdate) AS l_year,

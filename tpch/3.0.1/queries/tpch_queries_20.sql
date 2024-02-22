@@ -6,20 +6,20 @@ FROM
     nation
 WHERE
     s_suppkey IN (
-        SELECT /*+ SET_VAR(use_secondary_engine=1) SET_VAR(secondary_engine_cost_threshold=0) */
+        SELECT
             ps_suppkey
         FROM
             partsupp
         WHERE
             ps_partkey IN (
-                SELECT /*+ SET_VAR(use_secondary_engine=1) SET_VAR(secondary_engine_cost_threshold=0) */
+                SELECT
                     p_partkey
                 FROM
                     part
                 WHERE
                     p_name LIKE 'forest%')
                 AND ps_availqty > (
-                    SELECT /*+ SET_VAR(use_secondary_engine=1) SET_VAR(secondary_engine_cost_threshold=0) */
+                    SELECT
                         0.5 * sum(l_quantity)
                     FROM
                         lineitem

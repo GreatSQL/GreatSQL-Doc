@@ -13,7 +13,7 @@ GROUP BY
     ps_partkey
 HAVING
     sum(ps_supplycost * ps_availqty) > (
-        SELECT /*+ SET_VAR(use_secondary_engine=1) SET_VAR(secondary_engine_cost_threshold=0) */
+        SELECT
             sum(ps_supplycost * ps_availqty) * 0.0001000000
         FROM
             partsupp,

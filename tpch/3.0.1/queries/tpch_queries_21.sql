@@ -12,7 +12,7 @@ WHERE
     AND o_orderstatus = 'F'
     AND l1.l_receiptdate > l1.l_commitdate
     AND EXISTS (
-        SELECT /*+ SET_VAR(use_secondary_engine=1) SET_VAR(secondary_engine_cost_threshold=0) */
+        SELECT
             *
         FROM
             lineitem l2
@@ -20,7 +20,7 @@ WHERE
             l2.l_orderkey = l1.l_orderkey
             AND l2.l_suppkey <> l1.l_suppkey)
     AND NOT EXISTS (
-        SELECT /*+ SET_VAR(use_secondary_engine=1) SET_VAR(secondary_engine_cost_threshold=0) */
+        SELECT
             *
         FROM
             lineitem l3

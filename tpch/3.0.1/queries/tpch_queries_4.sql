@@ -7,7 +7,7 @@ WHERE
     o_orderdate >= CAST('1993-07-01' AS date)
     AND o_orderdate < CAST('1993-10-01' AS date)
     AND EXISTS (
-        SELECT /*+ SET_VAR(use_secondary_engine=1) SET_VAR(secondary_engine_cost_threshold=0) */
+        SELECT
             *
         FROM
             lineitem

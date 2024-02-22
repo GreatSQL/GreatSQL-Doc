@@ -22,7 +22,7 @@ WHERE
     AND n_regionkey = r_regionkey
     AND r_name = 'EUROPE'
     AND ps_supplycost = (
-        SELECT /*+ SET_VAR(use_secondary_engine=1) SET_VAR(secondary_engine_cost_threshold=0) */
+        SELECT
             min(ps_supplycost)
         FROM
             partsupp,
