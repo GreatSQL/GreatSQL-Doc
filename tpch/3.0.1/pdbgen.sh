@@ -17,7 +17,7 @@ maxthd=`lscpu | grep '^CPU(s)'|awk '{print $NF}'`
 maxthd=`expr ${maxthd} - 2`
 
 #当达到最大并发数时休眠时长
-sleep=0.5
+sleep=5
 
 #设置Scale Factor，默认值为1
 sf=1
@@ -39,13 +39,14 @@ tbls=(
 's 1'  #supplier
 )
 
+c=1
 for i in "${tbls[@]}"
 do
-  c=1
   tbl=`echo ${i} | awk '{print $1}'`
   chunk=`echo ${i} | awk '{print $2}'`
   #实际分片数还要乘以Scale Factor
-  echo "TBL: ${tbl}"
+  chunk=`expr ${chunk} \* ${sf}`
+
   for j in $(seq 1 $chunk)
   do
     echo "TBL: ${tbl}, CHUNK: ${chunk}, j: {$j}, c:${c}"
@@ -59,6 +60,6 @@ do
     else
       ./dbgen -vf -s ${sf} -S ${j} -C ${chunk} -T ${tbl} > /dev/null 2>&1 &
     fi
+    c=`expr $c + 1`
   done
-  c=`expr $c + 1`
 done
