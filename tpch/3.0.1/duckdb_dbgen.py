@@ -1,4 +1,11 @@
 #!/usr/bin/python3
+#
+# 2024.03.25更新
+#
+# 暂不推荐使用
+# 由于duckdb中将几个表的数据类型设置为int32，在构造SF>=357的情况下会出现int值溢出生成负数值问题
+# 建议改用本仓库中的 pdbgen.sh 脚本
+#
 import duckdb
 import pathlib
 import sys
@@ -26,7 +33,7 @@ while (x <= slice):
     print ("slice %d/%d done" % (x, slice))
     x += 1
     con.close()
-
+# 
 # 使用说明
 #
 # 功能：利用duckdb来快速生成TPC-H测试数据
