@@ -16,8 +16,8 @@
 maxthd=`lscpu | grep '^CPU(s)'|awk '{print $NF}'`
 maxthd=`expr ${maxthd} - 2`
 
-#当达到最大并发数时休眠时长
-sleep=5
+#当达到最大并发数时轮询等待时长
+sleep=1
 
 #设置Scale Factor，默认值为1
 sf=1
@@ -51,9 +51,10 @@ do
   do
     echo "TBL: ${tbl}, CHUNK: ${chunk}, j: {$j}, c:${c}"
     #控制并发数
-    if [ `expr ${c} % ${maxthd}` -eq 0 ] || [ `ps -ef|grep -v grep|grep -c dbgen` -gt ${maxthd} ] ; then
+    while [ `ps -ef|grep -v grep|grep -c dbgen` -gt ${maxthd} ]
+    do
       sleep ${sleep}
-    fi
+    done
 
     if [ ${chunk} -eq 1 ] ; then
       ./dbgen -vf -s ${sf} -C ${chunk} -T ${tbl} > /dev/null 2>&1 &
