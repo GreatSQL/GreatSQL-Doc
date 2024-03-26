@@ -5,7 +5,8 @@
 试用版本：TPC-H 3.0.1。
 
 相关文件介绍：
-- load-data-parallel.sh，用于执行并行LOAD DATA加载TPC-H测试数据到GreatSQL中的脚本。MySQL、Percona及其他分支不支持并行LOAD DATA特性，但也可以使用该脚本，不会产生报错。
+- pdbgen.sh，并行构造TPC-H测试数据集，每个表生成多个测试文件分片，便于后续并行导入
+- pload.sh，将pdbgen.sh并行构造TPC-H测试数据集文件并行load到数据库中
 - queries，该目录下包含了22个TPC-H测试的SQL脚本，已经都默认加上适用于GreatSQL AP引擎的HINT语法。
 - run-tpch.sh，实现自动化运行TPC-H测试SQL语句的脚本。
 - tpch-create-table.sql，适用于GreatSQL AP引擎的建表DDL脚本。
