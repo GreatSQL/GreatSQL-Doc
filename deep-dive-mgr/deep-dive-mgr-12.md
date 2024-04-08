@@ -1,7 +1,5 @@
 # 12. 新节点加入过程解读 | 深入浅出MGR
 
-[toc]
-
 本文从日志解读MGR节点加入过程。
 
 ## 1. 从日志理解（手动）加入新节点过程
@@ -302,9 +300,9 @@
 17:44:11.612184 [Note] [MY-010050] [Server] Event Scheduler: Waiting for the scheduler thread to reply
 17:44:11.612317 [Note] [MY-010048] [Server] Event Scheduler: Stopped
 17:44:13.612473 [Note] [MY-010118] [Server] Forcefully disconnecting 6 remaining clients
-17:44:13.612563 [Warning] [MY-010909] [Server] /usr/local/GreatSQL-8.0.25/bin/mysqld: Forcing close of thread 19  user: 'root'.
-17:44:13.612811 [Warning] [MY-010909] [Server] /usr/local/GreatSQL-8.0.25/bin/mysqld: Forcing close of thread 27  user: 'GreatSQL'.
-17:44:13.613020 [Warning] [MY-010909] [Server] /usr/local/GreatSQL-8.0.25/bin/mysqld: Forcing close of thread 28  user: 'GreatSQL'.
+17:44:13.612563 [Warning] [MY-010909] [Server] /usr/local/GreatSQL-8.0.32-25/bin/mysqld: Forcing close of thread 19  user: 'root'.
+17:44:13.612811 [Warning] [MY-010909] [Server] /usr/local/GreatSQL-8.0.32-25/bin/mysqld: Forcing close of thread 27  user: 'GreatSQL'.
+17:44:13.613020 [Warning] [MY-010909] [Server] /usr/local/GreatSQL-8.0.32-25/bin/mysqld: Forcing close of thread 28  user: 'GreatSQL'.
 17:44:13.613112 [Note] [MY-011650] [Repl] Plugin group_replication reported: 'Plugin 'group_replication' is stopping.'
 -- 18. 准备关闭mysql实例，关闭MGR服务，需要执行view change
 17:44:13.613226 [Note] [MY-011647] [Repl] Plugin group_replication reported: 'Going to wait for view modification'
@@ -378,12 +376,12 @@
 17:44:17.501206 [Note] [MY-010733] [Server] Shutting down plugin 'sha256_password'
 17:44:17.501208 [Note] [MY-010733] [Server] Shutting down plugin 'mysql_native_password'
 17:44:17.502296 [Note] [MY-010733] [Server] Shutting down plugin 'binlog'
-17:44:17.509905 [System] [MY-010910] [Server] /usr/local/GreatSQL-8.0.25/bin/mysqld: Shutdown complete (mysqld 8.0.25-15)  GreatSQL (GPL), Release 15, Revision 202112080052.
+17:44:17.509905 [System] [MY-010910] [Server] /usr/local/GreatSQL-8.0.32-25/bin/mysqld: Shutdown complete (mysqld 8.0.32-25)  GreatSQL (GPL), Release 25, Revision 79f57097e3f.
 -- 19. 启动mysql实例
 17:44:18.598602 [Warning] [MY-010140] [Server] Could not increase number of max_open_files to more than 10000 (request: 65535)
 17:44:18.786863 [Note] [MY-010098] [Server] --secure-file-priv is set to NULL. Operations related to importing and exporting data are disabled
-17:44:18.786898 [Note] [MY-010949] [Server] Basedir set to /usr/local/GreatSQL-8.0.25/.
-17:44:18.786904 [System] [MY-010116] [Server] /usr/local/GreatSQL-8.0.25/bin/mysqld (mysqld 8.0.25-15) starting as process 16415
+17:44:18.786898 [Note] [MY-010949] [Server] Basedir set to /usr/local/GreatSQL-8.0.32-25/.
+17:44:18.786904 [System] [MY-010116] [Server] /usr/local/GreatSQL-8.0.32-25/bin/mysqld (mysqld 8.0.32-25) starting as process 16415
 17:44:18.798984 [Warning] [MY-012364] [InnoDB] innodb_open_files should not be greater than the open_files_limit.
 17:44:18.799025 [Note] [MY-012366] [InnoDB] Using Linux native AIO
 17:44:18.799319 [Note] [MY-010747] [Server] Plugin 'FEDERATED' is disabled.
@@ -467,7 +465,7 @@
 17:44:19.607274 [Note] [MY-012266] [InnoDB] File './ibtmp1' size is now 12 MB.
 17:44:19.607493 [Note] [MY-013627] [InnoDB] Scanning temp tablespace dir:'./#innodb_temp/'
 17:44:19.620971 [Note] [MY-013018] [InnoDB] Created 128 and tracked 128 new rollback segment(s) in the temporary tablespace. 128 are now active.
-17:44:19.621579 [Note] [MY-012976] [InnoDB] Percona XtraDB (http://www.percona.com) 8.0.25-15 started; log sequence number 536978956
+17:44:19.621579 [Note] [MY-012976] [InnoDB] Percona XtraDB (http://www.percona.com) 8.0.32-25 started; log sequence number 536978956
 17:44:19.622059 [System] [MY-013577] [InnoDB] InnoDB initialization has ended.
 17:44:19.628832 [Note] [MY-011089] [Server] Data dictionary restarting version '80023'.
 17:44:19.694094 [Note] [MY-012357] [InnoDB] Reading DD tablespace files
@@ -510,7 +508,7 @@
 17:44:19.959308 [Note] [MY-010051] [Server] Event Scheduler: scheduler thread started with id 6
 17:44:19.960078 [Note] [MY-011240] [Server] Plugin mysqlx reported: 'Using SSL configuration from MySQL Server'
 17:44:19.960445 [Note] [MY-011243] [Server] Plugin mysqlx reported: 'Using OpenSSL for TLS connections'
-17:44:19.960638 [System] [MY-010931] [Server] /usr/local/GreatSQL-8.0.25/bin/mysqld: ready for connections. Version: '8.0.25-15'  socket: '/data/GreatSQL/mgr07/mysql.sock'  port: 3312  GreatSQL (GPL), Release 15, Revision 202112080052.
+17:44:19.960638 [System] [MY-010931] [Server] /usr/local/GreatSQL-8.0.32-25/bin/mysqld: ready for connections. Version: '8.0.32-25'  socket: '/data/GreatSQL/mgr07/mysql.sock'  port: 3312  GreatSQL (GPL), Release 25, Revision 79f57097e3f.
 17:44:19.961001 [Note] [MY-011673] [Repl] Plugin group_replication reported: 'Group communication SSL configuration: group_replication_ssl_mode: "DISABLED"'
 17:44:19.961750 [Note] [MY-011735] [Repl] Plugin group_replication reported: '[GCS] Debug messages will be sent to: asynchronous::/data/GreatSQL/mgr07/GCS_DEBUG_TRACE'
 -- 21. 新节点准备加入MGR

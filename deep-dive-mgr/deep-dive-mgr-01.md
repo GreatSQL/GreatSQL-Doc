@@ -1,7 +1,5 @@
 # 1. MGR简介 | 深入浅出MGR
 
-[toc]
-
 ## 1. 为什么是MGR
 MGR是MySQL Group Replication的缩写，即MySQL组复制。
 
@@ -25,12 +23,12 @@ MGR具备以下几个特点：
 4. 支持故障自动检测及自动切换，发生故障时能自动切换到新的主节点，再配合MySQL Router中间件，应用层无需干预或调整。
 5. 支持单节点、多节点写入两种模式，可根据架构或业务需要选择哪种方案，不过**强烈建议选用单主模式**。
 
-MGR可以选择单主（Single-Primary）模式
+MGR可以选择单主（Single-Primary）模式<br/>
 ![MGR单主模式](single-primary-election.png)
 
 如上图所示，一开始S1节点是Primary角色，提供读写服务。当它发生故障时，剩下的S2-S5节点会再投票选举出S2作为新的Primary角色提供读写服务，而S1节点在达到一定超时阈值后，就会被踢出。
 
-亦可选择多主（Multi-Primary）模式（再次**强烈建议选用单主模式**）
+亦可选择多主（Multi-Primary）模式（再次**强烈建议选用单主模式**）<br/>
 ![MGR多主模式](multi-primary.png)
 
 如上图所示，一开始S1-S5所有节点都是Primary角色，都可以提供读写服务，任何一个节点发生故障时，只需要把指向这个节点的流量切换下就行。
@@ -39,7 +37,7 @@ MGR可以选择单主（Single-Primary）模式
 
 
 ## 3. MGR技术架构
-首先来个MGR的技术架构图：
+首先来个MGR的技术架构图：<br/>
 ![Group Replication Plugin Architecture](https://dev.mysql.com/doc/refman/5.7/en/images/gr-plugin-blocks.png)
 
 MGR是以Plugin方式嵌入MySQL，部署更灵活方便。

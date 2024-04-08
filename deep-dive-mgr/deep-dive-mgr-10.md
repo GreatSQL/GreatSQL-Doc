@@ -1,7 +1,5 @@
 # 10. 选主算法、多版本兼容性及滚动升级 | 深入浅出MGR
 
-[toc]
-
 本文介绍MGR的选主算法，以及当MGR集群中有多个不同版本混搭时，如何才能正常运行，有什么注意事项。
 
 ## 1. 选主算法
@@ -20,15 +18,24 @@ MGR的选主工作是自动的，每个节点都会参与。选主时会检查�
 
 因此，运行MGR集群时最好各节点版本号相同，选主规则就简单多了。
 
+在GreatSQL中，新增 `group_replication_primary_election_mode` 用于自定义选主策略，可选值有 `WEIGHT_ONLY|GTID_FIRST|WEIGHT_FIRST`，默认值为 **WEIGHT_ONLY**，几个可选值详细解释如下：
+- WEIGHT_ONLY，还是按照上述传统模式自动选主，这是默认值。
+- GTID_FIRST，优先判断各节点事务应用状态，自动选择拥有最新事务的节点作为新的主节点。推荐设置为该模式。
+- WEIGHT_FIRST，传统模式优先，如果没有合适的结果再判断各节点事务状态。
+
+**提醒**：所有节点都的设置必须相同，否则无法启动。
+
+关于选项 `group_replication_primary_election_mode` 的详细解读请参考GreatSQL用户手册：[GreatSQL高可用特性之智能选主](https://greatsql.cn/docs/8032-25/user-manual/5-enhance/5-2-ha-mgr-election-mode.html)。
+
 在MySQL 8.0中，通过查询 `performance_schema.replication_group_members` 表的`MEMBER_ROLE` 即可知道哪个是主节点：
 ```
 mysql> select * from performance_schema.replication_group_members;
 +---------------------------+--------------------------------------+--------------+-------------+--------------+-------------+----------------+
 | CHANNEL_NAME              | MEMBER_ID                            | MEMBER_HOST  | MEMBER_PORT | MEMBER_STATE | MEMBER_ROLE | MEMBER_VERSION |
 +---------------------------+--------------------------------------+--------------+-------------+--------------+-------------+----------------+
-| group_replication_applier | 4ebd3504-11d9-11ec-8f92-70b5e873a570 | 172.16.16.10 |        3306 | ONLINE       | PRIMARY     | 8.0.25         |  <---主节点
-| group_replication_applier | 549b92bf-11d9-11ec-88e1-70b5e873a570 | 172.16.16.11 |        3307 | ONLINE       | SECONDARY   | 8.0.25         |
-| group_replication_applier | 5596116c-11d9-11ec-8624-70b5e873a570 | 172.16.16.12 |        3308 | ONLINE       | SECONDARY   | 8.0.25         |
+| group_replication_applier | 4ebd3504-11d9-11ec-8f92-70b5e873a570 | 172.16.16.10 |        3306 | ONLINE       | PRIMARY     | 8.0.32         |  <---主节点
+| group_replication_applier | 549b92bf-11d9-11ec-88e1-70b5e873a570 | 172.16.16.11 |        3307 | ONLINE       | SECONDARY   | 8.0.32         |
+| group_replication_applier | 5596116c-11d9-11ec-8624-70b5e873a570 | 172.16.16.12 |        3308 | ONLINE       | SECONDARY   | 8.0.32         |
 +---------------------------+--------------------------------------+--------------+-------------+--------------+-------------+----------------+
 ```
 
@@ -40,7 +47,7 @@ mysql> select * from performance_schema.replication_group_members;
 +---------------------------+--------------------------------------+---------------+-------------+--------------+-------------+----------------+
 | CHANNEL_NAME              | MEMBER_ID                            | MEMBER_HOST   | MEMBER_PORT | MEMBER_STATE | MEMBER_ROLE | MEMBER_VERSION |
 +---------------------------+--------------------------------------+---------------+-------------+--------------+-------------+----------------+
-| group_replication_applier | af39db70-6850-11ec-94c9-00155d064000 | 172.16.16.13  |        3306 | ONLINE       | SECONDARY   | 8.0.25         |
+| group_replication_applier | af39db70-6850-11ec-94c9-00155d064000 | 172.16.16.13  |        3306 | ONLINE       | SECONDARY   | 8.0.32         |
 | group_replication_applier | d9833e7e-6ecc-11ec-a3f6-d08e7908bcb1 | 172.16.16.10  |        3306 | ONLINE       | PRIMARY     | 5.7.36         |
 | group_replication_applier | fe55e195-6ecc-11ec-a2e9-d08e7908bcb1 | 172.16.16.11  |        3306 | ONLINE       | SECONDARY   | 5.7.36         |
 | group_replication_applier | ff19317f-6ecc-11ec-b17d-d08e7908bcb1 | 172.16.16.12  |        3306 | ONLINE       | SECONDARY   | 5.7.36         |
@@ -75,7 +82,7 @@ mysql> select version();
 +-----------+
 | version() |
 +-----------+
-| 8.0.25-15 |  <-- 当前MySQL版本是8.0.25
+| 8.0.32-25 |  <-- 当前MySQL版本是8.0.32
 +-----------+
 1 row in set (0.00 sec)
 
@@ -83,7 +90,7 @@ mysql> select group_replication_get_communication_protocol();
 +------------------------------------------------+
 | group_replication_get_communication_protocol() |
 +------------------------------------------------+
-| 8.0.16                                         |  <-- 当前MGR通信协议版本是8.0.16
+| 8.0.27                                         |  <-- 当前MGR通信协议版本是8.0.27
 +------------------------------------------------+
 1 row in set (0.00 sec)
 
@@ -106,12 +113,12 @@ mysql> select group_replication_get_communication_protocol();
 +------------------------------------------------+
 | group_replication_get_communication_protocol() |
 +------------------------------------------------+
-| 8.0.16                                         |  <-- 重置为8.0.16
+| 8.0.27                                         |  <-- 重置为8.0.27
 +------------------------------------------------+
 
-# 尝试修改为8.0.27，会报错
-mysql> select group_replication_set_communication_protocol('8.0.27');
-ERROR 1123 (HY000): Can't initialize function 'group_replication_set_communication_protocol'; 8.0.27 is not between 5.7.14 and 8.0.25
+# 尝试修改为8.0.33，会报错
+mysql> select group_replication_set_communication_protocol('8.0.33');
+ERROR 1123 (HY000): Can't initialize function 'group_replication_set_communication_protocol'; 8.0.33 is not between 5.7.14 and 8.0.32
 ```
 
 其实说这么多版本兼容性的话题，还不如一个简单的原则：**让所有节点的版本号都一致**。这样构建MGR集群更简单，节点间通信也不会被复杂化。
@@ -148,7 +155,7 @@ mysql> select * from performance_schema.replication_group_members;
 | group_replication_applier | c8ec34c4-78fc-11ec-864a-111111111111 | 127.0.0.1   |        4306 | ONLINE       | PRIMARY     | 5.7.36         |
 | group_replication_applier | c8ec34c4-78fc-11ec-864a-222222222222 | 127.0.0.1   |        4307 | ONLINE       | SECONDARY   | 5.7.36         |
 | group_replication_applier | c8ec34c4-78fc-11ec-864a-333333333333 | 127.0.0.1   |        4308 | ONLINE       | SECONDARY   | 5.7.36         |
-| group_replication_applier | c8ec34c4-78fc-11ec-864a-888888888333 | 127.0.0.1   |        3309 | ONLINE       | SECONDARY   | 8.0.25         |
+| group_replication_applier | c8ec34c4-78fc-11ec-864a-888888888333 | 127.0.0.1   |        3309 | ONLINE       | SECONDARY   | 8.0.32         |
 +---------------------------+--------------------------------------+-------------+-------------+--------------+-------------+----------------+
 ```
 
@@ -173,7 +180,7 @@ The instance '127.0.0.1:4308' was successfully removed from the cluster.
 +---------------------------+--------------------------------------+-------------+-------------+--------------+-------------+----------------+
 | group_replication_applier | c8ec34c4-78fc-11ec-864a-111111111111 | 127.0.0.1   |        4306 | ONLINE       | PRIMARY     | 5.7.36         |
 | group_replication_applier | c8ec34c4-78fc-11ec-864a-222222222222 | 127.0.0.1   |        4307 | ONLINE       | SECONDARY   | 5.7.36         |
-| group_replication_applier | c8ec34c4-78fc-11ec-864a-888888888333 | 127.0.0.1   |        3309 | ONLINE       | SECONDARY   | 8.0.25         |
+| group_replication_applier | c8ec34c4-78fc-11ec-864a-888888888333 | 127.0.0.1   |        3309 | ONLINE       | SECONDARY   | 8.0.32         |
 +---------------------------+--------------------------------------+-------------+-------------+--------------+-------------+----------------+
 ```
 
@@ -183,9 +190,9 @@ The instance '127.0.0.1:4308' was successfully removed from the cluster.
 | CHANNEL_NAME              | MEMBER_ID                            | MEMBER_HOST | MEMBER_PORT | MEMBER_STATE | MEMBER_ROLE | MEMBER_VERSION |
 +---------------------------+--------------------------------------+-------------+-------------+--------------+-------------+----------------+
 | group_replication_applier | c8ec34c4-78fc-11ec-864a-111111111111 | 127.0.0.1   |        4306 | ONLINE       | PRIMARY     | 5.7.36         |
-| group_replication_applier | c8ec34c4-78fc-11ec-864a-888888888333 | 127.0.0.1   |        3309 | ONLINE       | SECONDARY   | 8.0.25         |
-| group_replication_applier | c8ec34c4-78fc-11ec-864a-888888888444 | 127.0.0.1   |        3310 | ONLINE       | SECONDARY   | 8.0.25         |
-| group_replication_applier | c8ec34c4-78fc-11ec-864a-888888888555 | 127.0.0.1   |        3311 | ONLINE       | SECONDARY   | 8.0.25         |
+| group_replication_applier | c8ec34c4-78fc-11ec-864a-888888888333 | 127.0.0.1   |        3309 | ONLINE       | SECONDARY   | 8.0.32         |
+| group_replication_applier | c8ec34c4-78fc-11ec-864a-888888888444 | 127.0.0.1   |        3310 | ONLINE       | SECONDARY   | 8.0.32         |
+| group_replication_applier | c8ec34c4-78fc-11ec-864a-888888888555 | 127.0.0.1   |        3311 | ONLINE       | SECONDARY   | 8.0.32         |
 +---------------------------+--------------------------------------+-------------+-------------+--------------+-------------+----------------+
 ```
 
@@ -207,9 +214,9 @@ The instance '127.0.0.1:4306' was successfully removed from the cluster.
 +---------------------------+--------------------------------------+-------------+-------------+--------------+-------------+----------------+
 | CHANNEL_NAME              | MEMBER_ID                            | MEMBER_HOST | MEMBER_PORT | MEMBER_STATE | MEMBER_ROLE | MEMBER_VERSION |
 +---------------------------+--------------------------------------+-------------+-------------+--------------+-------------+----------------+
-| group_replication_applier | c8ec34c4-78fc-11ec-864a-888888888333 | 127.0.0.1   |        3309 | ONLINE       | PRIMARY     | 8.0.25         |
-| group_replication_applier | c8ec34c4-78fc-11ec-864a-888888888444 | 127.0.0.1   |        3310 | ONLINE       | SECONDARY   | 8.0.25         |
-| group_replication_applier | c8ec34c4-78fc-11ec-864a-888888888555 | 127.0.0.1   |        3311 | ONLINE       | SECONDARY   | 8.0.25         |
+| group_replication_applier | c8ec34c4-78fc-11ec-864a-888888888333 | 127.0.0.1   |        3309 | ONLINE       | PRIMARY     | 8.0.32         |
+| group_replication_applier | c8ec34c4-78fc-11ec-864a-888888888444 | 127.0.0.1   |        3310 | ONLINE       | SECONDARY   | 8.0.32         |
+| group_replication_applier | c8ec34c4-78fc-11ec-864a-888888888555 | 127.0.0.1   |        3311 | ONLINE       | SECONDARY   | 8.0.32         |
 +---------------------------+--------------------------------------+-------------+-------------+--------------+-------------+----------------+
 ```
 

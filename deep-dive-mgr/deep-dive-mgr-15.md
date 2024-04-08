@@ -1,7 +1,5 @@
 # 15. 故障检测与网络分区 | 深入浅出MGR
 
-[toc]
-
 本文介绍MGR的故障检测机制，以及发生网络分区后如何处理。
 
 ## 1. 故障检测
@@ -17,7 +15,7 @@ MGR中，各节点间会定期交换消息，当超过5秒（在MySQL中是固�
 
 在GreatSQL中对此进行了优化，新增选项 `group_replication_communication_flp_timeout`（默认值5，最小3，最大60） 用于定义节点超过多少秒没发消息会被判定为可疑。此外，还修改了硬编码 `SUSPICION_PROCESSING_THREAD_PERIOD = 2`，也就是故障检测线程每2秒（而非15秒）就会检查一次。因此在GreatSQL中，最快 5（group_replication_communication_flp_timeout） + 5（group_replication_member_expel_timeout） = 10秒 完成驱逐，最慢 5 + 5 + 2（SUSPICION_PROCESSING_THREAD_PERIOD） = 12秒 完成驱逐。
 
-在网络条件不好的情况下，建议适当加大 group_replication_member_expel_timeout 值，避免网络波动造成节点频繁被驱逐。不过也要注意另一个风险，见这篇文章所述：[为什么MGR一致性模式不推荐AFTER](https://mp.weixin.qq.com/s/rNeq479RNsklY1BlfKOsYg)。
+在网络条件不好的情况下，建议适当加大 `group_replication_member_expel_timeout` 值，避免网络波动造成节点频繁被驱逐。不过也要注意另一个风险，见这篇文章所述：[为什么MGR一致性模式不推荐AFTER](https://mp.weixin.qq.com/s/rNeq479RNsklY1BlfKOsYg)。
 
 存活的节点会把被驱逐的节点从成员列表中删除，但被驱逐的节点自身可能还没“意识”到（可能只是因为临时短时间的网络异常），在状态恢复后，该节点会先收到一条包含该节点已被驱逐出MGR的新视图信息，而后再重新加入MGR。被驱逐的节点会尝试 `group_replication_autorejoin_tries` 次重新加入MGR。
 

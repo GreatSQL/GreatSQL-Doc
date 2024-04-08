@@ -1,7 +1,5 @@
 # 7. 利用MySQL Router构建读写分离MGR集群 | 深入浅出MGR
 
-[toc]
-
 本文介绍如何在MGR集群前端部署MySQL Router以实现读写分离、读负载均衡，以及故障自动转移。
 
 MySQL Router是一个轻量级的中间件，它采用多端口的方案实现读写分离以及读负载均衡，而且同时支持mysql和mysql x协议。

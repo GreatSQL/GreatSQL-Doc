@@ -1,7 +1,5 @@
 # 9. 利用Docker快速构建MGR | 深入浅出MGR
 
-[toc]
-
 为了方便社区用户体验GreatSQL，我们同时还提供Docker镜像，本文详细介绍如何在Docker中部署GreatSQL，并且构建一个MGR集群。
 
 本文涉及的运行环境如下：
@@ -35,14 +33,14 @@ Using default tag: latest
 Trying to pull repository docker.io/greatsql/greatsql ...
 latest: Pulling from docker.io/greatsql/greatsql
 ...
-Digest: sha256:e3c7b3dcebcbb6e2a1ab60993f0999c9ce7e1c85e4a87ab4022d2c1351840f6f
+Digest: sha256:16edef1b078bac2762fe69fe2d66b93c852373ad06a291dcdb29446a21e7fa16
 Status: Downloaded newer image for docker.io/greatsql/greatsql:latest
 ```
 检查是否成功
 ```
 [root@greatsql]# docker images
 REPOSITORY                    TAG                 IMAGE ID            CREATED             SIZE
-docker.io/greatsql/greatsql   latest              1130a28e310b        3 days ago          570 MB
+docker.io/greatsql/greatsql   latest              977c1c074d74        3 days ago          570 MB
 ```
 
 ### 2.2 创建新容器
@@ -60,6 +58,7 @@ docker.io/greatsql/greatsql   latest              1130a28e310b        3 days ago
 -e MYSQL_MGR_USER='repl' \
 -e MYSQL_MGR_USER_PWD='repl' \
 -e MYSQL_SID=330602 \
+-e MAXPERF=0 \
 greatsql/greatsql
 ```
 
@@ -80,8 +79,9 @@ greatsql/greatsql
 |-e MYSQL_MGR_USER='repl'|可选|repl|设置MGR服务账户名|
 |-e MYSQL_MGR_USER_PWD='repl'|可选| repl4MGR |设置MGR服务账户密码|
 |-e MYSQL_SID|可选|3306+3位随机数|设置MySQL的server_id，利用MySQL Shell接管MGR时，要求每个实例的server_id要设置为不同值。如果不手动指定，则会自动生成随机数值|
+|-e MAXPERF|可选|1|设置是否采用最大性能模式运行容器，默认值：1，即默认启用该模式。如果您不需要运行该模式，请在创建容器时加上 `-e MAXPERF=0` 参数|
 
-`greatsql/greatsql`，是镜像名，也可以指定为镜像的ID，例如 `1130a28e310b`。
+`greatsql/greatsql`，是镜像名，也可以指定为镜像的ID，例如 `977c1c074d74`。
 
 如果不想让 root 账户使用空密码，可以把 `MYSQL_ALLOW_EMPTY_PASSWORD=1` 参数替换成诸如 `MYSQL_ROOT_PASSWORD='GreatSQL3#)^'` 或者指定随机密码 `MYSQL_RANDOM_ROOT_PASSWORD=1` 即可。
 
@@ -103,7 +103,7 @@ CONTAINER ID        IMAGE                    COMMAND                  CREATED   
 [root@greatsql]# docker exec -it mgr1 /bin/bash
 [root@mgr1 ~]# mysqladmin ver
 ...
-Server version:         8.0.25-15 GreatSQL, Release 15, Revision c7feae175e0
+Server version:         8.0.32-25 GreatSQL, Release 25, Revision 79f57097e3f
 Protocol version	10
 Connection		Localhost via UNIX socket
 UNIX socket		/data/GreatSQL/mysql.sock
@@ -115,7 +115,7 @@ Threads: 2  Questions: 2  Slow queries: 0  Opens: 120  Flush tables: 3  Open tab
 
 查看MGR账户及相应复制通道
 ```
-[root@GreatSQL][(none)]> show grants for repl;
+greatsql> show grants for repl;
 +----------------------------------------------+
 | Grants for repl@%                            |
 +----------------------------------------------+
@@ -123,7 +123,7 @@ Threads: 2  Questions: 2  Slow queries: 0  Opens: 120  Flush tables: 3  Open tab
 | GRANT BACKUP_ADMIN ON *.* TO `repl`@`%`      |
 +----------------------------------------------+
 
-[root@GreatSQL][none]> select * from performance_schema.replication_group_members;
+greatsql> select * from performance_schema.replication_group_members;
 +---------------------------+-----------+-------------+-------------+--------------+-------------+----------------+
 | CHANNEL_NAME              | MEMBER_ID | MEMBER_HOST | MEMBER_PORT | MEMBER_STATE | MEMBER_ROLE | MEMBER_VERSION |
 +---------------------------+-----------+-------------+-------------+--------------+-------------+----------------+
@@ -168,6 +168,7 @@ NETWORK ID          NAME                DRIVER              SCOPE
 -e MYSQL_MGR_LOCAL='172.18.0.2:33061' \
 -e MYSQL_MGR_SEEDS='172.18.0.2:33061,172.18.0.3:33061,172.18.0.4:33061' \
 -e MYSQL_INIT_MGR=1 \
+-e MAXPERF=0 \
 greatsql/greatsql
 ```
 后面的两个实例，只把 --name 和 --hostname 参数中的mgr1改成mgr2、mgr3，并且把 `-e MYSQL_MGR_LOCAL='172.18.0.2:33061'` 参数的的IP地址递增，例如 `-e MYSQL_MGR_LOCAL='172.18.0.3:33061'`。
@@ -176,9 +177,9 @@ greatsql/greatsql
 ```
 [root@greatsql]# docker ps -a
 CONTAINER ID        IMAGE               COMMAND                  CREATED             STATUS              PORTS                       NAMES
-1bcd23c6f378        1130a28e310b        "/docker-entrypoin..."   2 minutes ago       Up 2 minutes        3306/tcp, 33060-33061/tcp   mgr3
-9d12ab273d81        1130a28e310b        "/docker-entrypoin..."   2 minutes ago       Up 2 minutes        3306/tcp, 33060-33061/tcp   mgr2
-56fd564a1789        1130a28e310b        "/docker-entrypoin..."   4 minutes ago       Up 4 minutes        3306/tcp, 33060-33061/tcp   mgr1
+1bcd23c6f378        977c1c074d74        "/docker-entrypoin..."   2 minutes ago       Up 2 minutes        3306/tcp, 33060-33061/tcp   mgr3
+9d12ab273d81        977c1c074d74        "/docker-entrypoin..."   2 minutes ago       Up 2 minutes        3306/tcp, 33060-33061/tcp   mgr2
+56fd564a1789        977c1c074d74        "/docker-entrypoin..."   4 minutes ago       Up 4 minutes        3306/tcp, 33060-33061/tcp   mgr1
 ```
 
 分别查看3个容器的IP地址：
@@ -259,13 +260,13 @@ CHANGE MASTER TO MASTER_USER='repl', MASTER_PASSWORD='repl4MGR' FOR CHANNEL 'gro
 ### 3.4 启动MGR服务
 在另外的两个docker容器里，记住不要设置 `group_replication_bootstrap_group=ON`，直接启动 MGR服务即可。查看所有节点都启动后的MGR服务状态：
 ```
-[root@GreatSQL][(none)]> select * from performance_schema.replication_group_members;
+greatsql> select * from performance_schema.replication_group_members;
 +---------------------------+--------------------------------------+-------------+-------------+--------------+-------------+----------------+
 | CHANNEL_NAME              | MEMBER_ID                            | MEMBER_HOST | MEMBER_PORT | MEMBER_STATE | MEMBER_ROLE | MEMBER_VERSION |
 +---------------------------+--------------------------------------+-------------+-------------+--------------+-------------+----------------+
-| group_replication_applier | 63b55594-da80-11eb-94bf-0242ac120003 | mgr2        |        3306 | ONLINE       | SECONDARY   | 8.0.25         |
-| group_replication_applier | 6d33eb83-da80-11eb-91ed-0242ac120004 | mgr3        |        3306 | ONLINE       | SECONDARY   | 8.0.25         |
-| group_replication_applier | 7b1e33b1-da7f-11eb-8157-0242ac120002 | mgr1        |        3306 | ONLINE       | PRIMARY     | 8.0.25         |
+| group_replication_applier | 63b55594-da80-11eb-94bf-0242ac120003 | mgr2        |        3306 | ONLINE       | SECONDARY   | 8.0.32         |
+| group_replication_applier | 6d33eb83-da80-11eb-91ed-0242ac120004 | mgr3        |        3306 | ONLINE       | SECONDARY   | 8.0.32         |
+| group_replication_applier | 7b1e33b1-da7f-11eb-8157-0242ac120002 | mgr1        |        3306 | ONLINE       | PRIMARY     | 8.0.32         |
 +---------------------------+--------------------------------------+-------------+-------------+--------------+-------------+----------------+
 ```
 
@@ -281,12 +282,12 @@ CHANGE MASTER TO MASTER_USER='repl', MASTER_PASSWORD='repl4MGR' FOR CHANNEL 'gro
 这就构建完毕了，可以尝试在 **PRIMARY节点** 中创建库表并写入测试数据：
 ```
 #提醒：从这里开始要重新启动binlog记录
-[root@GreatSQL][(none)]> SET SQL_LOG_BIN=1;
-[root@GreatSQL][(none)]> create database mymgr;
-[root@GreatSQL][(none)]> use mymgr;
-[root@GreatSQL][(mymgr)]> create table t1(id int primary key);
-[root@GreatSQL][(mymgr)]> insert into t1 select rand()*10240;
-[root@GreatSQL][mymgr]>select * from t1;
+greatsql> SET SQL_LOG_BIN=1;
+greatsql> create database mymgr;
+greatsql> use mymgr;
+greatsql> create table t1(id int primary key);
+greatsql> insert into t1 select rand()*10240;
+greatsql> select * from t1;
 +------+
 | id   |
 +------+
@@ -409,8 +410,8 @@ Query OK, 0 rows affected (2.76 sec)
 +---------------------------+--------------------------------------+-------------+-------------+--------------+-------------+----------------+
 | CHANNEL_NAME              | MEMBER_ID                            | MEMBER_HOST | MEMBER_PORT | MEMBER_STATE | MEMBER_ROLE | MEMBER_VERSION |
 +---------------------------+--------------------------------------+-------------+-------------+--------------+-------------+----------------+
-| group_replication_applier | f0bd73d4-dbcb-11eb-99ba-0242ac110002 | mgr1        |        3306 | ONLINE       | PRIMARY     | 8.0.25         |
-| group_replication_applier | f1010499-dbcb-11eb-9194-0242ac110003 | mgr2        |        3306 | ONLINE       | SECONDARY   | 8.0.25         |
+| group_replication_applier | f0bd73d4-dbcb-11eb-99ba-0242ac110002 | mgr1        |        3306 | ONLINE       | PRIMARY     | 8.0.32         |
+| group_replication_applier | f1010499-dbcb-11eb-9194-0242ac110003 | mgr2        |        3306 | ONLINE       | SECONDARY   | 8.0.32         |
 +---------------------------+--------------------------------------+-------------+-------------+--------------+-------------+----------------+
 ```
 照旧，继续启动mgr3节点，一个三节点的MGR集群就完成了。

@@ -1,7 +1,5 @@
 # 6. MGR状态监控 | 深入浅出MGR
 
-[toc]
-
 MGR和传统主从复制类似，在运行过程中主要关注各节点的运行状态，以及Secondary节点的事务是否有延迟。本文介绍如何监控MGR节点状态、事务状态等。
 
 ## 1. 节点状态监控
@@ -11,9 +9,9 @@ mysql> select * from performance_schema.replication_group_members;
 +---------------------------+--------------------------------------+--------------+-------------+--------------+-------------+----------------+
 | CHANNEL_NAME              | MEMBER_ID                            | MEMBER_HOST  | MEMBER_PORT | MEMBER_STATE | MEMBER_ROLE | MEMBER_VERSION |
 +---------------------------+--------------------------------------+--------------+-------------+--------------+-------------+----------------+
-| group_replication_applier | af39db70-6850-11ec-94c9-00155d064000 | 192.168.6.27 |        4306 | ONLINE       | PRIMARY     | 8.0.25         |
-| group_replication_applier | b05c0838-6850-11ec-a06b-00155d064000 | 192.168.6.27 |        4307 | ONLINE       | SECONDARY   | 8.0.25         |
-| group_replication_applier | b0f86046-6850-11ec-92fe-00155d064000 | 192.168.6.27 |        4308 | ONLINE       | SECONDARY   | 8.0.25         |
+| group_replication_applier | af39db70-6850-11ec-94c9-00155d064000 | 192.168.6.27 |        4306 | ONLINE       | PRIMARY     | 8.0.32         |
+| group_replication_applier | b05c0838-6850-11ec-a06b-00155d064000 | 192.168.6.27 |        4307 | ONLINE       | SECONDARY   | 8.0.32         |
+| group_replication_applier | b0f86046-6850-11ec-92fe-00155d064000 | 192.168.6.27 |        4308 | ONLINE       | SECONDARY   | 8.0.32         |
 +---------------------------+--------------------------------------+--------------+-------------+--------------+-------------+----------------+
 ```
 输出结果中主要几个列的解读如下：

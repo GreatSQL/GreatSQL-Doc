@@ -1,8 +1,6 @@
 # 5. MGR管理维护 | 深入浅出MGR
 
-[toc]
-
-今天介绍MGR集群的日常管理维护操作，包括主节点切换，单主&多主模式切换等。手工操作以及利用MySQL Shell两种方式都会分别介绍。
+今天介绍MGR集群的日常管理维护操作，包括主节点切换，单主&多主模式切换等。手工操作以及利用GreatSQL Shell两种方式都会分别介绍。
 
 现在有个三节点的MGR集群：
 ```
@@ -10,9 +8,9 @@ mysql> select * from performance_schema.replication_group_members;
 +---------------------------+--------------------------------------+--------------+-------------+--------------+-------------+----------------+
 | CHANNEL_NAME              | MEMBER_ID                            | MEMBER_HOST  | MEMBER_PORT | MEMBER_STATE | MEMBER_ROLE | MEMBER_VERSION |
 +---------------------------+--------------------------------------+--------------+-------------+--------------+-------------+----------------+
-| group_replication_applier | af39db70-6850-11ec-94c9-00155d064000 | 172.16.16.10 |        3306 | ONLINE       | PRIMARY     | 8.0.25         |
-| group_replication_applier | b05c0838-6850-11ec-a06b-00155d064000 | 172.16.16.11 |        3306 | ONLINE       | SECONDARY   | 8.0.25         |
-| group_replication_applier | b0f86046-6850-11ec-92fe-00155d064000 | 172.16.16.12 |        3306 | ONLINE       | SECONDARY   | 8.0.25         |
+| group_replication_applier | af39db70-6850-11ec-94c9-00155d064000 | 172.16.16.10 |        3306 | ONLINE       | PRIMARY     | 8.0.32         |
+| group_replication_applier | b05c0838-6850-11ec-a06b-00155d064000 | 172.16.16.11 |        3306 | ONLINE       | SECONDARY   | 8.0.32         |
+| group_replication_applier | b0f86046-6850-11ec-92fe-00155d064000 | 172.16.16.12 |        3306 | ONLINE       | SECONDARY   | 8.0.32         |
 +---------------------------+--------------------------------------+--------------+-------------+--------------+-------------+----------------+
 ```
 
@@ -30,19 +28,19 @@ mysql> select group_replication_set_as_primary('b05c0838-6850-11ec-a06b-00155d06
 +--------------------------------------------------------------------------+
 1 row in set (1.00 sec)
 
-[root@yejr.run:mysql.sock] [(none)]>select * from performance_schema.replication_group_members;
+mysql> select * from performance_schema.replication_group_members;
 +---------------------------+--------------------------------------+--------------+-------------+--------------+-------------+----------------+
 | CHANNEL_NAME              | MEMBER_ID                            | MEMBER_HOST  | MEMBER_PORT | MEMBER_STATE | MEMBER_ROLE | MEMBER_VERSION |
 +---------------------------+--------------------------------------+--------------+-------------+--------------+-------------+----------------+
-| group_replication_applier | af39db70-6850-11ec-94c9-00155d064000 | 172.16.16.10 |        3306 | ONLINE       | SECONDARY   | 8.0.25         |
-| group_replication_applier | b05c0838-6850-11ec-a06b-00155d064000 | 172.16.16.11 |        3306 | ONLINE       | PRIMARY     | 8.0.25         |
-| group_replication_applier | b0f86046-6850-11ec-92fe-00155d064000 | 172.16.16.12 |        3306 | ONLINE       | SECONDARY   | 8.0.25         |
+| group_replication_applier | af39db70-6850-11ec-94c9-00155d064000 | 172.16.16.10 |        3306 | ONLINE       | SECONDARY   | 8.0.32         |
+| group_replication_applier | b05c0838-6850-11ec-a06b-00155d064000 | 172.16.16.11 |        3306 | ONLINE       | PRIMARY     | 8.0.32         |
+| group_replication_applier | b0f86046-6850-11ec-92fe-00155d064000 | 172.16.16.12 |        3306 | ONLINE       | SECONDARY   | 8.0.32         |
 +---------------------------+--------------------------------------+--------------+-------------+--------------+-------------+----------------+
 ```
 
 顺便提一下，在MySQL 5.7版本中，只能通过重启以实现主节点的自动切换，不能手动切换。从这个角度来说，如果想要使用MGR，最好是选择MySQL 8.0版本，而不要使用5.7版本。
 
-如果是用MySQL Shell，则可以调用 `setPrimaryInstance()` 函数进行切换：
+如果是用GreatSQL Shell，则可以调用 `setPrimaryInstance()` 函数进行切换：
 ```
 #首先获取cluster对象
  MySQL  172.16.16.10:3306 ssl  JS > var c=dba.getCluster()
@@ -60,7 +58,7 @@ mysql> select group_replication_set_as_primary('b05c0838-6850-11ec-a06b-00155d06
                 "replicationLag": null,
                 "role": "HA",
                 "status": "ONLINE",
-                "version": "8.0.25"
+                "version": "8.0.32"
             },
             "172.16.16.11:3306": {
                 "address": "172.16.16.11:3306",
@@ -70,7 +68,7 @@ mysql> select group_replication_set_as_primary('b05c0838-6850-11ec-a06b-00155d06
                 "replicationLag": null,
                 "role": "HA",
                 "status": "ONLINE",
-                "version": "8.0.25"
+                "version": "8.0.32"
             },
             "172.16.16.12:3306": {
                 "address": "172.16.16.12:3306",
@@ -80,7 +78,7 @@ mysql> select group_replication_set_as_primary('b05c0838-6850-11ec-a06b-00155d06
                 "replicationLag": null,
                 "role": "HA",
                 "status": "ONLINE",
-                "version": "8.0.25"
+                "version": "8.0.32"
             }
         },
         "topologyMode": "Single-Primary"
@@ -119,9 +117,9 @@ mysql> select * from performance_schema.replication_group_members;
 +---------------------------+--------------------------------------+--------------+-------------+--------------+-------------+----------------+
 | CHANNEL_NAME              | MEMBER_ID                            | MEMBER_HOST  | MEMBER_PORT | MEMBER_STATE | MEMBER_ROLE | MEMBER_VERSION |
 +---------------------------+--------------------------------------+--------------+-------------+--------------+-------------+----------------+
-| group_replication_applier | af39db70-6850-11ec-94c9-00155d064000 | 172.16.16.10 |        3306 | ONLINE       | PRIMARY     | 8.0.25         |
-| group_replication_applier | b05c0838-6850-11ec-a06b-00155d064000 | 172.16.16.11 |        3306 | ONLINE       | PRIMARY     | 8.0.25         |
-| group_replication_applier | b0f86046-6850-11ec-92fe-00155d064000 | 172.16.16.12 |        3306 | ONLINE       | PRIMARY     | 8.0.25         |
+| group_replication_applier | af39db70-6850-11ec-94c9-00155d064000 | 172.16.16.10 |        3306 | ONLINE       | PRIMARY     | 8.0.32         |
+| group_replication_applier | b05c0838-6850-11ec-a06b-00155d064000 | 172.16.16.11 |        3306 | ONLINE       | PRIMARY     | 8.0.32         |
+| group_replication_applier | b0f86046-6850-11ec-92fe-00155d064000 | 172.16.16.12 |        3306 | ONLINE       | PRIMARY     | 8.0.32         |
 +---------------------------+--------------------------------------+--------------+-------------+--------------+-------------+----------------+
 
 #切换成单主模式时可以指定某个节点的 server_uuid，如果不指定则会根据规则自动选择一个新的主节点
@@ -134,7 +132,7 @@ mysql> select group_replication_switch_to_single_primary_mode('b0f86046-6850-11e
 +-----------------------------------------------------------------------------------------+
 ```
 
-在MySQL Shell中，可以调用 `switchToSinglePrimaryMode()` 以及 `switchToMultiPrimaryMode()` 函数进行切换。同样地，函数 `switchToSinglePrimaryMode()` 里也可以指定某个节点作为新的主节点。
+在GreatSQL Shell中，可以调用 `switchToSinglePrimaryMode()` 以及 `switchToMultiPrimaryMode()` 函数进行切换。同样地，函数 `switchToSinglePrimaryMode()` 里也可以指定某个节点作为新的主节点。
 ```
  MySQL  172.16.16.10:3306 ssl  JS > var c=dba.getCluster()
 
@@ -168,7 +166,7 @@ mysql> stop group_replication; set global super_read_only=0; clone INSTANCE FROM
 ```
 全量复制完数据后，该节点会进行一次自动重启。重启完毕后，再次确认 `group_replication_group_name`、`group_replication_local_address`、`group_replication_group_seeds` 这些选项值是否正确，如果没问题，执行 `start group_replication` 后，该节点应该就可以正常加入集群了。
 
-如果是用MySQL Shell添加新节点则更简单。先执行MySQL Server初始化，并执行 `dba.dba.configureInstance()` 创建MGR专用账号后。而后，连接到Primary节点，直接调用 `addInstance()` 函数即可：
+如果是用GreatSQL Shell添加新节点则更简单。先执行MySQL Server初始化，并执行 `dba.dba.configureInstance()` 创建MGR专用账号后。而后，连接到Primary节点，直接调用 `addInstance()` 函数即可：
 ```
 #连接到Primary节点
 $ mysqlsh --uri GreatSQL@172.16.16.10:3306
@@ -237,7 +235,7 @@ The instance '172.16.16.13:3306' was successfully added to the cluster.
 ## 4. 删除节点
 在命令行模式下，一个节点想退出MGR集群，直接执行 `stop group_replication` 即可，如果这个节点只是临时退出集群，后面还想加回集群，则执行 `start group_replication` 即可自动再加入。而如果是想彻底退出集群，则停止MGR服务后，执行 `reset master; reset slave all;` 重置所有复制（包含MGR）相关的信息就可以了。
 
-在MySQL Shell里，只需调用 `removeInstance()` 函数即可删除某个节点，例如：
+在GreatSQL Shell里，只需调用 `removeInstance()` 函数即可删除某个节点，例如：
 ```
  MySQL  172.16.16.10:3306 ssl  JS > c.removeInstance('172.16.16.13:3306');
 The instance will be removed from the InnoDB cluster. Depending on the instance
@@ -253,7 +251,7 @@ The instance '172.16.16.13:3306' was successfully removed from the cluster.
 ## 5. 异常退出的节点重新加回
 当节点因为网络断开、实例crash等异常情况与MGR集群断开连接后，这个节点的状态会变成 **UNREACHABLE**，待到超过 `group_replication_member_expel_timeout` + 5 秒后，集群会踢掉该节点。等到这个节点再次启动并执行 `start group_replication`，正常情况下，该节点应能自动重新加回集群。
 
-在MySQL Shell里，可以调用 `rejoinInstance()` 函数将异常的节点重新加回集群：
+在GreatSQL Shell里，可以调用 `rejoinInstance()` 函数将异常的节点重新加回集群：
 ```
  MySQL  172.16.16.10:3306 ssl  JS > c.rejoinInstance('172.16.16.13:3306');
  
@@ -266,10 +264,10 @@ The instance '172.16.16.13:3306' was successfully rejoined to the cluster.
 
 P.S，第一个节点启动完毕后，记得重置选项 `group_replication_bootstrap_group=OFF`，避免在后续的操作中导致MGR集群分裂。
 
-如果是用MySQL Shell重启MGR集群，调用 `rebootClusterFromCompleteOutage()` 函数即可，它会自动判断各节点的状态，选择其中一个作为Primary节点，然后拉起各节点上的MGR服务，完成MGR集群重启。可以参考这篇文章：[万答#12，MGR整个集群挂掉后，如何才能自动选主，不用手动干预](https://mp.weixin.qq.com/s/07o1poO44zwQIvaJNKEoPA)
+如果是用GreatSQL Shell重启MGR集群，调用 `rebootClusterFromCompleteOutage()` 函数即可，它会自动判断各节点的状态，选择其中一个作为Primary节点，然后拉起各节点上的MGR服务，完成MGR集群重启。可以参考这篇文章：[万答#12，MGR整个集群挂掉后，如何才能自动选主，不用手动干预](https://mp.weixin.qq.com/s/07o1poO44zwQIvaJNKEoPA)
 
 ## 7. 小结
-本文介绍了MGR集群几种常见管理维护操作方法，包括切换主节点，切换单主/多主模式，添加节点，删除节点，异常节点重加入，重启整个MGR集群等。总的来看，利用MySQL Shell管理MGR集群会更简单方便些，也有利于管理平台的封装，不过手工操作的方式也不能忘记，有些时候可能没有配套的MySQL Shell工具，就得靠手工了。
+本文介绍了MGR集群几种常见管理维护操作方法，包括切换主节点，切换单主/多主模式，添加节点，删除节点，异常节点重加入，重启整个MGR集群等。总的来看，利用GreatSQL Shell管理MGR集群会更简单方便些，也有利于管理平台的封装，不过手工操作的方式也不能忘记，有些时候可能没有配套的GreatSQL Shell工具，就得靠手工了。
 
 
 ## 参考资料、文档

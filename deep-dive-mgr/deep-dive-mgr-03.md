@@ -1,7 +1,5 @@
 # 3. 安装部署MGR集群 | 深入浅出MGR
 
-[toc]
-
 本文介绍如何利用GreatSQL 8.0.25构建一个三节点的MGR集群。
 
 ## 1. 安装准备
@@ -17,11 +15,11 @@
 
 下载GreatSQL二进制文件包，下载地址：*https://gitee.com/GreatSQL/GreatSQL/releases* 。
 
-本文以 CentOS x86_64 环境为例，下载的二进制包名为： `GreatSQL-8.0.25-15-Linux-glibc2.28-x86_64.tar.xz`，放在 `/usr/local` 目录下并解压缩：
+本文以 CentOS x86_64 环境为例，下载的二进制包名为： `GreatSQL-8.0.32-25-Linux-glibc2.28-x86_64.tar.xz`，放在 `/usr/local` 目录下并解压缩：
 ```
 $ cd /usr/local
-$ tar xf GreatSQL-8.0.25-15-Linux-glibc2.28-x86_64.tar.xz
-$ cd GreatSQL-8.0.25-15-Linux-glibc2.28-x86_64
+$ tar xf GreatSQL-8.0.32-25-Linux-glibc2.28-x86_64.tar.xz
+$ cd GreatSQL-8.0.32-25-Linux-glibc2.28-x86_64
 $ ls
 bin    COPYING-jemalloc  include  LICENSE         LICENSE-test  mysqlrouter-log-rotate  README.router  run    support-files
 cmake  docs              lib      LICENSE.router  man           README                  README-test    share  var
@@ -33,7 +31,7 @@ cmake  docs              lib      LICENSE.router  man           README          
 #/etc/my.cnf
 [mysqld]
 user = mysql
-basedir=/usr/local/GreatSQL-8.0.25-15-Linux-glibc2.28-x86_64
+basedir=/usr/local/GreatSQL-8.0.32-25-Linux-glibc2.28-x86_64
 datadir=/data/GreatSQL
 port=3306
 server_id=103306
@@ -47,13 +45,13 @@ enforce_gtid_consistency=ON
 先初始化MySQL Server：
 ```
 $ mkdir -p /data/GreatSQL && chown -R mysql:mysql /data/GreatSQL
-$ /usr/local/GreatSQL-8.0.25-15-Linux-glibc2.28-x86_64/bin/mysqld --defaults-file=/etc/my.cnf --initialize-insecure
+$ /usr/local/GreatSQL-8.0.32-25-Linux-glibc2.28-x86_64/bin/mysqld --defaults-file=/etc/my.cnf --initialize-insecure
 ```
 **注意**：不要在生产环境中使用 `--initialize-insecure` 选项进行初始化安装，因为这么做的话，超级管理员root账号默认是空密码，任何人都可以使用该账号登录数据库，存在安全风险，本文中只是为了演示方便才这么做。
 
 启动MySQL Server：
 ```
-$ /usr/local/GreatSQL-8.0.25-15-Linux-glibc2.28-x86_64/bin/mysqld --defaults-file=/etc/my.cnf &
+$ /usr/local/GreatSQL-8.0.32-25-Linux-glibc2.28-x86_64/bin/mysqld --defaults-file=/etc/my.cnf &
 ```
 如果不出意外，则能正常启动MySQL Server。用同样的方法也完成对另外两个节点的初始化。
 
@@ -95,7 +93,7 @@ myqsl> install plugin group_replication soname 'group_replication.so';
 ```
 #每个节点都要单独创建用户，因此这个操作没必要记录binlog并复制到其他节点
 mysql> set session sql_log_bin=0;
-mysql> create user repl@'%' identified by 'repl';
+mysql> create user repl@'%' identified with mysql_native_password by 'repl';
 mysql> GRANT BACKUP_ADMIN, REPLICATION SLAVE ON *.* TO `repl`@`%`;
 #创建完用户后继续启用binlog记录
 mysql> set session sql_log_bin=1;
@@ -104,6 +102,8 @@ mysql> set session sql_log_bin=1;
 #通道名字 group_replication_recovery 是固定的，不能修改
 mysql> CHANGE MASTER TO MASTER_USER='repl', MASTER_PASSWORD='repl' FOR CHANNEL 'group_replication_recovery';
 ```
+
+**提示**：在上述过程中，创建新用户时采用的是 `mysql_native_password` 而非默认的 `caching_sha2_password` 密码认证插件。如果没有指定使用 `mysql_native_password` 密码插件的话，那么在下面执行 `CHANGE MASTER TO` 操作前，需要先设置 `group_replication_recovery_get_public_key = ON`，否则新加入的MGR节点可能会一直处于RECOVERING状态。详情参考：[MGR新节点RECOVERING状态的分析与解决：caching_sha2_password验证插件的影响](https://mp.weixin.qq.com/s/G9bpThAR-fYHHZsA8l4uuw)。
 
 接着执行下面的命令，将其设置为MGR的引导节点（只有第一个节点需要这么做）后即可直接启动MGR服务：
 ```
@@ -130,7 +130,7 @@ mysql> select * from performance_schema.replication_group_members;
 #my.cnf
 [mysqld]
 user = mysql
-basedir=/usr/local/GreatSQL-8.0.25-15-Linux-glibc2.28-x86_64
+basedir=/usr/local/GreatSQL-8.0.32-25-Linux-glibc2.28-x86_64
 datadir=/data/GreatSQL
 port=3306
 server_id=113306
@@ -151,7 +151,7 @@ report-host=172.16.16.11
 重启MySQL Server实例后（`report-host` 是只读选项，需要重启才能生效），创建MGR服务专用账号及配置MGR服务通道：
 ```
 mysql> set session sql_log_bin=0;
-mysql> create user repl@'%' identified by 'repl';
+mysql> create user repl@'%' identified with mysql_native_password by 'repl';
 mysql> GRANT BACKUP_ADMIN, REPLICATION SLAVE ON *.* TO `repl`@`%`;
 mysql> set session sql_log_bin=1;
 
@@ -178,7 +178,7 @@ mysql> select * from performance_schema.replication_group_members;
 ## 5. 向MGR集群中写入数据
 接下来我们连接到 **PRIMARY** 节点，创建测试库表并写入数据：
 ```
-$mysql -h172.16.16.10 -uroot -Spath/mysql.sock
+$mysql -h172.16.16.10 -uroot -S /data/GreatSQL/mysql.sock
 mysql> create database mgr;
 mysql> use mgr;
 mysql> create table t1(c1 int unsigned not null primary key);

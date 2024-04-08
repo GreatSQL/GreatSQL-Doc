@@ -1,7 +1,5 @@
 # 14. 流量控制（流控） | 深入浅出MGR
 
-[toc]
-
 本文介绍MGR中的流量控制（流控）是怎么工作的。
 
 ## 1. MGR流控
@@ -10,10 +8,10 @@
 综上几点，为了避免个别节点存在严重的事务复制延迟及其他风险，必要时可以采用流量控制（下面简称“流控”）来避免/缓解这个问题，降低节点间的事务延迟差距。
 
 MGR流控有几个要点：
-- 基于 **事务认证队列** 及 **等待被applied的relay log队列** 这两个队列（group_replication_flow_control_applier_threshold、group_replication_flow_control_certifier_threshold，默认值均为：25000），实行配额控制。
-- 启用流控（group_replication_flow_control_mode，默认值：QUOTA）后，当任何一个队列大小超过设定阈值（配额）后，就会触发流控机制。
+- 基于 **事务认证队列** 及 **等待被applied的relay log队列** 这两个队列（`group_replication_flow_control_applier_threshold`、`group_replication_flow_control_certifier_threshold`，默认值均为：25000），实行配额控制。
+- 启用流控（`group_replication_flow_control_mode`，默认值：QUOTA）后，当任何一个队列大小超过设定阈值（配额）后，就会触发流控机制。
 - 只影响启用流控的节点，不影响MGR中的其他节点（在PXC里是所有节点同时被流控影响）。
-- 当设置流控配额百分比（group_replication_flow_control_member_quota_percent）时，会在多个启用流控的Primary节点间平摊配额。
+- 当设置流控配额百分比（`group_replication_flow_control_member_quota_percent`）时，会在多个启用流控的Primary节点间平摊配额。
 - 流控只针对写事务，不影响只读事务。
 
 触发流控后，会暂缓事务写入请求，在 **group_replication_flow_control_period**（默认值：1）秒后再次检查是否还超过阈值。如果还是超过则继续流控，否则的话就放开事务写入请求。不过这个流控机制在真实业务场景中效果很有限，在事务写入高峰期，可能会频繁造成TPS抖动，但却不能真正起到流控作用。在GreatSQL中， 针对这个缺陷进行了优化，重新设计流控算法。增加主从延迟时间来计算流控阈值，并且同时考虑了大事务处理和主从节点的同步，流控粒度更细致，不会出现官方社区版本的1秒小抖动问题。

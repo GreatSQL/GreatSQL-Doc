@@ -1,8 +1,8 @@
 # 8. 利用Ansible快速构建MGR | 深入浅出MGR
 
-[toc]
-
 本次介绍如何利用ansible一键安装GreatSQL并完成MGR部署。
+
+**提示**：从GreatSQL 8.0.32-25版本开始，我们不再更新发布GreatSQL Ansible安装包。若有需要采用Ansbile安装GreatSQL，可以选择使用 [芬达老师的dbops](https://gitee.com/fanderchan/dbops) 进行安装。
 
 本文介绍的运行环境是CentOS 7.9：
 ```

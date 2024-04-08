@@ -1,10 +1,10 @@
 # 4. 利用MySQL Shell安装部署MGR集群 | 深入浅出MGR
 
-[toc]
+本文介绍如何利用MySQL Shell for GreatSQL + GreatSQL 8.0.32构建一个三节点的MGR集群。
 
-本文介绍如何利用MySQL Shell + GreatSQL 8.0.25构建一个三节点的MGR集群。
+MySQL Shell for GreatSQL（下面简称GreatSQL Shell）是一个客户端工具，可用于方便管理和操作MySQL/GreatSQL，支持SQL、JavaScript、Python等多种语言，也包括完善的API。GreatSQL Shell支持文档型和关系型数据库模式，通过X DevAPI可以管理文档型数据，通过AdminAPI可以管理InnoDB Cluster、InnoDB ClusterSet及InnoDB ReplicaSet等。
 
-MySQL Shell是一个客户端工具，可用于方便管理和操作MySQL，支持SQL、JavaScript、Python等多种语言，也包括完善的API。MySQL Shell支持文档型和关系型数据库模式，通过X DevAPI可以管理文档型数据，通过AdminAPI可以管理InnoDB Cluster、InnoDB ClusterSet及InnoDB ReplicaSet等。
+GreatSQL Shell在原生的MySQL Shell基础上增加对仲裁节点（Arbitrator节点）的支持，如果使用GreatSQL构建一个包含Arbitrator节点的MGR集群，推荐使用GreatSQL Shell来管理和操作。
 
 ## 1. 安装准备
 准备好下面三台服务器：
@@ -17,17 +17,14 @@ MySQL Shell是一个客户端工具，可用于方便管理和操作MySQL，支�
 
 确保三个节点间的网络是可以互通的，并且没有针对3306和33061端口的防火墙拦截规则。
 
-利用yum安装MySQL Shell，版本选择和GreatSQL相同的8.0.25：
-```
-$ yum install mysql-shell-8.0.25
-```
+访问 [https://gitee.com/GreatSQL/GreatSQL/releases/tag/GreatSQL-8.0.32-25](https://gitee.com/GreatSQL/GreatSQL/releases/tag/GreatSQL-8.0.32-25)，选择并下载和GreatSQL 8.0.32-25相同的发行版，如：*greatsql-shell-8.0.32-25-glibc2.28-x86_64.tar.xz*。
 
-假定已经参考前文 [**3. 安装部署MGR集群**](https://gitee.com/GreatSQL/GreatSQL-Doc/blob/master/deep-dive-mgr/deep-dive-mgr-03.md) 做好MySQL Server的初始化并启动三个实例。
+假定已经参考前文 [**3. 安装部署MGR集群**](https://gitee.com/GreatSQL/GreatSQL-Doc/blob/master/deep-dive-mgr/deep-dive-mgr-03.md) 做好GreatSQL数据库实例的安装及初始化。
 
-接下来直接利用MySQL Shell部署MGR。
+接下来直接利用GreatSQL Shell部署MGR。
 
-## 2. 利用MySQL Shell构建MGR集群
-利用MySQL Shell构建MGR集群比较简单，主要有几个步骤：
+## 2. 利用GreatSQL Shell构建MGR集群
+利用GreatSQL Shell构建MGR集群比较简单，主要有几个步骤：
 1. 检查实例是否满足条件。
 2. 创建并初始化一个集群。
 3. 逐个添加实例。
@@ -35,10 +32,10 @@ $ yum install mysql-shell-8.0.25
 首先，用管理员账号 root 连接到第一个节点：
 ```
 #在本地通过socket方式登入
-$ mysqlsh -Spath/mysql.sock root@localhost
+$ mysqlsh -S /data/GreatSQL/mysql.sock root@localhost
 Please provide the password for 'root@.%2Fmysql.sock': ********
 Save password for 'root@.%2Fmysql.sock'? [Y]es/[N]o/Ne[v]er (default No): yes
-MySQL Shell 8.0.25
+MySQL Shell 8.0.32
 ...
 ```
 执行命令 `\status` 查看当前节点的状态，确认连接正常可用。
@@ -79,7 +76,7 @@ Successfully enabled parallel appliers.
 $ mysqlsh --uri GreatSQL@172.16.16.10:3306
 Please provide the password for 'GreatSQL@172.16.16.10:3306': ********
 Save password for 'GreatSQL@172.16.16.10:3306'? [Y]es/[N]o/Ne[v]er (default No): yes
-MySQL Shell 8.0.25
+MySQL Shell 8.0.32
 
 ...
 #定义一个变量名c，方便下面引用
@@ -191,10 +188,10 @@ The instance '172.16.16.11:3306' was successfully added to the cluster.  <-- 新
 ```
 或者执行 `c.status()` 可以打印出集群更多的信息。
 
-至此，利用MySQL Shell构建一个三节点的MGR集群做好了，可以尝试向 Primary 节点写入数据观察测试。
+至此，利用GreatSQL Shell构建一个三节点的MGR集群做好了，可以尝试向 Primary 节点写入数据观察测试。
 
-## 3. MySQL Shell接管现存的MGR集群
-对于已经在运行中的MGR集群，也是可以用MySQL Shell接管的。只需要在调用 `createCluster()` 函数时，加上 `adoptFromGR:true` 选项即可。实际上不加这个选项的话，MySQL Shell也会自动检测到该MGR集群已存在，并询问是否要接管。
+## 3. GreatSQL Shell接管现存的MGR集群
+对于已经在运行中的MGR集群，也是可以用GreatSQL Shell接管的。只需要在调用 `createCluster()` 函数时，加上 `adoptFromGR:true` 选项即可。实际上不加这个选项的话，GreatSQL Shell也会自动检测到该MGR集群已存在，并询问是否要接管。
 
 在这里简单演示下：
 ```
@@ -239,18 +236,18 @@ Metadata Schema successfully removed.
 ```
 这样就可以了接管了。
 
-## 4. 使用MySQL Shell的窍门
-在mysql shell中，也是可以启用pager（分页器）的，像下面这样设置即可：
+## 4. 使用GreatSQL Shell的窍门
+在GreatSQL Shell中，也是可以启用pager（分页器）的，像下面这样设置即可：
 ```
 mysqlsh> shell.enablePager();
 mysqlsh> shell.options["pager"]="less -i -n -S";
 Pager has been set to 'less -i -n -S'.
 ```
 
-在用mysql shell连接时，也可以加上 `--dba-log-sql=2 --log-level=debug3` 参数，以启用debug模式，并记录运行过程中实际调用的SQL命令，默认日志文件是 `~/.mysqlsh/mysqlsh.log`。
+在用GreatSQL Shell连接时，也可以加上 `--dba-log-sql=2 --log-level=debug3` 参数，以启用debug模式，并记录运行过程中实际调用的SQL命令，默认日志文件是 `~/.mysqlsh/mysqlsh.log`。
 
 ## 5. 小结
-本文主要介绍了如何利用MySQL Shell构建一个三节点的MGR集群，以及如何用MySQL Shell接管现有集群，处理元数据冲突的问题。相对于手工方式搭建MGR集群，用MySQL Shell操作会方便很多，推荐使用。
+本文主要介绍了如何利用GreatSQL Shell构建一个三节点的MGR集群，以及如何用GreatSQL Shell接管现有集群，处理元数据冲突的问题。相对于手工方式搭建MGR集群，用GreatSQL Shell操作会方便很多，推荐使用。
 
 ## 参考资料、文档
 - [MySQL 8.0 Reference Manual](https://dev.mysql.com/doc/refman/8.0/en/group-replication.html) 
