@@ -31,7 +31,6 @@ max_connections = 1024
 max_connect_errors = 1000000
 table_open_cache = 2048
 table_definition_cache = 2048
-thread_stack = 512K
 sort_buffer_size = 4M
 join_buffer_size = 4M
 read_buffer_size = 8M
@@ -145,6 +144,7 @@ innodb_status_output_locks = 1
 innodb_sort_buffer_size = 64M
 innodb_adaptive_hash_index = 0
 innodb_numa_interleave = ON
+innodb_spin_wait_delay = 20
 
 #innodb monitor settings
 #innodb_monitor_enable = "module_innodb,module_server,module_dml,module_ddl,module_trx,module_os,module_purge,module_log,module_lock,module_buffer,module_index,module_ibuf_system,module_buffer_page,module_adaptive_hash"

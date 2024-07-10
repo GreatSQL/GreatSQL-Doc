@@ -32,7 +32,6 @@ max_connections = 1024
 max_connect_errors = 1000000
 table_open_cache = 2048
 table_definition_cache = 2048
-thread_stack = 512K
 sort_buffer_size = 4M
 join_buffer_size = 4M
 read_buffer_size = 8M
@@ -184,6 +183,7 @@ innodb_sort_buffer_size = 64M
 innodb_adaptive_hash_index = 0
 #开启NUMA支持
 innodb_numa_interleave = ON
+innodb_spin_wait_delay = 20
 innodb_print_lock_wait_timeout_info = 1
 #自动杀掉超过5分钟不活跃事务，避免行锁被长时间持有
 kill_idle_transaction = 300
