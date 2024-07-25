@@ -1,8 +1,5 @@
 #
 # my.cnf example for GreatSQL
-# last update, 2021/8/20
-#
-# 下面参数选项设置仅作为参考，且假设服务器可用内存为256G
 #
 [client]
 socket    = /data/GreatSQL/mysql.sock
@@ -106,7 +103,6 @@ loose-group_replication_exit_state_action = READ_ONLY
 loose-group_replication_flow_control_mode = "DISABLED"
 loose-group_replication_single_primary_mode = ON
 loose-group_replication_communication_max_message_size = 10M
-loose-group_replication_transaction_size_limit = 3G
 loose-group_replication_arbitrator = 0
 loose-group_replication_single_primary_fast_mode = 1
 loose-group_replication_request_time_threshold = 20000

@@ -1,6 +1,5 @@
 #
 # my.cnf example for GreatSQL
-# last update, 2021/8/20
 #
 # 下面参数选项设置仅作为参考，且假设服务器可用内存为256G
 #
@@ -20,7 +19,7 @@ socket    = /data/GreatSQL/mysql.sock
 pid-file = mysql.pid
 character-set-server = UTF8MB4
 skip_name_resolve = 1
-#若你的MySQL数据库主要运行在境外，请务必根据实际情况调整本参数
+#若你的数据库主要运行在境外，请务必根据实际情况调整本参数
 default_time_zone = "+8:00"
 bind_address = "0.0.0.0"
 
