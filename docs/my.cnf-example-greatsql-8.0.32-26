@@ -106,6 +106,7 @@ loose-plugin_load_add = 'mysql_clone.so'
 # MGR
 #loose-plugin_load_add = 'group_replication.so'
 #loose-group_replication_group_name = "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa1"
+#loose-group_replication_view_change_uuid = "bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbb1"
 #loose-group_replication_local_address = "172.16.16.10:33061"
 #loose-group_replication_group_seeds = '172.16.16.10:33061,72.16.16.12:33061,72.16.16.12:33061'
 #loose-group_replication_communication_stack = "XCOM"
