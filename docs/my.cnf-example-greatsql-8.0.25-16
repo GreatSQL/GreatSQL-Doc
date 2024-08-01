@@ -143,7 +143,7 @@ innodb_status_output = 0
 innodb_status_output_locks = 1
 innodb_sort_buffer_size = 64M
 innodb_adaptive_hash_index = 0
-innodb_numa_interleave = ON
+innodb_numa_interleave = OFF
 innodb_spin_wait_delay = 20
 
 #innodb monitor settings

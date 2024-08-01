@@ -111,5 +111,5 @@ innodb_rollback_on_timeout = 1
 innodb_print_all_deadlocks = 1
 innodb_status_file = 1
 innodb_adaptive_hash_index = 0
-innodb_numa_interleave = ON
+innodb_numa_interleave = OFF
 innodb_spin_wait_delay = 20
