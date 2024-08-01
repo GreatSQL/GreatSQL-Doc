@@ -117,8 +117,6 @@ BuildRequires:  make
 BuildRequires:  gcc
 BuildRequires:  gcc-c++
 BuildRequires:  perl
-#BuildRequires:	perl(Time::HiRes)}
-#BuildRequires:	perl(Env)}
 BuildRequires:  perl(Carp)
 BuildRequires:  perl(Config)
 BuildRequires:  perl(Cwd)
@@ -166,11 +164,11 @@ BuildRequires:  pkgconfig(systemd)
 BuildRequires:  cyrus-sasl-devel
 BuildRequires:  openldap-devel
 
-BuildRequires:  cmake >= 3.6.1
+%{?el8:BuildRequires:  cmake >= 3.6.1}
+%{?el8:BuildRequires:  rpcgen}
 BuildRequires:  gcc
 BuildRequires:  gcc-c++
 BuildRequires:  libtirpc-devel
-BuildRequires:  rpcgen
 BuildRequires:  m4
 BuildRoot:      %(mktemp -ud %{_tmppath}/%{name}-%{version}-%{release}-XXXXXX)
 
