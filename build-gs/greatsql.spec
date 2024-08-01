@@ -29,10 +29,10 @@
 %global mysqldatadir /var/lib/mysql
 
 %global mysql_version 8.0.32
-%global greatsql_version 25
-%global revision db07cc5cb73
+%global greatsql_version 26
+%global revision a68b3034c3d
 %global tokudb_backup_version %{mysql_version}-%{greatsql_version}
-%global rpm_release 2
+%global rpm_release 1
 
 %global release %{greatsql_version}.%{rpm_release}%{?dist}
 
@@ -103,8 +103,8 @@ Summary:        GreatSQL: a high performance, highly reliable, easy to use, and 
 Group:          Applications/Databases
 Version:        %{mysql_version}
 Release:        %{release}
-License:        Copyright (c) 2000, 2018, %{mysql_vendor}. All rights reserved. Under %{?license_type} license as shown in the Description field..
-SOURCE0:        greatsql-8.0.32-25.tar.xz
+License:        GPL-2.0-or-later AND LGPL-2.1-only AND BSL-1.0 AND GPL-1.0-or-later OR Artistic-1.0-Perl AND BSD-2-Clause
+SOURCE0:        greatsql-8.0.32-26.tar.xz
 URL:            https://greatsql.cn
 SOURCE5:        mysql_config.sh
 SOURCE10:       boost_1_77_0.tar.xz
@@ -1056,8 +1056,8 @@ fi
 %attr(755, root, root) %{_bindir}/mysqladmin
 %attr(755, root, root) %{_bindir}/mysqlbinlog
 %attr(755, root, root) %{_bindir}/mysqlcheck
-%attr(755, root, root) %{_bindir}/mysqldump
 %attr(755, root, root) %{_bindir}/mysqldecrypt
+%attr(755, root, root) %{_bindir}/mysqldump
 %attr(755, root, root) %{_bindir}/mysqlimport
 %attr(755, root, root) %{_bindir}/mysqlpump
 %attr(755, root, root) %{_bindir}/mysqlshow
@@ -1335,6 +1335,9 @@ fi
 
 
 %changelog
+* Mon Aug 5 2024 GreatSQL <greatsql@greatdb.com> - 8.0.32-26.1
+- Release GreatSQL-8.0.32-26.1
+
 * Fri Jun 7 2024 GreatSQL <greatsql@greatdb.com> - 8.0.32-25.2
 - Change the compilation dependency of compat-openssl to openssl for GreatSQL-8.0.32-25.2
 
