@@ -164,8 +164,16 @@ BuildRequires:  pkgconfig(systemd)
 BuildRequires:  cyrus-sasl-devel
 BuildRequires:  openldap-devel
 
-%{?el8:BuildRequires:  cmake >= 3.6.1}
-%{?el8:BuildRequires:  rpcgen}
+%if 0%{?rhel} >= 8
+BuildRequires:  cmake >= 3.6.1
+BuildRequires:  rpcgen
+%else
+%if 0%{?oe} >= 2003
+BuildRequires:  cmake >= 3.6.1
+BuildRequires:  rpcgen
+%endif
+%endif
+
 BuildRequires:  gcc
 BuildRequires:  gcc-c++
 BuildRequires:  libtirpc-devel
@@ -654,11 +662,14 @@ echo "socket=/var/lib/mysql/mysql.sock" >> /etc/my.cnf
 echo "log-error=/var/log/mysqld.log" >> /etc/my.cnf
 echo "pid-file=/var/run/mysqld/mysqld.pid" >> /etc/my.cnf
 echo "slow_query_log = ON" >> /etc/my.cnf
-echo "long_query_time = 1" >> /etc/my.cnf
+echo "long_query_time = 0.01" >> /etc/my.cnf
 echo "log_slow_verbosity = FULL" >> /etc/my.cnf
 echo "log_error_verbosity = 3" >> /etc/my.cnf
 echo "innodb_buffer_pool_size = 1G" >> /etc/my.cnf
-echo "innodb_log_file_size = 128M" >> /etc/my.cnf
+echo "innodb_redo_log_capacity = 256M" >> /etc/my.cnf
+echo "innodb_io_capacity = 10000" >> /etc/my.cnf
+echo "innodb_io_capacity_max = 20000" >> /etc/my.cnf
+echo "innodb_flush_sync = OFF" >> /etc/my.cnf
 
 %preun -n greatsql-server
 %if 0%{?systemd}
