@@ -23,3 +23,8 @@
 - [23、GreatSQL vs MySQL-20231017.pdf](./23、GreatSQL%20vs%20MySQL-20231017.pdf)
 - [24、GreatSQL国产开源新势力-叶金荣-0105.pdf](./24、GreatSQL国产开源新势力-叶金荣-0105.pdf)
 - [25、What Is New in GreatSQL 8.0.32-25.pdf](./25、What%20Is%20New%20in%20GreatSQL%208.0.32-25.pdf)
+- [28、GreatSQL HTAP探索之路.pdf](./28、GreatSQL%20HTAP探索之路.pdf)
+- [29、What Is New in GreatSQL 8.0.32-26.pdf](./29、What%20Is%20New%20in%20GreatSQL%208.0.32-26.pdf)
+
+# 其他资料
+- [GreatSQL TPC-H 性能测试报告](./27、benchmark-greatsql-tpch-report-20240228.pdf)
