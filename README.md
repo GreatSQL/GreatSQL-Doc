@@ -8,44 +8,34 @@
 ---
 GreatSQL相关文档、专栏内容、视频等资源汇总，主要包含以下内容：
 
+## GreatSQL用户手册
+- [GreatSQL用户手册](https://gitee.com/GreatSQL/GreatSQL-Manual)，最新版本GreatSQL用户手册
+
 ## GreatSQL新版本发布会视频
 - [GreatSQL新版本发布会](https://greatsql.cn/smx_course-lesson.html?op=video&ids=9)，历次GreatSQL新版本发布会视频内容
-
-## GreatSQL编译构建相关
-- [利用Docker环境快速编译GreatSQL相关资源](./greatsql_docker_build)
-- [利用Docker环境快速编译MySQL Shell for GreatSQL相关资源](./greatsql_shell_docker_build)
-- [用于编译GreatSQL RPM包的Spec文件](./build-gs/greatsql.spec)
-- [在CentOS环境下源码编译安装GreatSQL](./docs/build-greatsql-with-source.md)
-- [在麒麟OS+龙芯环境下源码编译安装GreatSQL](./docs/build-greatsql-with-source-under-kylin-and-loongson.md)
-- [在openEuler、龙蜥Anolis、统信UOS系统下编译GreatSQL二进制包](./docs/build-greatsql-under-openeuler-anolis-uos.md)
 
 ## GreatSQL管理运维使用相关
 - [GCA认证课程学习视频](https://greatsql.cn/smx_course-lesson.html?op=video&ids=10)，GreatSQL认证数据库专员培训视频课程
 - [实战MGR专栏视频](https://greatsql.cn/smx_course-lesson.html?op=video&ids=5)，适合新手入门的MGR学习实操视频内容
 - [深入浅出MGR专栏文章](./deep-dive-mgr)，深入浅出MGR相关知识点、运维管理实操
 - [深入浅出MGR专栏视频](https://greatsql.cn/smx_course-lesson.html?op=video&ids=6)，深入浅出MGR相关知识点、运维管理实操视频内容
-- [基于GreatSQL的跨机房多通道主主复制容灾切换实战演练](./docs/multi-idc-multi-channel-dul-replication-ha.md)
-- [一文掌握GreatSQL MGR集群的部署和运维](./docs/using-greatsql-to-build-mgr-and-node-manage.md)
-- [在Docker中部署GreatSQL并构建MGR集群](./docs/install-greatsql-with-docker.md)
-- [MySQL InnoDB Cluster+GreatSQL部署MGR集群](./docs/mysql-innodb-cluster-with-greatsql.md)
-- [GreatSQL MGR FAQ](https://gitee.com/GreatSQL/GreatSQL-Manual/blob/master/11-faq/0-faq.md)
+
+## GreatSQL编译构建相关
+- [在Docker中编译GreatSQL](https://gitee.com/GreatSQL/GreatSQL-Docker/tree/master/GreatSQL-Build)
+- [在Docker中编译GreatSQL Shell](https://gitee.com/GreatSQL/GreatSQL-Docker/tree/master/GreatSQL-Shell-Build)
+- [用于编译GreatSQL RPM包的Spec文件](./build-gs/greatsql.spec)
+- [在CentOS环境下源码编译安装GreatSQL](./docs/build-greatsql-with-source.md)
+- [在麒麟OS+龙芯环境下源码编译安装GreatSQL](./docs/build-greatsql-with-source-under-kylin-and-loongson.md)
+- [在openEuler、龙蜥Anolis、统信UOS系统下编译GreatSQL二进制包](./docs/build-greatsql-under-openeuler-anolis-uos.md)
 
 ## my.cnf参考模板
-- [my.cnf for GreatSQL 8.0.32-25](./docs/my.cnf-example-greatsql-8.0.32-25)
-- [my.cnf for GreatSQL 8.0.32-24](./docs/my.cnf-example-greatsql-8.0.32-24)
-- [my.cnf for GreatSQL 8.0.25-17](./docs/my.cnf-example-greatsql-8.0.25-17)
-- [my.cnf for GreatSQL 8.0.25-16](./docs/my.cnf-example-greatsql-8.0.25-16)
-- [my.cnf for GreatSQL 8.0.25-15](./docs/my.cnf-example-greatsql-8.0.25-15)
-- [my.cnf for GreatSQL 5.7.36](./docs/my.cnf-example-greatsql-5.7.36)
+- [my.cnf参考模板](https://greatsql.cn/docs/3-quick-start/3-4-quick-start-with-cnf.html)
 
 ## 其他
-- [在GreatSQL中进行TPC-H测试相关资源](./tpch)
-- [历次公开分享PPT](./Presentations)
-
-# 其他GreatSQL相关资源仓库
-- [GreatSQL用户手册](https://gitee.com/GreatSQL/GreatSQL-Manual)，最新版本GreatSQL用户手册
 - [GreatSQL-Docker](https://gitee.com/GreatSQL/GreatSQL-Docker)，在Docker中运行GreatSQL
-- [GreatSQL-Ansible](https://gitee.com/GreatSQL/GreatSQL-Ansible)，利用Ansible一键安装GreatSQL并完成MGR集群部署
+- [在GreatSQL中进行TPC-H测试相关资源](./tpch)
+- [在GreatSQL中进行BenchmarkSQL测试相关资源](./benchmarksql-5.0)
+- [历次公开分享PPT](./Presentations)
 
 # 关于 GreatSQL
 --- 
