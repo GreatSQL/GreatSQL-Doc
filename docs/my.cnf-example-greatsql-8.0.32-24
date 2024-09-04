@@ -61,7 +61,7 @@ log_queries_not_using_indexes = 1
 log_throttle_queries_not_using_indexes = 60
 min_examined_row_limit = 100
 log_slow_admin_statements = 1
-log_slow_slave_statements = 1
+log_slow_replica_statements = 1
 log_slow_verbosity = FULL
 log_bin = /data/GreatSQL/binlog
 binlog_format = ROW
@@ -83,12 +83,12 @@ myisam_sort_buffer_size = 128M
 
 #replication settings
 relay_log_recovery = 1
-slave_parallel_type = LOGICAL_CLOCK
+replica_parallel_type = LOGICAL_CLOCK
 #并行复制线程数可以设置为逻辑CPU数量的2倍
-slave_parallel_workers = 64
+replica_parallel_workers = 64
 binlog_transaction_dependency_tracking = WRITESET
-slave_preserve_commit_order = 1
-slave_checkpoint_period = 2
+replica_preserve_commit_order = 1
+replica_checkpoint_period = 2
 
 #启用InnoDB并行查询优化功能
 loose-force_parallel_execute = OFF
