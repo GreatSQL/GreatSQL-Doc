@@ -171,6 +171,7 @@ innodb_adaptive_hash_index = OFF
 innodb_numa_interleave = OFF
 innodb_spin_wait_delay = 20
 innodb_print_lock_wait_timeout_info = ON
+innodb_change_buffering = none
 kill_idle_transaction = 300
 innodb_data_file_async_purge = ON
 
