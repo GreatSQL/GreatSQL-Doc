@@ -4,14 +4,14 @@ conn=jdbc:mysql://localhost:3306/bmsql?allowPublicKeyRetrieval=true&useSSL=false
 user=tpcc
 password=tpcc
 
-warehouses=2000
+warehouses=1000
 loadWorkers=160
 
-terminals=64
+terminals=32
 //To run specified transactions per terminal- runMins must equal zero
 runTxnsPerTerminal=0
 //To run for specified minutes- runTxnsPerTerminal must equal zero
-runMins=20
+runMins=10
 //Number of total transactions per minute
 limitTxnsPerMin=0
 
