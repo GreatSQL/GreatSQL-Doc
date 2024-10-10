@@ -65,6 +65,7 @@ max_binlog_size = 1G
 binlog_rows_query_log_events = 1
 binlog_expire_logs_seconds = 604800
 binlog_checksum = CRC32
+binlog_order_commits = OFF
 gtid_mode = ON
 enforce_gtid_consistency = TRUE
 

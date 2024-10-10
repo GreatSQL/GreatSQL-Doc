@@ -57,6 +57,7 @@ max_binlog_size = 1G
 binlog_rows_query_log_events = 1
 #MySQL 8.0.22前，想启用MGR的话，需要设置binlog_checksum=NONE才行
 binlog_checksum = NONE
+binlog_order_commits = OFF
 gtid_mode = ON
 enforce_gtid_consistency = TRUE
 log_slave_updates = 1
