@@ -9,7 +9,7 @@
 
 MGR流控有几个要点：
 - 基于 **事务认证队列** 及 **等待被applied的relay log队列** 这两个队列（`group_replication_flow_control_applier_threshold`、`group_replication_flow_control_certifier_threshold`，默认值均为：25000），实行配额控制。
-- 启用流控（`group_replication_flow_control_mode`，默认值：QUOTA）后，当任何一个队列大小超过设定阈值（配额）后，就会触发流控机制。
+- 启用流控（`group_replication_flow_control_mode`，默认值：**QUOTA**）后，当任何一个队列大小超过设定阈值（配额）后，就会触发流控机制。
 - 只影响启用流控的节点，不影响MGR中的其他节点（在PXC里是所有节点同时被流控影响）。
 - 当设置流控配额百分比（`group_replication_flow_control_member_quota_percent`）时，会在多个启用流控的Primary节点间平摊配额。
 - 流控只针对写事务，不影响只读事务。
@@ -19,7 +19,27 @@ MGR流控有几个要点：
 在GreatSQL中，新增选项 `group_replication_flow_control_replay_lag_behind` 用于控制MGR主从节点复制延迟阈值，当MGR主从节点因为大事务等原因延迟超过阈值时，就会触发流控机制。
 参数范围 0 ~ ULONG_MAX，默认值600秒，可在线动态修改，且立即生效。
 
-此外，针对不同业务场景，流控阈值设置也不尽相同。对于事务实时性要求不高的业务，可以设置较大阈值。对于内存较大的节点，可以适当调大阈值；反之，在内存紧张的节点上，就要降低阈值以避免OOM风险。
+| System Variable Name  | group_replication_flow_control_replay_lag_behind |
+| --- | --- |
+| Variable Scope        | global |
+| Dynamic Variable      | YES |
+| Permitted Values |    [0 ~ ULONG_MAX] |
+| Default       | 60 |
+| Description   | 用于控制MGR主从节点复制延迟阈值，当MGR主从节点因为大事务等原因延迟超过阈值时，就会触发流控机制 |
+
+该选项默认为60秒，可在线动态修改，例如：
+```sql
+SET GLOBAL group_replication_flow_control_replay_lag_behind = 60;
+```
+正常情况下，该参数无需调整。
+
+**提示**：
+
+1. 在GreatSQL中，启用新的流控机制后（`group_replication_flow_control_mode=QUOTA`），只有 `group_replication_flow_control_replay_lag_behind` 参数有作用。原先关于流控的几个选项 `group_replication_flow_control*` 等都不再起作用，但仍然可以查看和修改。
+
+2. 在 Percona 8.0.30 中对选项 `group_replication_flow_control_mode` 新增可选值 `MAJORITY`，在GreatSQL中也不起作用。
+
+3. 针对不同业务场景，流控阈值设置也不尽相同。对于事务实时性要求不高的业务，可以设置较大阈值。对于内存较大的节点，可以适当调大阈值；反之，在内存紧张的节点上，就要降低阈值以避免OOM风险。
 
 ## 2. 小结
 本节介绍了为什么MGR需要流控，已经GreatSQL如何改进优化流控算法。
