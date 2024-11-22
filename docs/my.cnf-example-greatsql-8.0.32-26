@@ -109,7 +109,7 @@ loose-plugin_load_add = 'mysql_clone.so'
 #loose-group_replication_group_name = "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa1"
 #loose-group_replication_view_change_uuid = "bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbb1"
 #loose-group_replication_local_address = "172.16.16.10:33061"
-#loose-group_replication_group_seeds = '172.16.16.10:33061,72.16.16.12:33061,72.16.16.12:33061'
+#loose-group_replication_group_seeds = '172.16.16.10:33061,172.16.16.12:33061,172.16.16.12:33061'
 #loose-group_replication_communication_stack = "XCOM"
 #loose-group_replication_recovery_use_ssl = OFF
 #loose-group_replication_ssl_mode = DISABLED
@@ -135,14 +135,14 @@ loose-plugin_load_add = 'mysql_clone.so'
 #loose-plugin_load_add = 'greatdb_ha.so'
 #loose-greatdb_ha_enable_mgr_vip = OFF
 #loose-greatdb_ha_mgr_vip_nic = 'eth0'
-#loose-greatdb_ha_mgr_vip_ip = '172.16.0.252'
+#loose-greatdb_ha_mgr_vip_ip = '172.16.16.252'
 #loose-greatdb_ha_mgr_vip_mask = '255.255.255.0'
 #loose-greatdb_ha_port = 33062
-#loose-greatdb_ha_mgr_read_vip_ips = "172.16.0.251,172.16.0.252"
+#loose-greatdb_ha_mgr_read_vip_ips = "172.16.16.251,172.16.16.252"
 #loose-greatdb_ha_mgr_read_vip_floating_type = "TO_ANOTHER_SECONDARY"
 #loose-greatdb_ha_send_arp_packge_times = 5
 #loose-greatdb_ha_mgr_exit_primary_kill_connection_mode = OFF
-report_host = 172.16.0.10
+report_host = 172.16.16.10
 report_port = 3306
 
 # InnoDB
