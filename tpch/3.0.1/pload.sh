@@ -5,7 +5,7 @@
 # 功能：将pdbgen.sh并行构造TPC-H测试数据集文件并行load到数据库中
 #
 # 使用方法：
-# 1. 修改workdir, MYSQL_CLI, maxthd, sleep等相关设定
+# 1. 修改workdir, MYSQL_CLI, thd, sleep等相关设定
 # 2. 运行脚本
 # ./pload.sh > ./pload.log 2>&1
 #
@@ -18,14 +18,37 @@ user="tpch"
 passwd="tpch"
 MYSQL_CLI="mysql -h$host -P$port -u$user -p"$passwd" -f ${tpchdb}"
 
-cd ${workdir}
-
-#最大并发数，默认设置为可用逻辑CPU数-2，可自行调整
-maxthd=`lscpu | grep '^CPU(s)'|awk '{print $NF}'`
-maxthd=`expr ${maxthd} - 2`
-
 #当达到最大并发数时轮询等待时长
 sleep=1
+
+cat <<EOF
+TPC-H load data parallelly
+
+USAGE:
+./pload.sh <N>
+
+Options
+===========================
+<N> -- set parallel threads for load data to <N>
+
+EOF
+
+#设置load data并行度，默认值为1
+thd=1
+if [ ! -z "$1" ] && grep '^[[:digit:]]' <<< "$1" > /dev/null; then
+  thd=`expr $1 + 0`
+  echo "load data parallelly in ${thd} threads"
+  sleep ${sleep}
+else
+  #最大并发数，默认设置为可用逻辑CPU数-2，可自行调整
+  thd=`lscpu | grep '^CPU(s)'|awk '{print $NF}'`
+  thd=`expr ${thd} - 2`
+  echo "You did not specify the option <N>, the default value is ${thd}"
+  echo "load data parallelly in ${thd} threads"
+  sleep ${sleep}
+fi
+exit
+cd ${workdir}
 
 tbls="region nation supplier customer part partsupp orders lineitem"
 
@@ -44,7 +67,7 @@ do
     do
       f=${tbl}.tbl.${i}
 
-      while [ `mysqladmin pr|wc -l` -gt ${maxthd} ]
+      while [ `mysqladmin pr|grep -v grep|grep 'load data.*SET_VAR'|wc -l` -gt ${thd} ]
       do
         echo "SLEEP ${sleep}, ${f}"
 	sleep ${sleep}

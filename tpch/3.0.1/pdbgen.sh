@@ -19,13 +19,36 @@ maxthd=`expr ${maxthd} - 2`
 #当达到最大并发数时轮询等待时长
 sleep=1
 
+cat <<EOF
+TPC-H Population Generator
+
+USAGE:
+./pdbgen.sh <N>
+
+Options
+===========================
+<N> -- set Scale Factor (SF) to  <N> (default: 1)
+
+EOF
+
 #设置Scale Factor，默认值为1
 sf=1
 if [ ! -z "$1" ] && grep '^[[:digit:]]' <<< "$1" > /dev/null; then
   sf=`expr $1 + 0`
+  echo "TPC-H SF=${sf} test data generating"
+  sleep ${sleep}
 else
   sf=1
+  echo "You did not specify the option <N>, the default value is 1"
+  echo "TPC-H SF=${sf} test data generating"
+  sleep ${sleep}
 fi
+
+cat <<EOF
+...
+...
+...
+EOF
 
 #不同表分片基数
 tbls=(
