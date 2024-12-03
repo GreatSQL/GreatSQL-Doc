@@ -30,7 +30,10 @@ MGR中，各节点间会定期交换消息，当超过5秒（在MySQL中是固�
 选项 `group_replication_exit_state_action` 定义了被驱逐节点之后的行为模式，默认是**READ_ONLY**（即设置为 `super_read_only = ON` && `READ_ONLY = ON`）实例进入只读模式。
 
 ## 2. 少数派成员失联时
-当集群中的少数派成员失联时（Unreachable），默认不会自动退出MGR集群。这时可以设置 `group_replication_unreachable_majority_timeout`，当少数派节点和多数派节点失联超过该阈值时，少数派节点就会自动退出MGR集群。如果设置为0，则会立即退出，而不再等待。节点退出集群时，相应的事务会被回滚，然后节点状态变成 **ERROR**，并执行选项 `group_replication_exit_state_action` 定义的后续行为模式。如果设置了 `group_replication_autorejoin_tries`，也会再自动尝试重新加入MGR集群。
+当集群中的少数派成员失联时（Unreachable），默认不会自动退出MGR集群。这时可以设置 `group_replication_unreachable_majority_timeout` 大于 0，当少数派节点和多数派节点失联超过该阈值时，少数派节点就会自动退出MGR集群。如果设置为0，则会持续等待，而不是在超过阈值后退出。节点退出集群时，相应的事务会被回滚，然后节点状态变成 **ERROR**，并执行选项 `group_replication_exit_state_action` 定义的后续行为模式。如果设置了 `group_replication_autorejoin_tries`，也会再自动尝试重新加入MGR集群。
+
+当 MGR Primary 节点因故障处于少数派时，MGR Primary 节点此时不能提供写服务，但是可以提供读服务。如果此时也需要 MGR 旧主断掉所有连接，需要设置 `group_replication_unreachable_majority_timeout` 大于 0。在等待 `group_replication_unreachable_majority_timeout` 时间后，旧主会退出 MGR 集群，从而会自动断掉上面的所有连接。如果想确保旧主退出以后多数派才会选出新主，可
+以配置 `group_replication_unreachable_majority_timeout` < `group_replication_member_expel_timeout`，这样可以确保位于少数派的旧主完全退出后，多数派才会重新选出新主。
 
 如果一个节点刚（主动）退出（或被驱逐）又立刻被加回，而其他成员节点上此时还没来及处理更新组视图删除该节点的旧视图信息，可能会出现类似下面的报错提示：
 
