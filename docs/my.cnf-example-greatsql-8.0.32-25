@@ -106,7 +106,6 @@ loose-gdb_parallel_load_chunk_size = 4M
 #rapid engine
 loose-rapid_memory_limit = 12G
 loose-rapid_worker_threads = 32
-loose-rapid_hash_table_memory_limit = 30
 loose-secondary_engine_parallel_load_workers = 16
 
 #mgr settings

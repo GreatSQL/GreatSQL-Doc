@@ -98,7 +98,6 @@ loose-innodb_optimize_no_pk_parallel_load = ON
 loose-plugin_load_add = 'ha_rapid.so'
 loose-rapid_memory_limit = 64G
 loose-rapid_worker_threads = 32
-loose-rapid_hash_table_memory_limit = 30
 loose-secondary_engine_parallel_load_workers = 16
 
 # Clone
