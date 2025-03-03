@@ -1,5 +1,5 @@
 #
-# my.cnf example for GreatSQL 8.0.32-26
+# my.cnf example for GreatSQL 8.0.32-27
 #
 # 下面参数选项设置仅作为参考，假定服务器配置为128C256G
 #
@@ -95,13 +95,18 @@ loose-gdb_parallel_load = ON
 loose-innodb_optimize_no_pk_parallel_load = ON
 
 # Rapid
-loose-plugin_load_add = 'ha_rapid.so'
-loose-rapid_memory_limit = 64G
-loose-rapid_worker_threads = 32
-loose-secondary_engine_parallel_load_workers = 16
+#loose-plugin_load_add = 'ha_rapid.so'
+#loose-rapid_memory_limit = 64G
+#loose-rapid_worker_threads = 32
+#loose-secondary_engine_parallel_load_workers = 16
+
+# Turbo
+#loose-plugin_load_add = 'turbo.so'
+loose-turbo_memory_limit= 64G
+loose-turbo_worker_threads = 32
 
 # Clone
-loose-plugin_load_add = 'mysql_clone.so'
+#loose-plugin_load_add = 'mysql_clone.so'
 
 # MGR
 #loose-plugin_load_add = 'group_replication.so'
@@ -109,10 +114,11 @@ loose-plugin_load_add = 'mysql_clone.so'
 #loose-group_replication_view_change_uuid = "bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbb1"
 #loose-group_replication_local_address = "172.16.16.10:33061"
 #loose-group_replication_group_seeds = '172.16.16.10:33061,172.16.16.12:33061,172.16.16.12:33061'
+#loose-group_replication_ip_allowlist = '172.160.16.0/8,192.168.0.0/24,::1/128'
 #loose-group_replication_communication_stack = "XCOM"
 #loose-group_replication_recovery_use_ssl = OFF
 #loose-group_replication_ssl_mode = DISABLED
-#loose-group_replication_start_on_boot = ON
+#loose-group_replication_start_on_boot = OFF
 #loose-group_replication_bootstrap_group = OFF
 #loose-group_replication_exit_state_action = READ_ONLY
 #loose-group_replication_flow_control_mode = "DISABLED"
@@ -174,11 +180,3 @@ innodb_print_lock_wait_timeout_info = ON
 innodb_change_buffering = none
 kill_idle_transaction = 300
 innodb_data_file_async_purge = ON
-
-# InnoDB monitor
-#innodb_monitor_enable = "module_innodb,module_server,module_dml,module_ddl,module_trx,module_os,module_purge,module_log,module_lock,module_buffer,module_index,module_ibuf_system,module_buffer_page,module_adaptive_hash"
-
-# PFS
-#performance_schema = 1
-#performance_schema_instrument = '%memory%=on'
-#performance_schema_instrument = '%lock%=on'

@@ -101,7 +101,7 @@ loose-innodb_optimize_no_pk_parallel_load = ON
 #loose-secondary_engine_parallel_load_workers = 16
 
 # Turbo
-loose-plugin_load_add = 'turbo.so'
+#loose-plugin_load_add = 'turbo.so'
 loose-turbo_memory_limit= 64G
 loose-turbo_worker_threads = 32
 
