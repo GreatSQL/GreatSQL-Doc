@@ -165,7 +165,9 @@ openEuler下就可以安装文档 [https://gitee.com/GreatSQL/GreatSQL-Doc/blob/
 - https://fedora.pkgs.org/36/fedora-aarch64/jemalloc-devel-5.2.1-7.fc36.aarch64.rpm.html
 - 源码包 https://sourceforge.net/projects/jemalloc.mirror/files/
 
-当然了，jemalloc并库不是必须的，用它的好处是可以优化内存管理性能等。有条件的话尽量启用，实在搞定就放弃。
+当然了，jemalloc并库不是必须的，用它的好处是可以优化内存管理性能等。有条件的话尽量启用，实在搞定就放弃（非必须）。
+
+如果是ARM环境下，可以不必安装配置 jemalloc 依赖。
 
 如果需要手动编译安装jemalloc，参考下面的方法即可：
 ```
@@ -239,8 +241,11 @@ GREATSQL_SOURCE_DIR=greatsql-8.0.25-17
 JOBS=`nproc`
 
 # 如果你的OS环境下已安装jemalloc，建议也启用jemalloc编译选项
-#如果没有安装jemalloc，则将本行参数注释掉
-CMAKE_EXE_LINKER_FLAGS=" -ljemalloc "
+# 如果没有安装jemalloc，则将本行参数注释掉
+# 如果是ARM环境下，可以不必安装配置 jemalloc 依赖
+if [ ${ARCH} = "x86_64" ] ; then
+  CMAKE_EXE_LINKER_FLAGS=" -ljemalloc "
+fi
 
 cd ${SRC_DIR}/${GREATSQL_SOURCE_DIR} && \
 rm -fr bld && \
