@@ -170,6 +170,7 @@ innodb_io_capacity_max = 8000
 innodb_open_files = 65534
 #提醒：当需要用CLONE加密特性时，不要选用O_DIRECT模式，否则会比较慢
 innodb_flush_method = O_DIRECT
+innodb_use_fdatasync = ON
 innodb_lru_scan_depth = 4000
 innodb_lock_wait_timeout = 10
 innodb_rollback_on_timeout = 1
