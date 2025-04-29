@@ -142,6 +142,7 @@ innodb_log_file_size = 2G
 innodb_log_files_in_group = 3
 innodb_redo_log_capacity = 6G
 innodb_doublewrite_files = 2
+innodb_doublewrite_pages = 128
 innodb_max_undo_log_size = 4G
 # 根据您的服务器IOPS能力适当调整
 # 一般配普通SSD盘的话，可以调整到 10000 - 20000

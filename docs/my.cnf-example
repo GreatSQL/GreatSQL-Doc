@@ -158,6 +158,7 @@ innodb_flush_log_at_trx_commit = 1
 innodb_log_buffer_size = 32M
 innodb_redo_log_capacity = 4G
 innodb_doublewrite_files = 2
+innodb_doublewrite_pages = 128
 innodb_max_undo_log_size = 4G
 innodb_io_capacity = 4000
 innodb_io_capacity_max = 8000
