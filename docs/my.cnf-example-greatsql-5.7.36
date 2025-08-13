@@ -1,5 +1,8 @@
-#my.cnf for greatsql 5.7.36
-#my.cnf
+#
+# my.cnf for greatsql 5.7.36
+#
+# 下面参数选项设置仅作为参考，假定服务器配置为128C256G
+# 
 [client]
 socket = /data/GreatSQL/mysql.sock
 [mysql]
@@ -95,7 +98,7 @@ loose-group_replication_request_time_threshold = 0 #当怀疑MGR成为性能瓶�
 report-host = 172.16.16.10
 
 #innodb settings
-innodb_buffer_pool_size = 16G
+innodb_buffer_pool_size = 96G #如果是专用的数据库服务器，则可以设置为物理内存的50%-70%，视实际情况而定
 innodb_buffer_pool_instances = 8
 innodb_data_file_path = ibdata1:12M:autoextend
 innodb_flush_log_at_trx_commit = 1
