@@ -28,11 +28,11 @@
 %global greatsql_vendor GreatDB Software Co., Ltd.
 %global mysqldatadir /var/lib/mysql
 
-%global mysql_version 8.0.32
-%global greatsql_version 26
-%global revision a68b3034c3d
+%global mysql_version 8.4.4
+%global greatsql_version 4
+%global revision d73de75905d
 %global tokudb_backup_version %{mysql_version}-%{greatsql_version}
-%global rpm_release 2
+%global rpm_release 1
 
 %global release %{greatsql_version}.%{rpm_release}%{?dist}
 
@@ -55,12 +55,13 @@
 
 %{!?with_systemd:                %global systemd 0}
 %global systemd 1
-%{!?with_debuginfo:              %global nodebuginfo 0}
+%{!?with_debuginfo:              %global nodebuginfo 1}
 %{!?product_suffix:              %global product_suffix -80}
 %{!?feature_set:                 %global feature_set community}
 %{!?compilation_comment_release: %global compilation_comment_release GreatSQL (GPL), Release %{greatsql_version}, Revision %{revision}}
 %{!?compilation_comment_debug:   %global compilation_comment_debug GreatSQL - Debug (GPL), Release %{greatsql_version}, Revision %{revision}}
 %{!?src_base:                    %global src_base greatsql}
+%global add_fido_plugins 1
 
 # Setup cmake flags for TokuDB
 %if 0%{?tokudb}
@@ -99,18 +100,16 @@
 %global license_type          GPLv2
 
 Name:           greatsql
-Summary:        GreatSQL: a high performance, highly reliable, easy to use, and high security database
+Summary:        GreatSQL: a high performance, highly reliable, easy to use, and high security database that can be used to replace MySQL or Percona Server.
 Group:          Applications/Databases
 Version:        %{mysql_version}
 Release:        %{release}
 License:        GPL-2.0-or-later AND LGPL-2.1-only AND BSL-1.0 AND GPL-1.0-or-later OR Artistic-1.0-Perl AND BSD-2-Clause
-SOURCE0:        greatsql-8.0.32-26.tar.xz
 URL:            https://greatsql.cn
-SOURCE5:        mysql_config.sh
-SOURCE10:       boost_1_77_0.tar.xz
-SOURCE90:       filter-provides.sh
-SOURCE91:       filter-requires.sh
+SOURCE0:        https://product.greatdb.com/GreatSQL-%{mysql_version}-%{greatsql_version}/%{name}-%{mysql_version}-%{greatsql_version}.tar.xz
+SOURCE10:       https://archives.boost.io/release/1.77.0/source/boost_1_77_0.tar.xz
 SOURCE11:       mysqld.cnf
+SOURCE12:       mysql_config.sh
 Patch0:         mysql-5.7-sharedlib-rename.patch
 BuildRequires:  cmake >= 2.8.2
 BuildRequires:  make
@@ -150,13 +149,21 @@ BuildRequires:  libaio-devel
 BuildRequires:  ncurses-devel
 BuildRequires:  pam-devel
 BuildRequires:  readline-devel
+%ifnarch aarch64
 BuildRequires:  numactl-devel
+%endif
 BuildRequires:  openssl
 BuildRequires:  openssl-devel
 BuildRequires:  zlib-devel
 BuildRequires:  bison
 BuildRequires:  openldap-devel
 BuildRequires:  libcurl-devel
+BuildRequires:  libedit
+BuildRequires:  libevent-devel
+BuildRequires:  libicu-devel
+BuildRequires:  lz4
+BuildRequires:  lz4-devel
+BuildRequires:  libzstd-devel
 %if 0%{?systemd}
 BuildRequires:  systemd
 BuildRequires:  pkgconfig(systemd)
@@ -170,18 +177,49 @@ BuildRequires:  gcc-c++
 BuildRequires:  libtirpc-devel
 BuildRequires:  rpcgen
 BuildRequires:  m4
+BuildRequires:  krb5-devel
+BuildRequires:  libudev-devel
+
+#some more requires, 2025.3.24
+BuildRequires:  mecab-devel
+BuildRequires:  gzip
+BuildRequires:  perl(base)
+BuildRequires:  perl(Digest::file)
+BuildRequires:  perl(Digest::MD5)
+BuildRequires:  perl(Env)
+BuildRequires:  perl(FindBin)
+BuildRequires:  perl(if)
+BuildRequires:  perl-interpreter
+BuildRequires:  perl-generators
+BuildRequires:  perl(IPC::Open3)
+BuildRequires:  perl(lib)
+#BuildRequires:  perl(LWP::Simple)
+BuildRequires:  perl(Net::Ping)
+BuildRequires:  perl(Socket)
+BuildRequires:  perl(strict)
+BuildRequires:  perl(Test::More)
+BuildRequires:  perl(warnings)
+BuildRequires:  procps
+BuildRequires:  protobuf-lite
+BuildRequires:  zlib
+#end for some more requires
+
 BuildRoot:      %(mktemp -ud %{_tmppath}/%{name}-%{version}-%{release}-XXXXXX)
 
+Conflicts:      community-mysql mysql-community
+Conflicts:      mariadb
+Conflicts:      Percona-Server
+
 # For rpm => 4.9 only: https://fedoraproject.org/wiki/Packaging:AutoProvidesAndRequiresFiltering
-%global __requires_exclude ^perl\\((GD|hostnames|lib::mtr|lib::v1|mtr_|My::|Lmo|Lmo::Meta|Lmo::Object|Lmo::Types|Lmo::Utils|Percona::Toolkit|Quoter|Transformers)
-%global __provides_exclude_from ^(/usr/share/(mysql|mysql-test)/.*|%{_libdir}/mysql/plugin/.*\\.so|/usr/include/mysql/.*|/usr/share/man/man.*/mysql.*|/etc/my.cnf|/usr/bin/mysql.*|/usr/sbin/mysqld.*|*libprotobuf*|*libmysqlclient.so*|*libmysqlharness*|*libmysqlrouter*|*mysqlclient*|*libdaemon*|*libfnv*|*libmemcached*|*libmurmur*|*libtest*)$
+%global __requires_exclude ^perl\\(GD|hostnames|lib::mtr|lib::v1|mtr_|My::|Lmo|Lmo::Meta|Lmo::Object|Lmo::Types|Lmo::Utils|Percona::Toolkit|Quoter|Transformers)
+%global __provides_exclude_from ^(%{_datadir}/(mysql|mysql-test)/.*|%{_libdir}/mysql/plugin/.*\\.so|%{_bindir}/mysql.*|%{_sbindir}/mysqld.*)$
 
 %global _privatelibs lib(protobuf|mysqlclient|mysqlharness|mysqlrouter|mysqlclient|daemon|fnv|memcached|murmur|test)*\\.so*
-%global __provides_exclude %{_privatelibs}
-%global __requires_exclude %{_privatelibs}
+%global __provides_exclude %{?__provides_exclude:%__provides_exclude|}%{_privatelibs}
+%global __requires_exclude %{?__requires_exclude:%__requires_exclude|}%{_privatelibs}
 
 %description
-GreatSQL focuses on improving the reliability and performance of MGR, supports InnoDB parallel query and other features, and is a domestic MySQL version suitable for financial applications. It can be used as an optional replacement of MySQL or Percona Server. It is completely free and compatible with MySQL or Percona server.
+GreatSQL: a high performance, highly reliable, easy to use, and high security database that can be used to replace MySQL or Percona Server.
 
 For a description of GreatSQL see https://greatsql.cn
 
@@ -198,8 +236,11 @@ Requires(pre):  greatsql-shared
 Requires:       greatsql-client
 Requires:       greatsql-icu-data-files
 Requires:       openssl
-Conflicts:      Percona-SQL-server-50 Percona-Server-server-51 Percona-Server-server-55 Percona-Server-server-56 Percona-Server-server-57
-
+Conflicts:      greatsql-mysql-config < %{version}-%{release}
+Obsoletes:      greatsql-mysql-config < %{version}-%{release}
+Conflicts:      mysql-server mysql-community-server mysql-config
+Conflicts:      mariadb-server mariadb-galera-server mariadb-connector-c-config mariadb-config
+Conflicts:      Percona-SQL-server-50 Percona-Server-server-51 Percona-Server-server-55 Percona-Server-server-56 Percona-Server-server-57 Percona-Server-server
 %if 0%{?systemd}
 Requires(post):   systemd
 Requires(preun):  systemd
@@ -210,10 +251,8 @@ Requires(preun):  /sbin/chkconfig
 Requires(preun):  /sbin/service
 %endif
 
-Obsoletes:      mariadb-connector-c-config
-
 %description -n greatsql-server
-GreatSQL: a high performance, highly reliable, easy to use, and high security database that can be used to replace MySQL or Percona Server.
+GreatSQL database server binaries and system database setup.
 
 For a description of GreatSQL see https://greatsql.cn
 
@@ -221,7 +260,9 @@ For a description of GreatSQL see https://greatsql.cn
 Summary:        GreatSQL - Client
 Group:          Applications/Databases
 Requires:       greatsql-shared
-Conflicts:      Percona-SQL-client-50 Percona-Server-client-51 Percona-Server-client-55 Percona-Server-client-56 Percona-Server-client-57
+Conflicts:      mysql mysql-client mysql-community-client
+Conflicts:      mariadb mariadb-client
+Conflicts:      Percona-SQL-client-50 Percona-Server-client-51 Percona-Server-client-55 Percona-Server-client-56 Percona-Server-client-57 Percona-Server-client
 
 %description -n greatsql-client
 This package contains the standard GreatSQL client and administration tools.
@@ -260,10 +301,9 @@ Requires:       perl(Sys::Hostname)
 Requires:       perl(Time::HiRes)
 Requires:       perl(Time::localtime)
 Requires(pre):  greatsql-shared greatsql-client greatsql-server
-Obsoletes:      MySQL-test < %{version}-%{release}
-Obsoletes:      mysql-test < %{version}-%{release}
-Obsoletes:      mariadb-test
-Conflicts:      Percona-SQL-test-50 Percona-Server-test-51 Percona-Server-test-55 Percona-Server-test-56 Percona-Server-test-57
+Conflicts:      mysql-test mysql-community-test
+Conflicts:      mariadb-test
+Conflicts:      Percona-SQL-test-50 Percona-Server-test-51 Percona-Server-test-55 Percona-Server-test-56 Percona-Server-test-57 Percona-Server-test
 
 %description -n greatsql-test
 This package contains the GreatSQL regression test suite.
@@ -273,9 +313,9 @@ For a description of GreatSQL see https://greatsql.cn
 %package -n greatsql-devel
 Summary:        GreatSQL - Development header files and libraries
 Group:          Applications/Databases
-Conflicts:      Percona-SQL-devel-50 Percona-Server-devel-51 Percona-Server-devel-55 Percona-Server-devel-56 Percona-Server-devel-57
-Obsoletes:      mariadb-connector-c-devel
-Obsoletes:      mariadb-devel
+Conflicts:      mysql-devel mysql-community-devel
+Conflicts:      mariadb-devel mariadb-connector-c-devel
+Conflicts:      Percona-SQL-devel-50 Percona-Server-devel-51 Percona-Server-devel-55 Percona-Server-devel-56 Percona-Server-devel-57 Percona-Server-devel
 
 %description -n greatsql-devel
 This package contains the development header files and libraries necessary
@@ -286,31 +326,15 @@ For a description of GreatSQL see https://greatsql.cn
 %package -n greatsql-shared
 Summary:        GreatSQL - Shared libraries
 Group:          Applications/Databases
-Obsoletes:      mysql-libs < %{version}-%{release}
+Conflicts:      mysql-libs mysql-community-libs mysql-libs < %{version}-%{release}
+Conflicts:      mariadb-libs
+Conflicts:      Percona-Server-shared-51 Percona-Server-shared-55 Percona-Server-shared-55 Percona-Server-shared-56 Percona-Server-shared-57 Percona-Server-shared
 
 %description -n greatsql-shared
 This package contains the shared libraries (*.so*) which certain languages
 and applications need to dynamically load and use GreatSQL.
 
 For a description of GreatSQL see https://greatsql.cn
-
-%if 0%{?compatlib}
-%package -n greatsql-shared-compat
-Summary:        Shared compat libraries for GreatSQL %{compatver}-%{percona_compatver} database client applications
-Group:          Applications/Databases
-
-Obsoletes:      mysql-libs
-
-Conflicts:      Percona-Server-shared-51
-Conflicts:      Percona-Server-shared-55
-Conflicts:      Percona-Server-shared-55
-Conflicts:      Percona-Server-shared-56
-Conflicts:      Percona-Server-shared-57
-
-%description -n greatsql-shared-compat
-This package contains the shared compat libraries for GreatSQL %{compatver}-%{percona_compatver} client
-applications.
-%endif
 
 %if 0%{?tokudb}
 %package -n greatsql-tokudb
@@ -320,6 +344,7 @@ Requires:       greatsql-server = %{version}-%{release}
 Requires:       greatsql-shared = %{version}-%{release}
 Requires:       greatsql-client = %{version}-%{release}
 Requires:       jemalloc >= 3.3.0
+Conflicts:      Percona-server-tokudb
 
 %description -n greatsql-tokudb
 This package contains the TokuDB plugin for GreatSQL %{version}-%{release}
@@ -332,6 +357,7 @@ Group:          Applications/Databases
 Requires:       greatsql-server = %{version}-%{release}
 Requires:       greatsql-shared = %{version}-%{release}
 Requires:       greatsql-client = %{version}-%{release}
+Conflicts:      Percona-server-rocksdb
 
 %description -n greatsql-rocksdb
 This package contains the RocksDB plugin for GreatSQL %{version}-%{release}
@@ -344,6 +370,8 @@ Summary:       GreatSQL MySQL Router
 Group:         Applications/Databases
 Provides:      greatsql-mysql-router = %{version}-%{release}
 Obsoletes:     greatsql-mysql-router < %{version}-%{release}
+Conflicts:     mysql-router mysql-router-community
+Conflicts:     percona-mysql-router
 
 %description -n greatsql-mysql-router
 The GreatSQL MySQL Router software delivers a fast, multi-threaded way of
@@ -355,21 +383,12 @@ For a description of GreatSQL see https://greatsql.cn
 Summary:        Development header files and libraries for GreatSQL MySQL Router
 Group:          Applications/Databases
 Provides:       greatsql-mysql-router-devel = %{version}-%{release}
-Obsoletes:      mysql-router-devel
+Conflicts:      mysql-router-devel
+Conflicts:      percona-mysql-router-devel
 
 %description -n greatsql-mysql-router-devel
 This package contains the development header files and libraries
 necessary to develop GreatSQL MySQL Router applications.
-
-For a description of GreatSQL see https://greatsql.cn
-
-%package   -n   greatsql-mysql-config
-Summary:        GreatSQL config
-Provides:       greatsql-mysql-config = %{version}-%{release}
-Conflicts:      mysql-config
-
-%description -n greatsql-mysql-config
-This package contains my.cnf for GreatSQL.
 
 For a description of GreatSQL see https://greatsql.cn
 
@@ -382,9 +401,11 @@ This package contains ICU data files needer by GreatSQL regular expressions.
 For a description of GreatSQL see https://greatsql.cn
 
 %prep
-%setup -q -T -a 0 -a 10 -c -n %{src_dir}
+#%setup -q -T -a 0 -a 10 -c -n %{src_dir}
+%setup -q -T -a 0 -c -n %{src_dir}
 pushd %{src_dir}
-%patch0 -p0
+%patch -P0 -p1
+
 cp %{SOURCE11} scripts
 
 %build
@@ -398,63 +419,6 @@ if [ "x$(id -u)" = "x0" ] ; then
 fi
 %endif
 
-# Build debug versions of mysqld and libmysqld.a
-mkdir debug
-(
-  cd debug
-  # Attempt to remove any optimisation flags from the debug build
-  optflags=$(echo "%{optflags}" | sed -e 's/-O2 / /' -e 's/-Wp,-D_FORTIFY_SOURCE=2/ -Wno-missing-field-initializers -Wno-error /')
-  optflags=$(echo $optflags | sed -e 's/-specs=\/usr\/lib\/rpm\/redhat\/redhat-hardened-cc1 -specs=\/usr\/lib\/rpm\/redhat\/redhat-annobin-cc1/ /')
-  cmake ../%{src_dir} \
-           -DBUILD_CONFIG=mysql_release \
-           -DINSTALL_LAYOUT=RPM \
-           -DCMAKE_BUILD_TYPE=Debug \
-           -DWITH_BOOST=.. \
-           -DCMAKE_C_FLAGS="$optflags" \
-           -DCMAKE_CXX_FLAGS="$optflags" \
-%if 0%{?systemd}
-           -DWITH_SYSTEMD=1 \
-%endif
-           -DWITH_INNODB_MEMCACHED=1 \
-           -DINSTALL_LIBDIR="%{_lib}/mysql" \
-           -DINSTALL_PLUGINDIR="%{_lib}/mysql/plugin" \
-           -DMYSQL_UNIX_ADDR="%{mysqldatadir}/mysql.sock" \
-           -DINSTALL_MYSQLSHAREDIR=share/greatsql \
-           -DINSTALL_SUPPORTFILESDIR=share/greatsql \
-           -DFEATURE_SET="%{feature_set}" \
-           -DWITH_AUTHENTICATION_LDAP=OFF \
-           -DWITH_PAM=1 \
-           -DWITH_ROCKSDB=OFF \
-           -DWITH_UNIT_TESTS=OFF \
-           -DALLOW_NO_SSE42=ON \
-           -DROCKSDB_DISABLE_AVX2=1 \
-           -DROCKSDB_DISABLE_MARCH_NATIVE=1 \
-           -DGROUP_REPLICATION_WITH_ROCKSDB=OFF \
-           -DWITH_TOKUDB=0 \
-           -DWITH_TOKUDB_BACKUP=OFF \
-           -DWITH_INNODB_MEMCACHED=1 \
-           -DMYSQL_MAINTAINER_MODE=OFF \
-           -DFORCE_INSOURCE_BUILD=1 \
-           -DWITH_NUMA=ON \
-           -DWITH_LDAP=system \
-           -DWITH_SYSTEM_LIBS=ON \
-           -DWITH_PROTOBUF=bundled \
-           -DWITH_RAPIDJSON=bundled \
-           -DWITH_ICU=bundled \
-           -DWITH_LZ4=bundled \
-           -DWITH_ZLIB=bundled \
-           -DWITH_ZSTD=bundled \
-           -DWITH_READLINE=system \
-           -DWITH_LIBEVENT=bundled \
-           -DWITH_KEYRING_VAULT=ON \
-           -DWITH_FIDO=bundled \
-           -DWITHOUT_RAPID_SECONDARY_STORAGE_ENGINE=1 \
-           %{?ssl_option} \
-           %{?mecab_option} \
-           -DCOMPILATION_COMMENT="%{compilation_comment_debug}" %{TOKUDB_FLAGS} %{TOKUDB_DEBUG_OFF} %{ROCKSDB_FLAGS}
-  echo BEGIN_DEBUG_CONFIG ; egrep '^#define' include/config.h ; echo END_DEBUG_CONFIG
-  make %{?_smp_mflags}
-)
 # Build full release
 mkdir release
 (
@@ -464,12 +428,10 @@ mkdir release
            -DINSTALL_LAYOUT=RPM \
            -DCMAKE_BUILD_TYPE=RelWithDebInfo \
            -DWITH_BOOST=.. \
-           -DCMAKE_C_FLAGS="$optflags" \
-           -DCMAKE_CXX_FLAGS="$optflags" \
+	   -DCMAKE_SKIP_INSTALL_RPATH=YES \
 %if 0%{?systemd}
            -DWITH_SYSTEMD=1 \
 %endif
-           -DWITH_INNODB_MEMCACHED=1 \
            -DINSTALL_LIBDIR="%{_lib}/mysql" \
            -DINSTALL_PLUGINDIR="%{_lib}/mysql/plugin" \
            -DMYSQL_UNIX_ADDR="%{mysqldatadir}/mysql.sock" \
@@ -478,17 +440,21 @@ mkdir release
            -DFEATURE_SET="%{feature_set}" \
            -DWITH_AUTHENTICATION_LDAP=OFF \
            -DWITH_PAM=1 \
-           -DWITH_TOKUDB=0 \
+           -DWITH_TOKUDB=OFF \
+	   -DWITH_NDB=OFF \
+	   -DWITH_NDBCLUSTER=OFF \
+	   -DWITH_NDBCLUSTER_STORAGE_ENGINE=OFF \
            -DWITH_UNIT_TESTS=OFF \
            -DWITH_ROCKSDB=OFF \
            -DROCKSDB_DISABLE_AVX2=1 \
            -DROCKSDB_DISABLE_MARCH_NATIVE=1 \
            -DGROUP_REPLICATION_WITH_ROCKSDB=OFF \
            -DALLOW_NO_SSE42=ON \
-           -DWITH_INNODB_MEMCACHED=1 \
            -DMYSQL_MAINTAINER_MODE=OFF \
            -DFORCE_INSOURCE_BUILD=1 \
+%ifnarch aarch64
            -DWITH_NUMA=ON \
+%endif
            -DWITH_LDAP=system \
            -DWITH_SYSTEM_LIBS=ON \
            -DWITH_LZ4=bundled \
@@ -500,12 +466,16 @@ mkdir release
            -DWITH_LIBEVENT=bundled \
            -DWITH_ZSTD=bundled \
            -DWITH_KEYRING_VAULT=ON \
+%if 0%{?add_fido_plugins}
            -DWITH_FIDO=bundled \
-           -DWITHOUT_RAPID_SECONDARY_STORAGE_ENGINE=1 \
-           %{?ssl_option} \
-           %{?mecab_option} \
+%else
+           -DWITH_FIDO=none \
+%endif
+           -DWITH_SSL=system \
+	   -DWITH_ROUTER=ON \
+	   -DENABLED_LOCAL_INFILE=ON \
            -DCOMPILATION_COMMENT="%{compilation_comment_release}" %{TOKUDB_FLAGS} %{TOKUDB_DEBUG_OFF} %{ROCKSDB_FLAGS}
-  echo BEGIN_NORMAL_CONFIG ; egrep '^#define' include/config.h ; echo END_NORMAL_CONFIG
+  echo BEGIN_NORMAL_CONFIG ; echo END_NORMAL_CONFIG
   make %{?_smp_mflags}
 )
 
@@ -544,12 +514,15 @@ install -d %{buildroot}%{_sysconfdir}/my.cnf.d
 
 # Add libdir to linker
 install -d -m 0755 %{buildroot}%{_sysconfdir}/ld.so.conf.d
-echo "%{_libdir}/mysql" > %{buildroot}%{_sysconfdir}/ld.so.conf.d/mysql-%{_arch}.conf
+echo "%{_libdir}/mysql" >> %{buildroot}%{_sysconfdir}/ld.so.conf.d/mysql-%{_arch}.conf
+echo "%{_libdir}/mysql/private" >> %{buildroot}%{_sysconfdir}/ld.so.conf.d/mysql-%{_arch}.conf
+echo "%{_libdir}/mysqlrouter" >> %{buildroot}%{_sysconfdir}/ld.so.conf.d/mysql-%{_arch}.conf
+echo "%{_libdir}/mysqlrouter/private" >> %{buildroot}%{_sysconfdir}/ld.so.conf.d/mysql-%{_arch}.conf
 
 # multiarch support
 %ifarch %{multiarchs}
   mv %{buildroot}/%{_bindir}/mysql_config %{buildroot}/%{_bindir}/mysql_config-%{__isa_bits}
-  install -p -m 0755 %{SOURCE5} %{buildroot}/%{_bindir}/mysql_config
+  install -p -m 0755 %{SOURCE12} %{buildroot}/%{_bindir}/mysql_config
 %endif
 
 %if 0%{?systemd}
@@ -560,9 +533,6 @@ install -D -p -m 0644 scripts/mysqlrouter.service %{buildroot}%{_unitdir}/mysqlr
 install -D -p -m 0755 packaging/rpm-common/mysqlrouter.init %{buildroot}%{_sysconfdir}/init.d/mysqlrouter
 %endif
 install -D -p -m 0644 packaging/rpm-common/mysqlrouter.conf %{buildroot}%{_sysconfdir}/mysqlrouter/mysqlrouter.conf
-
-# set rpath for plugin to use private/libfido2.so
-#patchelf --debug --set-rpath '$ORIGIN/../private' %{buildroot}/%{_libdir}/mysql/plugin/authentication_fido.so
 
 # Remove files pages we explicitly do not want to package
 rm -rf %{buildroot}%{_infodir}/mysql.info*
@@ -577,17 +547,6 @@ rm -rf %{buildroot}/usr/include/kmip.h
 rm -rf %{buildroot}/usr/include/kmippp.h
 rm -rf %{buildroot}/usr/lib/libkmip.a
 rm -rf %{buildroot}/usr/lib/libkmippp.a
-#%if 0%{?tokudb}
-#  rm -f %{buildroot}%{_prefix}/README.md
-#  rm -f %{buildroot}%{_prefix}/COPYING.GPLv2
-#  rm -f %{buildroot}%{_prefix}/PATENTS
-#%endif
-
-# Remove upcoming man pages, to avoid breakage when they materialize
-# Keep this comment as a placeholder for future cases
-# rm -f %{buildroot}%{_mandir}/man1/<manpage>.1
-
-# Remove removed manpages here until they are removed from the docs repo
 
 %check
 %if 0%{?runselftest}
@@ -633,7 +592,7 @@ datadir=$(/usr/bin/my_print_defaults server mysqld | grep '^--datadir=' | sed -n
 if [ ! -e /var/log/mysqld.log ]; then
     /usr/bin/install -m0640 -omysql -gmysql /dev/null /var/log/mysqld.log
 fi
-#/bin/touch /var/log/mysqld.log >/dev/null 2>&1 || :
+
 %if 0%{?systemd}
   %systemd_post mysqld.service
   if [ $1 == 1 ]; then
@@ -710,17 +669,26 @@ fi
 
 %postun -n greatsql-shared
 
-#%if 0%{?tokudb}
-#%post -n greatsql-tokudb
-#if [ $1 -eq 1 ] ; then
-#  echo -e "\n\n * This release of GreatSQL is distributed with TokuDB storage engine."
-#  echo -e " * Run the following script to enable the TokuDB storage engine in Percona Server:\n"
-#  echo -e "\tps-admin --enable-tokudb -u <mysql_admin_user> -p[mysql_admin_pass] [-S <socket>] [-h <host> -P <port>]\n"
-#  echo -e " * See http://www.percona.com/doc/percona-server/8.0/tokudb/tokudb_installation.html for more installation details\n"
-#  echo -e " * See http://www.percona.com/doc/percona-server/8.0/tokudb/tokudb_intro.html for an introduction to TokuDB\n\n"
-#fi
-#%endif
-#
+%ifarch x86_64
+%if 0%{?compatlib}
+%post -n greatsql-shared-compat
+for lib in libmysqlclient{.so.18.0.0,.so.18,_r.so.18.0.0,_r.so.18}; do
+  if [ ! -f %{_libdir}/mysql/${lib} ]; then
+    ln -s libmysqlclient.so.18.1.0 %{_libdir}/mysql/${lib};
+  fi
+done
+/sbin/ldconfig
+
+%postun -n greatsql-shared-compat
+for lib in libmysqlclient{.so.18.0.0,.so.18,_r.so.18.0.0,_r.so.18}; do
+  if [ -h %{_libdir}/mysql/${lib} ]; then
+    rm -f %{_libdir}/mysql/${lib};
+  fi
+done
+/sbin/ldconfig
+%endif
+%endif
+
 %if 0%{?rocksdb}
 %post -n greatsql-rocksdb
 if [ $1 -eq 1 ] ; then
@@ -741,7 +709,7 @@ fi
 %systemd_post mysqlrouter.service
 %else
 /sbin/chkconfig --add mysqlrouter
-%endif # systemd
+%endif
 
 %preun -n greatsql-mysql-router
 %if 0%{?systemd}
@@ -751,7 +719,7 @@ if [ "$1" = 0 ]; then
     /sbin/service mysqlrouter stop >/dev/null 2>&1 || :
     /sbin/chkconfig --del mysqlrouter
 fi
-%endif # systemd
+%endif
 
 %postun -n greatsql-mysql-router
 /sbin/ldconfig
@@ -761,7 +729,7 @@ fi
 if [ $1 -ge 1 ]; then
     /sbin/service mysqlrouter condrestart >/dev/null 2>&1 || :
 fi
-%endif # systemd
+%endif
 
 
 %files -n greatsql-server
@@ -777,23 +745,12 @@ fi
 %attr(644, root, root) %{_mandir}/man1/myisamlog.1*
 %attr(644, root, root) %{_mandir}/man1/myisampack.1*
 %attr(644, root, root) %{_mandir}/man8/mysqld.8*
-#%if 0%{?systemd}
-#%exclude %{_mandir}/man1/mysqld_multi.1*
-#%exclude %{_mandir}/man1/mysqld_safe.1*
-#%else
-#%attr(644, root, root) %{_mandir}/man1/mysqld_multi.1*
-#%attr(644, root, root) %{_mandir}/man1/mysqld_safe.1*
-#%endif
 %attr(644, root, root) %{_mandir}/man1/mysqldumpslow.1*
 %attr(644, root, root) %{_mandir}/man1/mysql_secure_installation.1*
-%attr(644, root, root) %{_mandir}/man1/mysql_upgrade.1*
 %attr(644, root, root) %{_mandir}/man1/mysqlman.1*
-#%attr(644, root, root) %{_mandir}/man1/mysql.server.1*
 %attr(644, root, root) %{_mandir}/man1/mysql_tzinfo_to_sql.1*
 %attr(644, root, root) %{_mandir}/man1/perror.1*
-%attr(644, root, root) %{_mandir}/man1/mysql_ssl_rsa_setup.1*
 %attr(644, root, root) %{_mandir}/man1/lz4_decompress.1*
-%attr(644, root, root) %{_mandir}/man1/zlib_decompress.1*
 
 %config(noreplace) %{_sysconfdir}/my.cnf
 %dir %{_sysconfdir}/my.cnf.d
@@ -808,13 +765,10 @@ fi
 %attr(755, root, root) %{_bindir}/myisampack
 %attr(755, root, root) %{_bindir}/mysql_secure_installation
 %attr(755, root, root) %{_bindir}/mysql_tzinfo_to_sql
-%attr(755, root, root) %{_bindir}/mysql_upgrade
 %attr(755, root, root) %{_bindir}/mysqldumpslow
 %attr(755, root, root) %{_bindir}/ps_mysqld_helper
 %attr(755, root, root) %{_bindir}/perror
-%attr(755, root, root) %{_bindir}/mysql_ssl_rsa_setup
 %attr(755, root, root) %{_bindir}/lz4_decompress
-%attr(755, root, root) %{_bindir}/zlib_decompress
 %attr(755, root, root) %{_bindir}/ps-admin
 %attr(755, root, root) %{_bindir}/zstd_decompress
 %attr(755, root, root) %{_bindir}/mysqldecompress
@@ -826,14 +780,107 @@ fi
 %attr(755, root, root) %{_bindir}/mysqld_safe
 %endif
 %attr(755, root, root) %{_sbindir}/mysqld
-%attr(755, root, root) %{_sbindir}/mysqld-debug
 %dir %{_libdir}/mysql/private
 %attr(755, root, root) %{_libdir}/mysql/private/libprotobuf-lite.so.*
 %attr(755, root, root) %{_libdir}/mysql/private/libprotobuf.so.*
+%attr(755, root, root) %{_libdir}/mysql/private/libabsl_bad_any_cast_impl.so
+%attr(755, root, root) %{_libdir}/mysql/private/libabsl_bad_optional_access.so
+%attr(755, root, root) %{_libdir}/mysql/private/libabsl_bad_variant_access.so
+%attr(755, root, root) %{_libdir}/mysql/private/libabsl_base.so
+%attr(755, root, root) %{_libdir}/mysql/private/libabsl_city.so
+%attr(755, root, root) %{_libdir}/mysql/private/libabsl_civil_time.so
+%attr(755, root, root) %{_libdir}/mysql/private/libabsl_cord_internal.so
+%attr(755, root, root) %{_libdir}/mysql/private/libabsl_cord.so
+%attr(755, root, root) %{_libdir}/mysql/private/libabsl_cordz_functions.so
+%attr(755, root, root) %{_libdir}/mysql/private/libabsl_cordz_handle.so
+%attr(755, root, root) %{_libdir}/mysql/private/libabsl_cordz_info.so
+%attr(755, root, root) %{_libdir}/mysql/private/libabsl_cordz_sample_token.so
+%attr(755, root, root) %{_libdir}/mysql/private/libabsl_crc32c.so
+%attr(755, root, root) %{_libdir}/mysql/private/libabsl_crc_cord_state.so
+%attr(755, root, root) %{_libdir}/mysql/private/libabsl_crc_cpu_detect.so
+%attr(755, root, root) %{_libdir}/mysql/private/libabsl_crc_internal.so
+%attr(755, root, root) %{_libdir}/mysql/private/libabsl_debugging_internal.so
+%attr(755, root, root) %{_libdir}/mysql/private/libabsl_demangle_internal.so
+%attr(755, root, root) %{_libdir}/mysql/private/libabsl_die_if_null.so
+%attr(755, root, root) %{_libdir}/mysql/private/libabsl_examine_stack.so
+%attr(755, root, root) %{_libdir}/mysql/private/libabsl_exponential_biased.so
+%attr(755, root, root) %{_libdir}/mysql/private/libabsl_failure_signal_handler.so
+%attr(755, root, root) %{_libdir}/mysql/private/libabsl_flags_commandlineflag_internal.so
+%attr(755, root, root) %{_libdir}/mysql/private/libabsl_flags_commandlineflag.so
+%attr(755, root, root) %{_libdir}/mysql/private/libabsl_flags_config.so
+%attr(755, root, root) %{_libdir}/mysql/private/libabsl_flags_internal.so
+%attr(755, root, root) %{_libdir}/mysql/private/libabsl_flags_marshalling.so
+%attr(755, root, root) %{_libdir}/mysql/private/libabsl_flags_parse.so
+%attr(755, root, root) %{_libdir}/mysql/private/libabsl_flags_private_handle_accessor.so
+%attr(755, root, root) %{_libdir}/mysql/private/libabsl_flags_program_name.so
+%attr(755, root, root) %{_libdir}/mysql/private/libabsl_flags_reflection.so
+%attr(755, root, root) %{_libdir}/mysql/private/libabsl_flags.so
+%attr(755, root, root) %{_libdir}/mysql/private/libabsl_flags_usage_internal.so
+%attr(755, root, root) %{_libdir}/mysql/private/libabsl_flags_usage.so
+%attr(755, root, root) %{_libdir}/mysql/private/libabsl_graphcycles_internal.so
+%attr(755, root, root) %{_libdir}/mysql/private/libabsl_hash.so
+%attr(755, root, root) %{_libdir}/mysql/private/libabsl_hashtablez_sampler.so
+%attr(755, root, root) %{_libdir}/mysql/private/libabsl_int128.so
+%attr(755, root, root) %{_libdir}/mysql/private/libabsl_kernel_timeout_internal.so
+%attr(755, root, root) %{_libdir}/mysql/private/libabsl_leak_check.so
+%attr(755, root, root) %{_libdir}/mysql/private/libabsl_log_entry.so
+%attr(755, root, root) %{_libdir}/mysql/private/libabsl_log_flags.so
+%attr(755, root, root) %{_libdir}/mysql/private/libabsl_log_globals.so
+%attr(755, root, root) %{_libdir}/mysql/private/libabsl_log_initialize.so
+%attr(755, root, root) %{_libdir}/mysql/private/libabsl_log_internal_check_op.so
+%attr(755, root, root) %{_libdir}/mysql/private/libabsl_log_internal_conditions.so
+%attr(755, root, root) %{_libdir}/mysql/private/libabsl_log_internal_format.so
+%attr(755, root, root) %{_libdir}/mysql/private/libabsl_log_internal_globals.so
+%attr(755, root, root) %{_libdir}/mysql/private/libabsl_log_internal_log_sink_set.so
+%attr(755, root, root) %{_libdir}/mysql/private/libabsl_log_internal_message.so
+%attr(755, root, root) %{_libdir}/mysql/private/libabsl_log_internal_nullguard.so
+%attr(755, root, root) %{_libdir}/mysql/private/libabsl_log_internal_proto.so
+%attr(755, root, root) %{_libdir}/mysql/private/libabsl_log_severity.so
+%attr(755, root, root) %{_libdir}/mysql/private/libabsl_log_sink.so
+%attr(755, root, root) %{_libdir}/mysql/private/libabsl_low_level_hash.so
+%attr(755, root, root) %{_libdir}/mysql/private/libabsl_malloc_internal.so
+%attr(755, root, root) %{_libdir}/mysql/private/libabsl_periodic_sampler.so
+%attr(755, root, root) %{_libdir}/mysql/private/libabsl_random_distributions.so
+%attr(755, root, root) %{_libdir}/mysql/private/libabsl_random_internal_distribution_test_util.so
+%attr(755, root, root) %{_libdir}/mysql/private/libabsl_random_internal_platform.so
+%attr(755, root, root) %{_libdir}/mysql/private/libabsl_random_internal_pool_urbg.so
+%attr(755, root, root) %{_libdir}/mysql/private/libabsl_random_internal_randen_hwaes_impl.so
+%attr(755, root, root) %{_libdir}/mysql/private/libabsl_random_internal_randen_hwaes.so
+%attr(755, root, root) %{_libdir}/mysql/private/libabsl_random_internal_randen_slow.so
+%attr(755, root, root) %{_libdir}/mysql/private/libabsl_random_internal_randen.so
+%attr(755, root, root) %{_libdir}/mysql/private/libabsl_random_internal_seed_material.so
+%attr(755, root, root) %{_libdir}/mysql/private/libabsl_random_seed_gen_exception.so
+%attr(755, root, root) %{_libdir}/mysql/private/libabsl_random_seed_sequences.so
+%attr(755, root, root) %{_libdir}/mysql/private/libabsl_raw_hash_set.so
+%attr(755, root, root) %{_libdir}/mysql/private/libabsl_raw_logging_internal.so
+%attr(755, root, root) %{_libdir}/mysql/private/libabsl_scoped_set_env.so
+%attr(755, root, root) %{_libdir}/mysql/private/libabsl_spinlock_wait.so
+%attr(755, root, root) %{_libdir}/mysql/private/libabsl_stacktrace.so
+%attr(755, root, root) %{_libdir}/mysql/private/libabsl_statusor.so
+%attr(755, root, root) %{_libdir}/mysql/private/libabsl_status.so
+%attr(755, root, root) %{_libdir}/mysql/private/libabsl_strerror.so
+%attr(755, root, root) %{_libdir}/mysql/private/libabsl_str_format_internal.so
+%attr(755, root, root) %{_libdir}/mysql/private/libabsl_strings_internal.so
+%attr(755, root, root) %{_libdir}/mysql/private/libabsl_strings.so
+%attr(755, root, root) %{_libdir}/mysql/private/libabsl_string_view.so
+%attr(755, root, root) %{_libdir}/mysql/private/libabsl_symbolize.so
+%attr(755, root, root) %{_libdir}/mysql/private/libabsl_synchronization.so
+%attr(755, root, root) %{_libdir}/mysql/private/libabsl_throw_delegate.so
+%attr(755, root, root) %{_libdir}/mysql/private/libabsl_time.so
+%attr(755, root, root) %{_libdir}/mysql/private/libabsl_time_zone.so
+%if 0%{?add_ssl_lib}
+%attr(755, root, root) %{_libdir}/mysql/private/libcrypto.so
+%attr(755, root, root) %{_libdir}/mysql/private/libcrypto.so.1.1
+%attr(755, root, root) %{_libdir}/mysql/private/libssl.so
+%attr(755, root, root) %{_libdir}/mysql/private/libssl.so.1.1
+%endif
+%if 0%{?add_fido_plugins}
+%attr(755, root, root) %{_libdir}/mysql/private/libfido2.so.*
+%attr(755, root, root) %{_libdir}/mysql/plugin/authentication_webauthn_client.so
+%endif
 
 %dir %{_libdir}/mysql/plugin
 %attr(755, root, root) %{_libdir}/mysql/plugin/procfs.so
-%attr(755, root, root) %{_libdir}/mysql/plugin/binlog_utils_udf.so
 %attr(755, root, root) %{_libdir}/mysql/plugin/adt_null.so
 %attr(755, root, root) %{_libdir}/mysql/plugin/auth_socket.so
 %attr(755, root, root) %{_libdir}/mysql/plugin/authentication_kerberos_client.so
@@ -850,6 +897,7 @@ fi
 %attr(755, root, root) %{_libdir}/mysql/plugin/component_keyring_kms.so
 %attr(755, root, root) %{_libdir}/mysql/plugin/component_log_filter_dragnet.so
 %attr(755, root, root) %{_libdir}/mysql/plugin/component_log_sink_json.so
+%attr(755, root, root) %{_libdir}/mysql/plugin/component_log_sink_rotate.so
 %attr(755, root, root) %{_libdir}/mysql/plugin/component_log_sink_syseventlog.so
 %attr(755, root, root) %{_libdir}/mysql/plugin/component_mysqlbackup.so
 %attr(755, root, root) %{_libdir}/mysql/plugin/component_query_attributes.so
@@ -864,15 +912,30 @@ fi
 %attr(755, root, root) %{_libdir}/mysql/plugin/component_test_table_access.so
 %attr(755, root, root) %{_libdir}/mysql/plugin/component_test_udf_services.so
 %attr(755, root, root) %{_libdir}/mysql/plugin/component_validate_password.so
+%attr(755, root, root) %{_libdir}/mysql/plugin/component_audit_log_filter.so
+%attr(755, root, root) %{_libdir}/mysql/plugin/component_binlog_utils_udf.so
+%attr(755, root, root) %{_libdir}/mysql/plugin/component_keyring_vault.so
+%attr(755, root, root) %{_libdir}/mysql/plugin/component_masking_functions.so
+%attr(755, root, root) %{_libdir}/mysql/plugin/component_percona_udf.so
+%attr(755, root, root) %{_libdir}/mysql/plugin/component_test_event_tracking_consumer.so
+%attr(755, root, root) %{_libdir}/mysql/plugin/component_test_event_tracking_consumer_a.so
+%attr(755, root, root) %{_libdir}/mysql/plugin/component_test_event_tracking_consumer_b.so
+%attr(755, root, root) %{_libdir}/mysql/plugin/component_test_event_tracking_consumer_c.so
+%attr(755, root, root) %{_libdir}/mysql/plugin/component_test_event_tracking_producer_a.so
+%attr(755, root, root) %{_libdir}/mysql/plugin/component_test_event_tracking_producer_b.so
+%attr(755, root, root) %{_libdir}/mysql/plugin/component_test_execute_prepared_statement.so
+%attr(755, root, root) %{_libdir}/mysql/plugin/component_test_execute_regular_statement.so
+%attr(755, root, root) %{_libdir}/mysql/plugin/component_test_mysql_signal_handler.so
+%attr(755, root, root) %{_libdir}/mysql/plugin/component_test_mysql_thd_store_service.so
+%attr(755, root, root) %{_libdir}/mysql/plugin/component_test_server_telemetry_metrics.so
+%attr(755, root, root) %{_libdir}/mysql/plugin/component_test_server_telemetry_traces.so
+%attr(755, root, root) %{_libdir}/mysql/plugin/component_uuid_vx_udf.so
 %attr(755, root, root) %{_libdir}/mysql/plugin/conflicting_variables.so
 %attr(755, root, root) %{_libdir}/mysql/plugin/connection_control.so
 %attr(755, root, root) %{_libdir}/mysql/plugin/ddl_rewriter.so
 %attr(755, root, root) %{_libdir}/mysql/plugin/ha_example.so
 %attr(755, root, root) %{_libdir}/mysql/plugin/ha_mock.so
-%attr(755, root, root) %{_libdir}/mysql/plugin/keyring_file.so
 %attr(755, root, root) %{_libdir}/mysql/plugin/keyring_udf.so
-%attr(755, root, root) %{_libdir}/mysql/plugin/innodb_engine.so
-%attr(755, root, root) %{_libdir}/mysql/plugin/libmemcached.so
 %attr(755, root, root) %{_libdir}/mysql/plugin/locking_service.so
 %attr(755, root, root) %{_libdir}/mysql/plugin/mypluglib.so
 %attr(755, root, root) %{_libdir}/mysql/plugin/mysql_clone.so
@@ -888,122 +951,23 @@ fi
 %attr(755, root, root) %{_libdir}/mysql/plugin/test_services_command_services.so
 %attr(755, root, root) %{_libdir}/mysql/plugin/test_services_host_application_signal.so
 %attr(755, root, root) %{_libdir}/mysql/plugin/test_udf_wrappers.so
-%attr(755, root, root) %{_libdir}/mysql/plugin/data_masking*
-%dir %{_libdir}/mysql/plugin/debug
-%attr(755, root, root) %{_libdir}/mysql/plugin/debug/procfs.so
-%attr(755, root, root) %{_libdir}/mysql/plugin/debug/data_masking.so
-%attr(755, root, root) %{_libdir}/mysql/plugin/debug/adt_null.so
-%attr(755, root, root) %{_libdir}/mysql/plugin/debug/auth_socket.so
-%attr(755, root, root) %{_libdir}/mysql/plugin/debug/authentication_kerberos_client.so
-%attr(755, root, root) %{_libdir}/mysql/plugin/debug/authentication_ldap_simple.so
-%attr(755, root, root) %{_libdir}/mysql/plugin/debug/authentication_ldap_sasl.so
-%attr(755, root, root) %{_libdir}/mysql/plugin/debug/authentication_ldap_sasl_client.so
-%attr(755, root, root) %{_libdir}/mysql/plugin/debug/authentication_oci_client.so
-%attr(755, root, root) %{_libdir}/mysql/plugin/debug/greatdb_ha.so
-%attr(755, root, root) %{_libdir}/mysql/plugin/debug/group_replication.so
-%attr(755, root, root) %{_libdir}/mysql/plugin/debug/component_audit_api_message_emit.so
-%attr(755, root, root) %{_libdir}/mysql/plugin/debug/component_encryption_udf.so
-%attr(755, root, root) %{_libdir}/mysql/plugin/debug/component_keyring_file.so
-%attr(755, root, root) %{_libdir}/mysql/plugin/debug/component_keyring_kmip.so
-%attr(755, root, root) %{_libdir}/mysql/plugin/debug/component_keyring_kms.so
-%attr(755, root, root) %{_libdir}/mysql/plugin/debug/component_log_filter_dragnet.so
-%attr(755, root, root) %{_libdir}/mysql/plugin/debug/component_log_sink_json.so
-%attr(755, root, root) %{_libdir}/mysql/plugin/debug/component_log_sink_syseventlog.so
-%attr(755, root, root) %{_libdir}/mysql/plugin/debug/component_mysqlbackup.so
-%attr(755, root, root) %{_libdir}/mysql/plugin/debug/component_query_attributes.so
-%attr(755, root, root) %{_libdir}/mysql/plugin/debug/component_reference_cache.so
-%attr(755, root, root) %{_libdir}/mysql/plugin/debug/component_test_audit_api_message.so
-%attr(755, root, root) %{_libdir}/mysql/plugin/debug/component_test_component_deinit.so
-%attr(755, root, root) %{_libdir}/mysql/plugin/debug/component_test_host_application_signal.so
-%attr(755, root, root) %{_libdir}/mysql/plugin/debug/component_test_mysql_command_services.so
-%attr(755, root, root) %{_libdir}/mysql/plugin/debug/component_test_mysql_system_variable_set.so
-%attr(755, root, root) %{_libdir}/mysql/plugin/debug/component_test_sensitive_system_variables.so
-%attr(755, root, root) %{_libdir}/mysql/plugin/debug/component_test_status_var_reader.so
-%attr(755, root, root) %{_libdir}/mysql/plugin/debug/component_test_table_access.so
-%attr(755, root, root) %{_libdir}/mysql/plugin/debug/component_test_udf_services.so
-%attr(755, root, root) %{_libdir}/mysql/plugin/debug/component_validate_password.so
-%attr(755, root, root) %{_libdir}/mysql/plugin/debug/conflicting_variables.so
-%attr(755, root, root) %{_libdir}/mysql/plugin/debug/connection_control.so
-%attr(755, root, root) %{_libdir}/mysql/plugin/debug/ddl_rewriter.so
-%attr(755, root, root) %{_libdir}/mysql/plugin/debug/ha_example.so
-%attr(755, root, root) %{_libdir}/mysql/plugin/debug/ha_mock.so
-%attr(755, root, root) %{_libdir}/mysql/plugin/debug/keyring_file.so
-%attr(755, root, root) %{_libdir}/mysql/plugin/debug/keyring_udf.so
-%attr(755, root, root) %{_libdir}/mysql/plugin/debug/innodb_engine.so
-%attr(755, root, root) %{_libdir}/mysql/plugin/debug/libmemcached.so
-%attr(755, root, root) %{_libdir}/mysql/plugin/debug/locking_service.so
-%attr(755, root, root) %{_libdir}/mysql/plugin/debug/mypluglib.so
-%attr(755, root, root) %{_libdir}/mysql/plugin/debug/mysql_clone.so
-%attr(755, root, root) %{_libdir}/mysql/plugin/debug/mysql_no_login.so
-%attr(755, root, root) %{_libdir}/mysql/plugin/debug/rewrite_example.so
-%attr(755, root, root) %{_libdir}/mysql/plugin/debug/rewriter.so
-%attr(755, root, root) %{_libdir}/mysql/plugin/debug/semisync_master.so
-%attr(755, root, root) %{_libdir}/mysql/plugin/debug/semisync_slave.so
-%attr(755, root, root) %{_libdir}/mysql/plugin/debug/semisync_replica.so
-%attr(755, root, root) %{_libdir}/mysql/plugin/debug/semisync_source.so
-%attr(755, root, root) %{_libdir}/mysql/plugin/debug/validate_password.so
-%attr(755, root, root) %{_libdir}/mysql/plugin/debug/version_token.so
-%attr(755, root, root) %{_libdir}/mysql/plugin/debug/test_services_command_services.so
-%attr(755, root, root) %{_libdir}/mysql/plugin/debug/test_services_host_application_signal.so
-%attr(755, root, root) %{_libdir}/mysql/plugin/debug/binlog_utils_udf.so
-%attr(755, root, root) %{_libdir}/mysql/plugin/debug/test_udf_wrappers.so
 %if 0%{?mecab}
 %{_libdir}/mysql/mecab
 %attr(755, root, root) %{_libdir}/mysql/plugin/libpluginmecab.so
-%attr(755, root, root) %{_libdir}/mysql/plugin/debug/libpluginmecab.so
 %endif
 #coredumper
 %attr(755, root, root) %{_includedir}/coredumper/coredumper.h
 %attr(755, root, root) /usr/lib/libcoredumper.a
 # Percona plugins
-%attr(755, root, root) %{_libdir}/mysql/plugin/audit_log.so
-%attr(755, root, root) %{_libdir}/mysql/plugin/audit_login_messages.so
-#%attr(644, root, root) %{_datadir}/mysql-*/audit_log_filter_linux_install.sql
-#%attr(755, root, root) %{_libdir}/mysql/plugin/authentication_pam.so
-#%attr(755, root, root) %{_libdir}/mysql/plugin/authentication_ldap_sasl.so
-#%attr(755, root, root) %{_libdir}/mysql/plugin/authentication_ldap_simple.so
-#%attr(755, root, root) %{_libdir}/mysql/plugin/keyring_okv.so
-#%attr(755, root, root) %{_libdir}/mysql/plugin/keyring_encrypted_file.so
-#%attr(755, root, root) %{_libdir}/mysql/plugin/mysql_clone.so
-#%attr(755, root, root) %{_libdir}/mysql/plugin/thread_pool.so
-#%attr(755, root, root) %{_libdir}/mysql/plugin/openssl_udf.so
-#%attr(755, root, root) %{_libdir}/mysql/plugin/firewall.so
-#%attr(644, root, root) %{_datadir}/mysql-*/linux_install_firewall.sql
-%attr(755, root, root) %{_libdir}/mysql/plugin/debug/audit_log.so
-%attr(755, root, root) %{_libdir}/mysql/plugin/debug/audit_login_messages.so
-#%attr(755, root, root) %{_libdir}/mysql/plugin/scalability_metrics.so
-#%attr(755, root, root) %{_libdir}/mysql/plugin/debug/scalability_metrics.so
 %attr(755, root, root) %{_libdir}/mysql/plugin/auth_pam.so
-%attr(755, root, root) %{_libdir}/mysql/plugin/debug/auth_pam.so
 %attr(755, root, root) %{_libdir}/mysql/plugin/auth_pam_compat.so
-%attr(755, root, root) %{_libdir}/mysql/plugin/debug/auth_pam_compat.so
-%attr(755, root, root) %{_libdir}/mysql/plugin/libfnv1a_udf.*
-%attr(755, root, root) %{_libdir}/mysql/plugin/debug/libfnv1a_udf.*
-%attr(755, root, root) %{_libdir}/mysql/plugin/libfnv_udf.*
-%attr(755, root, root) %{_libdir}/mysql/plugin/debug/libfnv_udf.*
-%attr(755, root, root) %{_libdir}/mysql/plugin/libmurmur_udf.*
-%attr(755, root, root) %{_libdir}/mysql/plugin/debug/libmurmur_udf.*
 %attr(755, root, root) %{_libdir}/mysql/plugin/dialog.so
-%attr(755, root, root) %{_libdir}/mysql/plugin/debug/dialog.so
-#%attr(755, root, root) %{_libdir}/mysql/plugin/query_response_time.so
-#%attr(755, root, root) %{_libdir}/mysql/plugin/debug/query_response_time.so
-%attr(755, root, root) %{_libdir}/mysql/plugin/keyring_vault.so
-%attr(755, root, root) %{_libdir}/mysql/plugin/debug/keyring_vault.so
-#
-#%attr(644, root, root) %{_datadir}/greatsql/fill_help_tables.sql
-#%attr(644, root, root) %{_datadir}/greatsql/mysql_sys_schema.sql
-#%attr(644, root, root) %{_datadir}/greatsql/mysql_system_tables.sql
-#%attr(644, root, root) %{_datadir}/greatsql/mysql_system_tables_data.sql
-#%attr(644, root, root) %{_datadir}/greatsql/mysql_test_data_timezone.sql
 %attr(644, root, root) %{_datadir}/greatsql/mysql-log-rotate
-#%attr(644, root, root) %{_datadir}/greatsql/mysql_security_commands.sql
 %attr(644, root, root) %{_datadir}/greatsql/dictionary.txt
-%attr(644, root, root) %{_datadir}/greatsql/innodb_memcached_config.sql
 %attr(644, root, root) %{_datadir}/greatsql/install_rewriter.sql
 %attr(644, root, root) %{_datadir}/greatsql/uninstall_rewriter.sql
-%attr(644, root, root) %{_datadir}/greatsql/install_audit_log.sql
+%attr(644, root, root) %{_datadir}/greatsql/audit_log_filter_linux_install.sql
 %attr(644, root, root) %{_datadir}/greatsql/sys_masking.sql
-%attr(644, root, root) %{_datadir}/greatsql/uninstall_audit_log.sql
 %if 0%{?systemd}
 %attr(644, root, root) %{_unitdir}/mysqld.service
 %attr(644, root, root) %{_unitdir}/mysqld@.service
@@ -1045,7 +1009,6 @@ fi
 %attr(755, root, root) %{_datadir}/greatsql/spanish/
 %attr(755, root, root) %{_datadir}/greatsql/swedish/
 %attr(755, root, root) %{_datadir}/greatsql/ukrainian/
-#%attr(755, root, root) %{_datadir}/greatsql/mysql_system_users.sql
 
 %files -n greatsql-client
 %defattr(-, root, root, -)
@@ -1057,19 +1020,22 @@ fi
 %attr(755, root, root) %{_bindir}/mysqldecrypt
 %attr(755, root, root) %{_bindir}/mysqldump
 %attr(755, root, root) %{_bindir}/mysqlimport
-%attr(755, root, root) %{_bindir}/mysqlpump
 %attr(755, root, root) %{_bindir}/mysqlshow
 %attr(755, root, root) %{_bindir}/mysqlslap
 %attr(755, root, root) %{_bindir}/mysql_config_editor
 %attr(755, root, root) %{_bindir}/mysql_migrate_keyring
 %attr(755, root, root) %{_bindir}/mysql_keyring_encryption_test
+%attr(755, root, root) %{_bindir}/mysql_client_load_balance_test
+%attr(755, root, root) %{_bindir}/mysql_test_event_tracking
+%if 0%{?add_ssl_lib}
+%attr(755, root, root) %{_bindir}/my_openssl
+%endif
 
 %attr(644, root, root) %{_mandir}/man1/mysql.1*
 %attr(644, root, root) %{_mandir}/man1/mysqladmin.1*
 %attr(644, root, root) %{_mandir}/man1/mysqlbinlog.1*
 %attr(644, root, root) %{_mandir}/man1/mysqlcheck.1*
 %attr(644, root, root) %{_mandir}/man1/mysqldump.1*
-%attr(644, root, root) %{_mandir}/man1/mysqlpump.1*
 %attr(644, root, root) %{_mandir}/man1/mysqlimport.1*
 %attr(644, root, root) %{_mandir}/man1/mysqlshow.1*
 %attr(644, root, root) %{_mandir}/man1/mysqlslap.1*
@@ -1081,7 +1047,9 @@ fi
 %attr(644, root, root) %{_mandir}/man1/comp_err.1*
 %attr(644, root, root) %{_mandir}/man1/mysql_config.1*
 %attr(755, root, root) %{_bindir}/mysql_config
+%ifarch %{multiarchs}
 %attr(755, root, root) %{_bindir}/mysql_config-%{__isa_bits}
+%endif
 %{_includedir}/mysql
 %{_datadir}/aclocal/mysql.m4
 %{_libdir}/mysql/lib%{shared_lib_pri_name}.a
@@ -1094,17 +1062,22 @@ fi
 %doc %{?license_files_server}
 %dir %attr(755, root, root) %{_libdir}/mysql
 %attr(644, root, root) %{_sysconfdir}/ld.so.conf.d/mysql-%{_arch}.conf
-%{_libdir}/mysql/lib%{shared_lib_pri_name}.so.21*
+%{_libdir}/mysql/lib%{shared_lib_pri_name}.so.24*
+#coredumper
+%attr(755, root, root) %{_includedir}/coredumper/coredumper.h
+%attr(755, root, root) /usr/lib/libcoredumper.a
 
-#%if 0%{?compatlib}
-#%files -n greatsql-shared-compat
-#%defattr(-, root, root, -)
-#%doc %{?license_files_server}
-#%dir %attr(755, root, root) %{_libdir}/mysql
-#%attr(644, root, root) %{_sysconfdir}/ld.so.conf.d/mysql-%{_arch}.conf
-#%{_libdir}/mysql/libmysqlclient.so.%{compatlib}.*
-#%{_libdir}/mysql/libmysqlclient_r.so.%{compatlib}.*
-#%endif
+%ifarch x86_64
+%if 0%{?compatlib}
+%files -n greatsql-shared-compat
+%defattr(-, root, root, -)
+%doc %{?license_files_server}
+%dir %attr(755, root, root) %{_libdir}/mysql
+%attr(644, root, root) %{_sysconfdir}/ld.so.conf.d/mysql-%{_arch}.conf
+%{_libdir}/mysql/libmysqlclient.so.%{compatlib}.*
+%{_libdir}/mysql/libmysqlclient_r.so.%{compatlib}.*
+%endif
+%endif
 
 %files -n greatsql-test
 %defattr(-, root, root, -)
@@ -1188,97 +1161,11 @@ fi
 %attr(755, root, root) %{_libdir}/mysql/plugin/component_mysqlx_global_reset.so
 %attr(755, root, root) %{_libdir}/mysql/plugin/component_test_mysql_runtime_error.so
 %attr(755, root, root) %{_libdir}/mysql/plugin/libtest_sql_reset_connection.so
-%attr(755, root, root) %{_libdir}/mysql/plugin/debug/component_test_mysql_runtime_error.so
-%attr(755, root, root) %{_libdir}/mysql/plugin/debug/libtest_sql_reset_connection.so
-%attr(755, root, root) %{_libdir}/mysql/plugin/debug/auth.so
-%attr(755, root, root) %{_libdir}/mysql/plugin/debug/auth_test_plugin.so
-%attr(755, root, root) %{_libdir}/mysql/plugin/debug/component_example_component1.so
-%attr(755, root, root) %{_libdir}/mysql/plugin/debug/component_example_component2.so
-%attr(755, root, root) %{_libdir}/mysql/plugin/debug/component_example_component3.so
-%attr(755, root, root) %{_libdir}/mysql/plugin/debug/component_log_sink_test.so
-%attr(755, root, root) %{_libdir}/mysql/plugin/debug/component_test_backup_lock_service.so
-%attr(755, root, root) %{_libdir}/mysql/plugin/debug/component_test_string_service_charset.so
-%attr(755, root, root) %{_libdir}/mysql/plugin/debug/component_test_string_service_long.so
-%attr(755, root, root) %{_libdir}/mysql/plugin/debug/component_test_string_service.so
-%attr(755, root, root) %{_libdir}/mysql/plugin/debug/component_pfs_example.so
-%attr(755, root, root) %{_libdir}/mysql/plugin/debug/component_pfs_example_component_population.so
-%attr(755, root, root) %{_libdir}/mysql/plugin/debug/pfs_example_plugin_employee.so
-%attr(755, root, root) %{_libdir}/mysql/plugin/debug/component_test_pfs_notification.so
-%attr(755, root, root) %{_libdir}/mysql/plugin/debug/component_test_pfs_resource_group.so
-%attr(755, root, root) %{_libdir}/mysql/plugin/debug/component_test_udf_registration.so
-%attr(755, root, root) %{_libdir}/mysql/plugin/debug/component_test_mysql_current_thread_reader.so
-%attr(755, root, root) %{_libdir}/mysql/plugin/debug/component_udf_reg_3_func.so
-%attr(755, root, root) %{_libdir}/mysql/plugin/debug/component_udf_reg_avg_func.so
-%attr(755, root, root) %{_libdir}/mysql/plugin/debug/component_udf_reg_int_func.so
-%attr(755, root, root) %{_libdir}/mysql/plugin/debug/component_udf_reg_int_same_func.so
-%attr(755, root, root) %{_libdir}/mysql/plugin/debug/component_udf_reg_only_3_func.so
-%attr(755, root, root) %{_libdir}/mysql/plugin/debug/component_udf_reg_real_func.so
-%attr(755, root, root) %{_libdir}/mysql/plugin/debug/component_udf_unreg_3_func.so
-%attr(755, root, root) %{_libdir}/mysql/plugin/debug/component_udf_unreg_int_func.so
-%attr(755, root, root) %{_libdir}/mysql/plugin/debug/component_udf_unreg_real_func.so
-%attr(755, root, root) %{_libdir}/mysql/plugin/debug/component_test_sys_var_service_int.so
-%attr(755, root, root) %{_libdir}/mysql/plugin/debug/component_test_sys_var_service.so
-%attr(755, root, root) %{_libdir}/mysql/plugin/debug/component_test_sys_var_service_same.so
-%attr(755, root, root) %{_libdir}/mysql/plugin/debug/component_test_sys_var_service_str.so
-%attr(755, root, root) %{_libdir}/mysql/plugin/debug/component_test_status_var_service.so
-%attr(755, root, root) %{_libdir}/mysql/plugin/debug/component_test_status_var_service_int.so
-%attr(755, root, root) %{_libdir}/mysql/plugin/debug/component_test_status_var_service_reg_only.so
-%attr(755, root, root) %{_libdir}/mysql/plugin/debug/component_test_status_var_service_str.so
-%attr(755, root, root) %{_libdir}/mysql/plugin/debug/component_test_status_var_service_unreg_only.so
-%attr(755, root, root) %{_libdir}/mysql/plugin/debug/component_test_system_variable_source.so
-%attr(755, root, root) %{_libdir}/mysql/plugin/debug/libdaemon_example.so
-%attr(755, root, root) %{_libdir}/mysql/plugin/debug/replication_observers_example_plugin.so
-%attr(755, root, root) %{_libdir}/mysql/plugin/debug/libtest_framework.so
-%attr(755, root, root) %{_libdir}/mysql/plugin/debug/libtest_services.so
-%attr(755, root, root) %{_libdir}/mysql/plugin/debug/libtest_services_threaded.so
-%attr(755, root, root) %{_libdir}/mysql/plugin/debug/libtest_session_detach.so
-%attr(755, root, root) %{_libdir}/mysql/plugin/debug/libtest_session_attach.so
-%attr(755, root, root) %{_libdir}/mysql/plugin/debug/libtest_session_in_thd.so
-%attr(755, root, root) %{_libdir}/mysql/plugin/debug/libtest_session_info.so
-%attr(755, root, root) %{_libdir}/mysql/plugin/debug/libtest_sql_2_sessions.so
-%attr(755, root, root) %{_libdir}/mysql/plugin/debug/libtest_sql_all_col_types.so
-%attr(755, root, root) %{_libdir}/mysql/plugin/debug/libtest_sql_cmds_1.so
-%attr(755, root, root) %{_libdir}/mysql/plugin/debug/libtest_sql_commit.so
-%attr(755, root, root) %{_libdir}/mysql/plugin/debug/libtest_sql_complex.so
-%attr(755, root, root) %{_libdir}/mysql/plugin/debug/libtest_sql_errors.so
-%attr(755, root, root) %{_libdir}/mysql/plugin/debug/libtest_sql_lock.so
-%attr(755, root, root) %{_libdir}/mysql/plugin/debug/libtest_sql_processlist.so
-%attr(755, root, root) %{_libdir}/mysql/plugin/debug/libtest_sql_replication.so
-%attr(755, root, root) %{_libdir}/mysql/plugin/debug/libtest_sql_shutdown.so
-%attr(755, root, root) %{_libdir}/mysql/plugin/debug/libtest_sql_stmt.so
-%attr(755, root, root) %{_libdir}/mysql/plugin/debug/libtest_sql_sqlmode.so
-%attr(755, root, root) %{_libdir}/mysql/plugin/debug/libtest_sql_stored_procedures_functions.so
-%attr(755, root, root) %{_libdir}/mysql/plugin/debug/libtest_sql_views_triggers.so
-%attr(755, root, root) %{_libdir}/mysql/plugin/debug/libtest_x_sessions_deinit.so
-%attr(755, root, root) %{_libdir}/mysql/plugin/debug/libtest_x_sessions_init.so
-%attr(755, root, root) %{_libdir}/mysql/plugin/debug/qa_auth_client.so
-%attr(755, root, root) %{_libdir}/mysql/plugin/debug/qa_auth_interface.so
-%attr(755, root, root) %{_libdir}/mysql/plugin/debug/qa_auth_server.so
-%attr(755, root, root) %{_libdir}/mysql/plugin/debug/test_security_context.so
-%attr(755, root, root) %{_libdir}/mysql/plugin/debug/test_services_plugin_registry.so
-%attr(755, root, root) %{_libdir}/mysql/plugin/debug/test_udf_services.so
-%attr(755, root, root) %{_libdir}/mysql/plugin/debug/udf_example.so
-%attr(755, root, root) %{_libdir}/mysql/plugin/debug/component_mysqlx_global_reset.so
-%attr(755, root, root) %{_libdir}/mysql/plugin/debug/libtest_sql_sleep_is_connected.so
-
-#%if 0%{?tokudb}
-#%files -n percona-server-tokudb
-#%attr(-, root, root)
-#%{_bindir}/tokuftdump
-#%{_libdir}/mysql/plugin/ha_tokudb.so
-#%attr(755, root, root) %{_libdir}/mysql/plugin/debug/ha_tokudb.so
-#%attr(755, root, root) %{_bindir}/tokuft_logprint
-#%attr(755, root, root) %{_libdir}/mysql/plugin/tokudb_backup.so
-#%attr(755, root, root) %{_libdir}/mysql/plugin/debug/tokudb_backup.so
-#%attr(755, root, root) %{_libdir}/mysql/libHotBackup.so
-#%{_includedir}/backup.h
-#%endif
 
 %if 0%{?rocksdb}
 %files -n greatsql-rocksdb
 %attr(-, root, root)
 %{_libdir}/mysql/plugin/ha_rocksdb.so
-%attr(755, root, root) %{_libdir}/mysql/plugin/debug/ha_rocksdb.so
 %attr(755, root, root) %{_bindir}/ldb
 %attr(755, root, root) %{_bindir}/mysql_ldb
 %attr(755, root, root) %{_bindir}/sst_dump
@@ -1303,12 +1190,26 @@ fi
 %else
 %{_sysconfdir}/init.d/mysqlrouter
 %endif
-%{_libdir}/mysqlrouter/private/libmysqlharness*.so.*
-%{_libdir}/mysqlrouter/private/libmysqlrouter*.so.*
+%{_libdir}/mysqlrouter/private/libmysqlharness.so.*
+%{_libdir}/mysqlrouter/private/libmysqlharness_stdx.so.*
+%{_libdir}/mysqlrouter/private/libmysqlharness_tls.so.*
+%{_libdir}/mysqlrouter/private/libmysqlrouter.so.*
+%{_libdir}/mysqlrouter/private/libmysqlrouter_connection_pool.so.*
 %{_libdir}/mysqlrouter/private/libmysqlrouter_http.so.*
 %{_libdir}/mysqlrouter/private/libmysqlrouter_http_auth_backend.so.*
 %{_libdir}/mysqlrouter/private/libmysqlrouter_http_auth_realm.so.*
 %{_libdir}/mysqlrouter/private/libprotobuf-lite.so.*
+%{_libdir}/mysqlrouter/private/libabsl_*.so
+%{_libdir}/mysqlrouter/private/libmysqlrouter_io_component.so.1
+%{_libdir}/mysqlrouter/private/libmysqlrouter_metadata_cache.so.*
+%{_libdir}/mysqlrouter/private/libmysqlrouter_mysqlxmessages.so.*
+%{_libdir}/mysqlrouter/private/libmysqlrouter_routing.so.*
+%{_libdir}/mysqlrouter/private/libmysqlrouter_routing_connections.so.*
+%{_libdir}/mysqlrouter/private/libmysqlrouter_destination_status.so.*
+%{_libdir}/mysqlrouter/private/libmysqlrouter_cluster.so.*
+%{_libdir}/mysqlrouter/private/libmysqlrouter_http_server.so.*
+%{_libdir}/mysqlrouter/private/libmysqlrouter_mysql.so.*
+%{_libdir}/mysqlrouter/private/libmysqlrouter_utils.so.*
 %dir %{_libdir}/mysqlrouter
 %dir %{_libdir}/mysqlrouter/private
 %{_libdir}/mysqlrouter/*.so
@@ -1318,22 +1219,63 @@ fi
 %files -n greatsql-icu-data-files
 %defattr(-, root, root, -)
 %doc %{?license_files_server}
-%dir %attr(755, root, root) %{_libdir}/mysql/private/icudt69l
-%{_libdir}/mysql/private/icudt69l/unames.icu
-%{_libdir}/mysql/private/icudt69l/brkitr
+%dir %attr(755, root, root) %{_libdir}/mysql/private/icudt73l
+%{_libdir}/mysql/private/icudt73l/unames.icu
+%{_libdir}/mysql/private/icudt73l/cnvalias.icu
+%{_libdir}/mysql/private/icudt73l/uemoji.icu
+%{_libdir}/mysql/private/icudt73l/ulayout.icu
+%{_libdir}/mysql/private/icudt73l/brkitr
 
 %changelog
+* Mon Oct 13 2025 GreatSQL <greatsql@greatdb.com> - 8.4.4-4.1
+- Release GreatSQL-8.4.4-4.1
+
+* Thu Apr 24 2025 GreatSQL <greatsql@greatdb.com> - 8.0.32-27.6
+- add mysql and mysqlrouter private dir into ldconfig search path
+- update descriptions
+
+* Fri Apr 11 2025 Funda Wang <fundawang@yeah.net> - 8.0.32-27.5
+- greatsql-mysql-config was removed previously, my.cnf was moved
+  into greatsql-server package without conflicts and obsoletes
+
+* Tue Apr 1 2025 GreatSQL <greatsql@greatdb.com> - 8.0.32-27.4
+- Remove greatsql-mysql-config, greatsql-shared-compat
+- Clearly declare the conflicts list
+
+* Fri Mar 28 2025 Funda Wang <fundawang@yeah.net> - 8.0.32-27.3
+- fix requires_exclude
+
+* Mon Mar 24 2025 GreatSQL <greatsql@greatdb.com> - 8.0.32-27.2
+- Remove debug build stage
+- Add some new cmake options
+
+* Mon Mar 10 2025 GreatSQL <greatsql@greatdb.com> - 8.0.32-27.1
+- Release GreatSQL-8.0.32-27.1
+
+* Sun Dec 08 2024 Funda Wang <fundawang@yeah.net> - 8.0.32-26.6
+- convert to git lfs
+
+* Wed Dec 04 2024 shenzhongwei <shenzhongwei@kylinos.cn> - 8.0.32-26.5
+- fix: %patchN is deprecated (2 usages found), use %patch N (or %patch -P N) 
+
+* Wed Dec 04 2024 Funda Wang <fundawang@yeah.net> - 8.0.32-26.4
+- use conflicts rather than obsoletes for mysql and mariadb sub packages
+
+* Tue Nov 26 2024 laokz <zhangkai@iscas.ac.cn> - 8.0.32-26.3
+- Add riscv64 patch
+- Add missed condition of packaging mysql_config-%{__isa_bits}
+
 * Wed Sep 11 2024 GreatSQL <greatsql@greatdb.com> - 8.0.32-26.2
 - Fix the issue of missing audit and datamask plugin files for GreatSQL-8.0.32-26.2
 
 * Thu Aug 8 2024 GreatSQL <greatsql@greatdb.com> - 8.0.32-26.1
 - Release GreatSQL-8.0.32-26.1
 
-* Mon Apr 22 2024 Wenlong Zhang <zhangwenlong@loongson.cn> - 8.0.32-25.3
-- add loongarch64 support
-
 * Fri Jun 7 2024 GreatSQL <greatsql@greatdb.com> - 8.0.32-25.2
 - Change the compilation dependency of compat-openssl to openssl for GreatSQL-8.0.32-25.2
+
+* Mon Apr 22 2024 Wenlong Zhang <zhangwenlong@loongson.cn> - 8.0.32-25.3
+- add loongarch64 support
 
 * Thu Dec 28 2023 GreatSQL <greatsql@greatdb.com> - 8.0.32-25.1
 - Release GreatSQL-8.0.32-25.1
