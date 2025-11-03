@@ -169,7 +169,6 @@ BuildRequires:  systemd
 BuildRequires:  pkgconfig(systemd)
 %endif
 BuildRequires:  cyrus-sasl-devel
-BuildRequires:  openldap-devel
 
 BuildRequires:  cmake >= 3.6.1
 BuildRequires:  gcc
