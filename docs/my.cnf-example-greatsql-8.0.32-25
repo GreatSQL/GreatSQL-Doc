@@ -159,7 +159,7 @@ innodb_log_buffer_size = 64M
 innodb_log_file_size = 2G
 innodb_log_files_in_group = 3
 innodb_redo_log_capacity = 6G
-innodb_doublewrite_files = 2
+innodb_doublewrite_files=64
 innodb_doublewrite_pages = 128
 innodb_max_undo_log_size = 4G
 # 根据您的服务器IOPS能力适当调整
@@ -171,12 +171,12 @@ innodb_open_files = 65534
 #提醒：当需要用CLONE加密特性时，不要选用O_DIRECT模式，否则会比较慢
 innodb_flush_method = O_DIRECT
 innodb_use_fdatasync = ON
-innodb_lru_scan_depth = 4000
+innodb_lru_scan_depth=9000
 innodb_lock_wait_timeout = 10
 innodb_rollback_on_timeout = 1
 innodb_print_all_deadlocks = 1
 innodb_online_alter_log_max_size = 4G
-innodb_print_ddl_logs = 1
+innodb_print_ddl_logs=OFF
 innodb_status_file = 1
 innodb_status_output = 0
 innodb_status_output_locks = 1
@@ -184,7 +184,7 @@ innodb_sort_buffer_size = 64M
 innodb_adaptive_hash_index = 0
 innodb_numa_interleave = OFF
 innodb_spin_wait_delay = 20
-innodb_print_lock_wait_timeout_info = 1
+innodb_print_lock_wait_timeout_info=OFF
 #自动杀掉超过5分钟不活跃事务，避免行锁被长时间持有
 kill_idle_transaction = 300
 #异步清理大表
