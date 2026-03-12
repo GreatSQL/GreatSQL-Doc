@@ -85,7 +85,7 @@ replica_parallel_workers = 16
 binlog_transaction_dependency_tracking = WRITESET
 replica_preserve_commit_order = ON
 replica_checkpoint_period = 2
-loose-rpl_read_binlog_speed_limit = 100
+loose-rpl_read_binlog_speed_limit=0
 
 # Disalbe InnoDB PQ
 loose-force_parallel_execute = OFF
