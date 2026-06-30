@@ -99,8 +99,8 @@ loose-plugin_load_add='libgreatdb_plan_baseline.so'
 loose-plan_baseline_enable_summary=OFF
 loose-plan_baseline_enable_persistent=OFF
 loose-plan_baseline_refresh_interval=1800
-loose-plan_baseline_max_row_count=3000
-loose-plan_baseline_max_table_count=24
+loose-plan_baseline_max_rows_count=3000
+loose-plan_baseline_max_tables_count=24
 
 # Rapid
 #loose-plugin_load_add='ha_rapid.so'
