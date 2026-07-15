@@ -9,7 +9,7 @@ socket=/data/GreatSQL/mysql.sock
 
 [mysql]
 loose-skip-binary-as-hex
-prompt="(\\D)[\\u@GreatSQL][\\d]>"
+prompt="(\\D)[\\u@GreatSQL][\\d]> "
 no-auto-rehash
 
 [mysqld]
@@ -90,6 +90,9 @@ replica_checkpoint_period=2
 loose-rpl_read_binlog_speed_limit=0
 loose-replica_parallel_wait_mode="WAIT_ON_WORKER_THREAD"
 
+# Disalbe InnoDB PQ
+loose-force_parallel_execute=OFF
+
 # Parallel LOAD DATA
 loose-gdb_parallel_load=ON
 loose-innodb_optimize_no_pk_parallel_load=ON
@@ -105,13 +108,13 @@ loose-plan_baseline_max_tables_count=24
 # Rapid
 #loose-plugin_load_add='ha_rapid.so'
 #loose-rapid_memory_limit=64G
-#loose-rapid_worker_threads=32
+#loose-rapid_worker_threads=4
 #loose-secondary_engine_parallel_load_workers=16
 
 # Turbo
 #loose-plugin_load_add='turbo.so'
-#loose-turbo_memory_limit= 64G
-#loose-turbo_worker_threads=32
+#loose-turbo_memory_limit=64G
+#loose-turbo_worker_threads=4
 
 # Clone
 #loose-plugin_load_add='mysql_clone.so'
